@@ -1,0 +1,18 @@
+[
+  {
+    "old_id": 1,
+    "name": {
+    	"fi": "Lääkäri",
+    	"sv": "Läkare"
+    },
+    "id": "laakari"
+  },
+  {
+    "old_id": 2,
+    "name": {
+    	"fi": "Hammaslääkäri",
+    	"sv": "Tandläkare"
+    },
+    "id": "hammaslaakari"
+  }
+]

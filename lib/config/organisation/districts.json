@@ -1,0 +1,148 @@
+[{
+  "actived": true,
+  "domain_id": "hyks-erva",
+  "old_id": 9,
+  "name": "Etelä-Karjalan sosiaali- ja terveyspiiri",
+  "short_name": "EKSOTE",
+  "id": "etela-karjalan-sosiaali-ja-terveyspiiri"
+}, {
+  "actived": true,
+  "domain_id": "tays-erva",
+  "old_id": 4,
+  "name": "Etelä-Pohjanmaan sairaanhoitopiiri",
+  "short_name": "EPSHP",
+  "id": "etela-pohjanmaan-sairaanhoitopiiri"
+}, {
+  "actived": true,
+  "domain_id": "kys-erva",
+  "old_id": 12,
+  "name": "Etelä-Savon sairaanhoitopiiri",
+  "short_name": "ESSHP",
+  "id": "etela-savon-sairaanhoitopiiri"
+}, {
+  "actived": false,
+  "domain_id": 7,
+  "old_id": 21,
+  "name": "Harjoitus alue",
+  "short_name": "harjoitus alue",
+  "id": "harjoitus-alue"
+}, {
+  "actived": true,
+  "domain_id": "hyks-erva",
+  "old_id": 6,
+  "name": "Helsingin ja Uudenmaan sairaanhoitopiiri",
+  "short_name": "HUS",
+  "id": "helsingin-ja-uudenmaan-sairaanhoitopiiri"
+}, {
+  "actived": true,
+  "domain_id": "kys-erva",
+  "old_id": 13,
+  "name": "Itä-Savon sairaanhoitopiiri",
+  "short_name": "ISSHP",
+  "id": "ita-savon-sairaanhoitopiiri"
+}, {
+  "actived": true,
+  "domain_id": "oys-erva",
+  "old_id": 17,
+  "name": "Kainuun sairaanhoitopiiri",
+  "short_name": "Kainuun sairaanhoitopiiri",
+  "id": "kainuun-sairaanhoitopiiri"
+}, {
+  "actived": true,
+  "domain_id": "tays-erva",
+  "old_id": 2,
+  "name": "Kanta-Hämeen sairaanhoitopiiri",
+  "short_name": "KHSHP",
+  "id": "kanta-hameen-sairaanhoitopiiri"
+}, {
+  "actived": true,
+  "domain_id": "oys-erva",
+  "old_id": 16,
+  "name": "Keski-Pohjanmaan erikoissairaanhoito- ja peruspalvelukuntayhtymä",
+  "short_name": "Keski-Pohjanmaan erikoissairaanhoito- ja peruspalv",
+  "id": "keski-pohjanmaan-erikoissairaanhoito-ja-peruspalvelukuntayhtyma"
+}, {
+  "actived": true,
+  "domain_id": "kys-erva",
+  "old_id": 11,
+  "name": "Keski-Suomen sairaanhoitopiiri",
+  "short_name": "KSSHP",
+  "id": "keski-suomen-sairaanhoitopiiri"
+}, {
+  "actived": true,
+  "domain_id": "hyks-erva",
+  "old_id": 8,
+  "name": "Kymenlaakson sairaanhoitopiiri",
+  "short_name": "KYMSHP",
+  "id": "kymenlaakson-sairaanhoitopiiri"
+}, {
+  "actived": true,
+  "domain_id": "oys-erva",
+  "old_id": 18,
+  "name": "Länsi-Pohjan sairaanhoitopiiri",
+  "short_name": "Länsi-Pohjan sairaanhoitopiiri",
+  "id": "lansi-pohjan-sairaanhoitopiiri"
+}, {
+  "actived": true,
+  "domain_id": "oys-erva",
+  "old_id": 15,
+  "name": "Lapin sairaanhoitopiiri",
+  "short_name": "Lapin sairaanhoitopiiri",
+  "id": "lapin-sairaanhoitopiiri"
+}, {
+  "actived": true,
+  "old_id": 1,
+  "domain_id": "tays-erva",
+  "name": "Pirkanmaan sairaanhoitopiiri",
+  "short_name": "PSHP",
+  "id": "pirkanmaan-sairaanhoitopiiri"
+}, {
+  "actived": true,
+  "domain_id": "tays-erva",
+  "old_id": 3,
+  "name": "Päijät-Hämeen sairaanhoitopiiiri",
+  "short_name": "PHSHP",
+  "id": "paijat-hameen-sairaanhoitopiiiri"
+}, {
+  "actived": true,
+  "domain_id": "kys-erva",
+  "old_id": 10,
+  "name": "Pohjois-Karjalan sairaanhoito- ja sosiaalipalvelujen kuntayhtymä",
+  "short_name": "PKSSK",
+  "id": "pohjois-karjalan-sairaanhoito-ja-sosiaalipalvelujen-kuntayhtyma"
+}, {
+  "actived": true,
+  "domain_id": "oys-erva",
+  "old_id": 14,
+  "name": "Pohjois-Pohjanmaan sairaanhoitopiiri",
+  "short_name": "Pohjois-Pohjanmaan sairaanhoitopiiri",
+  "id": "pohjois-pohjanmaan-sairaanhoitopiiri"
+}, {
+  "actived": true,
+  "domain_id": "kys-erva",
+  "old_id": 7,
+  "name": "Pohjois-Savon sairaanhoitopiiri",
+  "short_name": "PSSHP",
+  "id": "pohjois-savon-sairaanhoitopiiri"
+}, {
+  "actived": true,
+  "domain_id": "tyks-erva",
+  "old_id": 23,
+  "name": "Satakunnan sairaanhoitopiiri",
+  "short_name": "Satakunnan sairaanhoitopiiri",
+  "id": "satakunnan-sairaanhoitopiiri"
+}, {
+  "actived": true,
+  "domain_id": "tyks-erva",
+  "old_id": 5,
+  "name": "Vaasan sairaanhoitopiiri",
+  "short_name": "VSHP",
+  "id": "vaasan-sairaanhoitopiiri"
+}, {
+  "actived": true,
+  "domain_id": "tyks-erva",
+  "old_id": 24,
+  "name": "Varsinais-Suomen sairaanhoitopiiri",
+  "short_name": "Varsinais-Suomen sairaanhoitopiiri",
+  "id": "varsinais-suomen-sairaanhoitopiiri"
+}]

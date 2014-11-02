@@ -1,0 +1,50 @@
+[
+  {
+    "actived": true,
+    "admin_id": 49,
+    "old_id": 1,
+    "name": "Tampereen yliopistollisen sairaalan erityisvastuualue",
+    "short_name": "Tays ERVA",
+    "id": "tays-erva"
+  },
+  {
+    "actived": true,
+    "admin_id": 50,
+    "old_id": 2,
+    "name": "Helsingin ja Uudenmaan sairaanhoitopiirin erityisvastuualue",
+    "short_name": "HYKS ERVA",
+    "id": "hyks-erva"
+  },
+  {
+    "actived": true,
+    "admin_id": 51,
+    "old_id": 3,
+    "name": "Kuopion yliopistollisen sairaalan erityisvastuualue",
+    "short_name": "Kys ERVA",
+    "id": "kys-erva"
+  },
+  {
+    "actived": true,
+    "admin_id": 144,
+    "old_id": 4,
+    "name": "Oulun yliopistollisen sairaalan erityisvastuualue",
+    "short_name": "Oys ERVA",
+    "id": "oys-erva"
+  },
+  {
+    "actived": true,
+    "admin_id": 146,
+    "old_id": 8,
+    "name": "Turun yliopistollisen sairaalan erityisvastuualue",
+    "short_name": "Tyks ERVA",
+    "id": "tyks-erva"
+  },
+  {
+    "actived": false,
+    "admin_id": 168,
+    "old_id": 7,
+    "name": "Yllapidon testi",
+    "short_name": "Yllapidon oma testi ERVA",
+    "id": "yllapidon-oma-testi-erva"
+  }
+]

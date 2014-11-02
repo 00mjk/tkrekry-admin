@@ -1,0 +1,69 @@
+<div class="modal-header">
+    <h2>Työpaikkailmoituksen esikatselu</h2>
+</div>
+<div class="modal-body preview">
+    <h3>{{advertisement.title}}</h3>
+    <p ng-bind-html="advertisement.description">
+    </p>
+    <ul>
+        <li>
+            <h4>Www-osoite:</h4>
+            <p>
+                <a href="{{advertisement.office.web_address}}">{{advertisement.office.web_address}}</a>
+            </p>
+        </li>
+        <li>
+            <h4>Yhteystiedot:</h4>
+            <ul>
+                <li data-ng-repeat="contact in advertisement.contacts track by contact._id">
+                    <span>{{contact.title}}</span>
+                    <span>{{contact.first_name}} {{contact.last_name}}</span>
+                    <a href="tel:{{contact.phone}}">{{contact.phone}}</a>
+                    <a href="mailto:{{contact.email}}">{{contact.email}}</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <h4>Työpaikan osoite:</h4>
+            <p>
+                <a href="http://maps.google.fi/maps?f=q&source=s_q&hl=fi&geocode=&q={{advertisement.office.street}}+{{advertisement.office.postal_code}}+{{advertisement.office.locality}}" target="_blank">
+                    <span>{{advertisement.office.street}},</span>
+                    <span>{{advertisement.office.postal_code}} </span>
+                    <span>{{advertisement.office.locality}}</span>
+                </a>
+            </p>
+        </li>
+        <li>
+            <h4>Työ alkaa:</h4>
+            <p>{{advertisement.work_begins}}</p>
+        </li>
+        <li>
+            <h4>Työn tyyppi:</h4>
+            <p>{{advertisement.job_type.name.fi}}</p>
+        </li>
+        <li>
+            <h4>Työaika:</h4>
+            <p>{{advertisement.working_hours}}</p>
+        </li>
+        <li>
+            <h4>Työn kesto:</h4>
+            <p>{{advertisement.job_duration.name.fi}}</p>
+        </li>
+        <li>
+            <h4>Haku päättyy:</h4>
+            <p>{{advertisement.application_period_end| amDateFormat: 'DD.MM.YYYY - HH:mm'}}</p>
+        </li>
+        <li>
+            <h4>Jätä hakemus:</h4>
+            <p>{{advertisement.application_submission}}</p>
+        </li>
+        <li>
+            <h4>Ilmoitus jätetty:</h4>
+            <p>{{advertisement.published_at| amDateFormat: 'DD.MM.YYYY - HH:mm'}}</p>
+        </li>
+    </ul>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary pull-left" ng-click="ok()">Sulje</button>
+</div>

@@ -1,0 +1,252 @@
+<div ng-include="'partials/navbar.html'"></div>
+<div class="content container">
+    <div class="row header-row">
+        <div class="col-sm-4" ng-switch on="!(advertisement._id)">
+            <h1 ng-switch-when="true">Uusi työpaikkailmoitus</h1>
+            <h1 ng-switch-when="false">Muokkaa ilmoitusta</h1>
+        </div>
+        <div class="col-sm-4">
+
+        </div>
+        <div class="col-sm-4">
+            <p class="back-link pull-right"><a href="#/">Takaisin työpaikkailmoituksiin</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <p ng-show="advertisement.published">
+                Ilmoitus julkaistu {{advertisement.published_at| amDateFormat: 'DD.MM.YYYY - HH:mm'}}.
+            </p>
+            <p>
+                * Merkityt kentät ovat pakollisia (tyhjäksi jättämiäsi kenttiä ei näytetä ilmoituksessa).
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <form novalidate name="advertisementForm" class="form-horizontal" role="form">
+                <div class="col-sm-12 alert alert-danger" id="errors-list" ng-focus-id="errorsList" ng-class="{ 'show-errors': showErrors }" ng-show="showErrors" ng-scroll-and-focus>
+                    <p>
+                        <strong>Virheitä lomakkeella!</strong>Korjaa kenttien tiedot ja tallenna ilmoitus.</p>
+                    <form-error-list></form-error-list>
+                </div>
+
+                <fieldset>
+                    <legend>Työpaikan tiedot</legend>
+
+                    <div class="form-group" ng-class="{ 'has-error' : advertisementForm.employer.$invalid && !advertisementForm.employer.$pristine, 'has-success': advertisementForm.employer.$valid }">
+                        <label for="inputEmployer" class="col-sm-2 control-label">* Työnantaja:</label>
+                        <div class="col-sm-5">
+                            <select class="form-control" id="inputEmployer" ng-model="selectedEmployer" ng-options="employer.name for employer in employers track by employer._id" name="employer" required nice-name="Työnantaja"></select>
+                        </div>
+                        <span class="help-block">Tulee mm. ilmoituksen otsikkoon.</span>
+                    </div>
+
+                    <div class="form-group" ng-class="{ 'has-error' : advertisementForm.title.$invalid && !advertisementForm.title.$pristine, 'has-success': advertisementForm.title.$valid }">
+                        <label for="inputTitle" class="col-sm-2 control-label">* Tehtävänimike:</label>
+                        <div class="col-sm-5">
+                            <input class="form-control" id="inputTitle" type="text" ng-minlength="5" required ng-model="advertisement.title" name="title" nice-name="Tehtävänimike">
+                        </div>
+                        <span class="help-block">Tulee mm. ilmoituksen otsikkoon.</span>
+                    </div>
+
+                    <div class="form-group" ng-class="{ 'has-error' : advertisementForm.job_profession_group.$invalid && !advertisementForm.job_profession_group.$pristine, 'has-success': advertisementForm.job_profession_group.$valid }">
+                        <label for="inputJobProfessionGroup" class="col-sm-2 control-label">* Ammattiryhmä:</label>
+                        <div class="col-sm-5">
+                            <select class="form-control" id="inputJobProfessionGroup" name="job_profession_group" ng-model="advertisement.job_profession_group" required ng-options="jobProfessionGroup.name.fi for jobProfessionGroup in jobProfessionGroups track by jobProfessionGroup.id" ng-init="advertisement.job_profession_group = advertisement.job_profession_group || jobProfessionGroups[0]" nice-name="Ammattiryhmä">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-class="{ 'has-error' : advertisementForm.jobType.$invalid && !advertisementForm.jobType.$pristine, 'has-success': advertisementForm.jobType.$valid }">
+                        <label for="inputJobType" class="col-sm-2 control-label">* Työn tyyppi:</label>
+                        <div class="col-sm-5">
+                            <select class="form-control" id="inputJobType" ng-model="advertisement.job_type" ng-options="jobType.name.fi for jobType in jobTypes track by jobType.id" required ng-init="advertisement.job_type = advertisement.job_type.name.fi" name="jobType" nice-name="Työn ensisijainen tyyppi">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-class="{ 'has-error' : advertisementForm.duration.$invalid && !advertisementForm.duration.$pristine, 'has-success': advertisementForm.duration.$valid }">
+                        <label for="inputDuration" class="col-sm-2 control-label">* Työn kesto:</label>
+                        <div class="col-sm-5">
+                            <select class="form-control" id="inputDuration" name="duration" ng-model="advertisement.job_duration" ng-options="jobDuration.name.fi for jobDuration in jobDurations track by jobDuration.id" required  nice-name="Työn kesto">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputWorkingHours" class="col-sm-2 control-label">Työaika:</label>
+                        <div class="col-sm-5">
+                            <input class="form-control" id="inputWorkingHours" name="working_hours" type="text" ng-model="advertisement.working_hours">
+                        </div>
+                        <span class="help-block">Esim. kokopäivätyö.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputWorkBegins" class="col-sm-2 control-label">Työ alkaa:</label>
+                        <div class="col-sm-5">
+                            <input class="form-control" id="inputWorkBegins" name="work_begins" type="text" ng-model="advertisement.work_begins">
+                        </div>
+                        <span class="help-block">Esim. pp.kk.vvvv tai "heti".</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputDescription" class="col-sm-2 control-label">Työn kuvaus ja muut tiedot:</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" id="inputDescription" name="description" rows="7" ng-model="advertisement.description" ckeditor="editorOptions" cols="10" rows="4"></textarea>
+                        </div>
+                    </div>
+
+                </fieldset>
+
+                <fieldset>
+                    <legend>Työpaikan sijainti ja www-osoite</legend>
+                    <div class="form-group">
+                        <label for="inputSelectOffices" class="col-sm-2 control-label">Valitse toimipiste:</label>
+                        <div class="col-sm-5">
+                            <select class="form-control" id="inputSelectOffices" name="selectedOffice" ng-options="office.name for office in offices | filter:bySelectedEmployer" ng-model="selectedOffice" ng-change="fillOffice(selectedOffice)"></select>
+                        </div>
+                        <div class="col-sm-2">
+                            <label class="control-label">tai syötä tiedot alle.</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputOfficeName" class="col-sm-2 control-label">Toimipisteen nimi:</label>
+                        <div class="col-sm-5">
+                            <input class="form-control" id="inputOfficeName" name="officeName" type="text" ng-model="advertisement.office.name">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputOfficeStreet" class="col-sm-2 control-label">Käyntiosoite:</label>
+                        <div class="col-sm-5">
+                            <input class="form-control" id="inputOfficeStreet" name="officeStreet" type="text" ng-model="advertisement.office.street">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputOfficePostalCode" class="col-sm-2 control-label">Postinumero ja -toimipaikka:</label>
+                        <div class="col-sm-2">
+                            <input class="form-control" id="inputOfficePostalCode" name="officePostalCode" type="text" ng-model="advertisement.office.postal_code">
+                        </div>
+                        <div class="col-sm-3">
+                            <input class="form-control" type="text" ng-model="advertisement.office.locality">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputOfficeUrl" class="col-sm-2 control-label">Työpaikan www-osoite:</label>
+                        <div class="col-sm-5">
+                            <input class="form-control" id="inputOfficeUrl" name="officeUrl" type="text" ng-model="advertisement.office.web_address" placeholder="http://www.osoite.fi">
+                        </div>
+                        <span class="help-block">Syötä muodossa http://www.osoite.fi.</span>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Ilmoituksen yhteyshenkilöt</legend>
+                    <div class="form-group">
+                        <label for="inputSelectedContacts" class="col-sm-2 control-label">Valitse yhteyshenkilö:</label>
+                        <div class="col-sm-5">
+                            <select class="form-control" id="inputSelectedContacts" name="selectedContact" ng-options="fullname(contact) for contact in contacts | filter:bySelectedEmployer" ng-change="addContact(selectedContact)" ng-model="selectedContact"></select>
+                        </div>
+                        <div class="col-sm-4">
+                            <label class="control-label">tai lisää yhteyshenkilö ja syötä tiedot alle.</label>
+                        </div>
+                        <div class="col-sm-1">
+                            <button type="submit" class="btn btn-default pull-right" ng-click="addContact()">Lisää</button>
+                        </div>
+                    </div>
+                    <div data-ng-repeat="contact in advertisement.contacts track by contact._id">
+                        <hr />
+                        <a link="#" class="btn btn-default pull-right" ng-click="removeContact(contact)">Poista</a>
+                        <div class="form-group">
+                            <label for="inputContactTitle{{contact._id}}" class="col-sm-2 control-label">Titteli:</label>
+                            <div class="col-sm-5">
+                                <input class="form-control" id="inputContactTitle{{contact._id}}" type="text" ng-model="contact.title">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputContactFirstname{{contact._id}}" class="col-sm-2 control-label">Etunimi:</label>
+                            <div class="col-sm-5">
+                                <input class="form-control" name="contact_first_name" id="inputContactFirstname{{contact._id}}" type="text" ng-model="contact.first_name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputContactLastName{{contact._id}}" class="col-sm-2 control-label">Sukunimi:</label>
+                            <div class="col-sm-5">
+                                <input class="form-control" id="inputContactLastName{{contact._id}}" type="text" ng-model="contact.last_name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputContactPhone{{contact._id}}" class="col-sm-2 control-label">Puhelinnumero:</label>
+                            <div class="col-sm-5">
+                                <input class="form-control" id="inputContactPhone{{contact._id}}" type="tel" ng-model="contact.phone">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputContactEmail{{contact.id}}" class="col-sm-2 control-label">Sähköposti:</label>
+                            <div class="col-sm-5">
+                                <input class="form-control" id="inputContactEmail{{contact.id}}" type="text" ng-model="contact.email">
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Ilmoituksen julkaisu ja muut tiedot</legend>
+                    <div class="form-group">
+                        <label for="inputApplicationPeriodEndDate" class="col-sm-2 control-label">Haku päättyy:</label>
+                        <div class="col-sm-3">
+                            <input class="form-control" id="inputApplicationPeriodEndDate" type="text" name="application_period_end_date" pick-Adate name="day" ng-model="advertisement.application_period_end_date" placeholder="pp.kk.vvvv" />
+                        </div>
+                        <div class="col-sm-2">
+                            <input class="form-control time-chooser" type="text" pick-Atime name="time" ng-model="advertisement.application_period_end_time" placeholder="hh:mm" />
+                        </div>
+                        <span class="help-block">Ilmoitus piilotetaan haun päättymisen jälkeen tai on näkyvissä 6 kk, <br />jos päivää ja aikaa ei syötetä (muodossa pp.kk.vvvv ja hh:mm).</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Ilmoitus jätetty:</label>
+                        <div class="col-sm-5">
+                            {{advertisement.published_at| amDateFormat: 'DD.MM.YYYY - HH:mm'}}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="inputStartAp">Ajastettu julkaisupäivä:</label>
+                        <div class="col-sm-5">
+                            <input class="form-control" pick-Adate id="inputStartAp" name="start_at" ng-model="advertisement.publication_day" placeholder="pp.kk.vvvv">
+                        </div>
+                        <span class="help-block">Ilmoitus voidaan julkaista automaattisesti kenttään syötetyn vuorokauden vaihtuessa. Ilmoitus tulee näkymään myös TKrekryn <a href="https://www.facebook.com/tkrekry">Facebook-sivulla</a>.</span>
+                    </div>
+
+                    <div class="form-group" ng-class="{ 'has-error' : advertisementForm.application_submission.$invalid && !advertisementForm.application_submission.$pristine, 'has-success': advertisementForm.application_submission.$valid  }">
+                        <label for="inputApplicationSubmission" class="col-sm-2 control-label">* Hakemus jätetään:</label>
+                        <div class="col-sm-5">
+                            <input class="form-control" id="inputApplicationSubmission" name="application_submission" type="text" ng-minlength="5" ng-minlength="155" required ng-model="advertisement.application_submission" nice-name="Hakemus jätetään" error-messages="{ required: 'on pakollinen kenttä.', minlength: 'on liian lyhyt', maxlength: 'on liian pitkä' }">
+                        </div>
+                        <span class="help-block">Kentän sisältö on vapaamuotoinen. Se voi olla esim. osoite, sähköposti tai linkki rekrytointipalveluun.</span>
+                    </div>
+                </fieldset>
+
+                <div class="form-group button-row">
+                    <div class="col-sm-12" ng-scroll-and-focus ng-focus-id="button-group">
+                        <hr />
+                        <button type="submit" class="btn btn-primary btn-lg" ng-click="submit()" ng-disabled="advertisementForm.$invalid">Tallenna</button>
+                        <button type="submit" class="btn btn-default btn-lg" ng-click="preview()" ng-disabled="advertisementForm.$invalid">Esikatsele</button>
+                        <button type="submit" class="btn btn-default btn-lg" ng-click="toggle()" ng-disabled="!(advertisement._id) && advertisementForm.$invalid">{{toggleText()}}</button>
+                        <a href="#/">Takaisin työpaikkailmoituksiin</a>
+                        <button type="copy" class="btn btn-default btn-lg pull-right" ng-click="copy()" ng-disabled="!(advertisement._id) && advertisementForm.$invalid">Kopioi</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<div ng-include="'partials/footer.html'"></div>

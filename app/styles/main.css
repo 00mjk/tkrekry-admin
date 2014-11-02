@@ -1,0 +1,317 @@
+/* Created by Pirkka Rannikko 2014 (see http://www.pirkkarannikko.com).
+ *
+ * --- Style sheet architecture in these templates ---
+ * Document if styles are divided into different files.
+ *
+ * --- Contents of this style sheet ---
+ * 1. Resets & common styles
+ * 2. Page layout & branding
+ * 3. Content area
+ * 4. Forms
+ *
+ */
+
+/* --- 1. Resets & common styles --- */
+
+/* --- 2. Page layout & branding --- */
+body {
+  background: #E4ECEE url("https://res.cloudinary.com/hcmcbhfea/image/upload/v1414773966/header-bg.jpg") 50% 0 no-repeat;
+}
+
+header.container {
+  padding: 0;
+}
+
+header .logo {
+  padding: 0 15px;
+}
+header .logo h1 {
+  margin: 15px 0 5px 0;
+}
+header .logo h2 {
+  color: #fff;
+  font-size: 1.0em;
+  font-style: italic;
+  margin: 0 0 11px 0;
+}
+header .logo h1 a {
+  background: url("https://res.cloudinary.com/hcmcbhfea/image/upload/v1414773966/tkrekry-logo.png") 0 0 no-repeat;
+  display: block;
+  height: 55px;
+  width: 212px;
+}
+header .logo h1 a:hover, header .logo h1 a:focus, header .logo h1 active {
+  text-decoration: none;
+}
+.logo h1 a span {
+    visibility: hidden;
+}
+
+.logininfo {
+  margin: 15px 0 0 0;
+}
+.logininfo p {
+  margin: 0;
+  padding: 5px 1px;
+}
+.logininfo.logged-out {
+  margin: 0;
+}
+.logininfo a:link, .logininfo a:visited, .logininfo a:hover, .logininfo a:focus, .logininfo a:active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+.logininfo a:hover, .logininfo a:focus, .logininfo a:active {
+  text-decoration: none;
+}
+.logininfo.logged-out a {
+  font-weight: normal;
+}
+
+nav.navbar {
+  background: none;
+  border-radius: 0;
+  clear: both;
+}
+.navbar-default .navbar-nav > li {
+  border: 1px solid #D4E0E0;
+  border-top: 0;
+}
+.navbar-default .navbar-nav > li:first-child {
+  border-top: 1px solid #D4E0E0;
+}
+.navbar-default .navbar-nav > li > a {
+  background: #fff;
+}
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus,
+.navbar-default .navbar-nav > li > a:active,
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus,
+.navbar-default .navbar-nav > .active > a:active {
+    background-color: #E5ECEC;
+    color: #555555;
+}
+
+.content {
+  background: #fff;
+  margin-bottom: 20px;
+}
+
+footer {
+  background: #2A425C;
+}
+footer p {
+  color: #E4E4E4;
+  display: inline-block;
+  margin: 20px 0;
+  vertical-align: text-bottom;
+}
+footer p + p {
+    float: right;
+}
+footer p:first-child a {
+    background: url("https://res.cloudinary.com/hcmcbhfea/image/upload/v1414773966/tkrekry-logo-small.png") 0 0 no-repeat;
+    display: inline-block;
+    height: 1.75em;
+    width: 7em;
+}
+footer a:link, footer a:visited, footer a:hover, footer a:focus, footer a:active {
+    color: #fff;
+}
+footer a:link, footer a:visited {
+  text-decoration: underline;
+}
+footer a:hover, footer a:focus, footer a:active, footer p:first-child a:link, footer p:first-child a:visited {
+  text-decoration: none;
+}
+footer p:first-child a span {
+    visibility: hidden;
+}
+footer p:first-child a + span {
+    display: inline-block;
+    padding: 5px 0 0 0;
+    vertical-align: bottom;
+}
+#loading-bar .bar {
+  background: #000;
+}
+#loading-bar-spinner .spinner-icon {
+  border-top-color: #000;
+  border-left-color: #000;
+}
+
+/* --- 3. Content area --- */
+
+.help.alert-info {
+  margin-top: 20px;
+}
+
+.main #employer {
+  width: 50%;
+}
+
+.ngGrid {
+  margin: 20px 0;
+}
+
+/* --- 4. Forms --- */
+
+/* Error list */
+#errors-list + fieldset {
+  clear: both;
+}
+ol.form-error-list {
+  padding: 0 20px;
+}
+
+.form-horizontal .control-label {
+  text-align: left;
+}
+
+.button-row hr {
+  border-width: 3px;
+}
+
+/* HTML textareas */
+.form-group div .cke_chrome {
+  border-color: #ccc;
+}
+
+/* Datepicker */
+#inputApplicationPeriodEndDate[readonly], .time-chooser[readonly], #inputStartAp[readonly] {
+    background-color: #fff;
+    cursor: default;
+}
+
+/* Job add preview modal */
+.modal-body.preview ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+/* Multiselect */
+.multiSelect select {
+  height: 11em;
+  width: 100%;
+}
+.select.buttons {
+  padding-top: 30px;
+}
+
+/* Frontpage grid headers */
+.is-sortable .header-content:after {
+  content: '\21C5';
+  font-size: 150%;
+  position: relative;
+  right: -5px;
+  bottom: -2px;
+}
+
+.is-sortable .header-content.sort-ascent:after {
+  content: "\2B06";
+}
+
+.is-sortable .header-content.sort-descent:after {
+  content: "\2B07";
+}
+
+
+@media only screen and (min-width: 48em) /* 768px / 16px */
+{
+
+  header .logo h1 {
+    float: left;
+  }
+
+  header .logo h2 {
+    clear: left;
+    float: left;
+    font-size: 1.286em;
+  }
+
+  .logininfo {
+    color: #fff;
+    float: right;
+    margin: -1.5em 0 0 0;
+    text-align: right;
+  }
+
+  .logininfo p {
+    padding: 0;
+  }
+
+  .logininfo a:link, .logininfo a:visited, .logininfo a:hover, .logininfo a:focus, .logininfo a:active {
+    color: #fff;
+  }
+
+  footer p:first-child a + span {
+    padding: 0 0 0 20px;
+  }
+
+  nav.navbar {
+    background: #fff;
+    border-bottom: #AFC3C4 solid 1px;
+  }
+
+  .navbar-default .navbar-nav > li {
+    border: 0;
+    border-right: 1px solid #D4E0E0;
+   }
+
+  .navbar-default .navbar-nav > li:first-child {
+    border-top: 0;
+    border-left: 1px solid #D4E0E0;
+  }
+
+  .content {
+    border-bottom: #AFC3C4 solid 1px;
+  }
+
+  /* Rows with inline headers and other elements */
+  .header-row {
+    padding: 20px 0 10px 0;
+  }
+  .header-row h1, .header-row h2 {
+    margin: 0;
+  }
+}
+
+@media only screen and (min-width: 64em) /* 1024px / 16px */
+{
+  header .logo {
+    padding: 0;
+  }
+
+  header .logo h1 {
+   margin: 25px 0;
+  }
+
+  header .logo h2
+  {
+    clear: none;
+    margin: 2.5em 0 0 1.8em;
+  }
+
+  .logininfo {
+    margin: 2.5em 0 0 0;
+  }
+
+  .logininfo.logged-out {
+    margin: 3.3em 0 0 0;
+  }
+
+}
+
+/* Retina images */
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+  .logo h1 a {
+    background-image: url('https://res.cloudinary.com/hcmcbhfea/image/upload/v1414773965/tkrekry-logo-x2.png');
+    background-size: 200px 52px;
+  }
+  footer p:first-child a {
+    background-image: url('https://res.cloudinary.com/hcmcbhfea/image/upload/v1414773965/tkrekry-logo-small-x2.png');
+    background-size: 97px 25px;
+  }
+}

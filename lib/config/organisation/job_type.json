@@ -1,0 +1,42 @@
+[
+  {
+    "old_id": 1,
+    "name": {
+      "fi": "Lyhyt sijaisuus",
+      "sv": "Kort vikariat"
+    },
+    "id": "lyhyt-sijaisuus"
+  },
+  {
+    "old_id": 2,
+    "name": {
+      "fi": "Pitkä sijaisuus",
+      "sv": "Långt vikariat"
+    },
+    "id": "pitka-sijaisuus"
+  },
+  {
+    "old_id": 3,
+    "name": {
+      "fi": "Vakituinen",
+      "sv": "Stadigvarande"
+    },
+    "id": "vakituinen"
+  },
+  {
+    "old_id": 4,
+    "name": {
+      "fi": "Päivystys",
+      "sv": "Jour"
+    },
+    "id": "paivystys"
+  },
+  {
+    "old_id": 5,
+    "name": {
+      "fi": "Amanuenssi",
+      "sv": "Amanuens"
+    },
+    "id": "amanuenssi"
+  }
+]

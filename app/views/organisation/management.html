@@ -1,0 +1,91 @@
+<div ng-include="'partials/navbar'"></div>
+<div class="content container">
+
+  <div class="row header-row">
+    <div class="col-sm-12">
+      <h1>Organisaatiohallinta</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <p>Organisaatiohallinnan avulla voit luoda <a href="/#/user/new/{{employer._id || 'not-selected'}}">uusia käyttäjiä</a> ja muokata sekä poistaa olemassaolevia ja muokata olemassa olevaa organisaatiota. Uusien terveyskeskusten, sairaanhoitopiirien ja alueiden lisääminen vaatii teknisen tuen apua. Katso myös pääkäyttäjän <a href="/#/help">käyttöohjeet ›</a>
+        <p>
+          <p>Lataa <a href="/api/users/report">käyttöaste-raportti</a>.</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+
+      <form class="form" role="form">
+
+        <fieldset>
+          <legend>Organisaatiohallinta</legend>
+
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label for="">Terveyskeskukset:</label>
+                <select class="form-control" size="20" ng-model="selectedEmployer" ng-options="employer.name for employer in employers"></select>
+              </div>
+              <div class="form-group">
+                <button type="submit" class="btn btn-default" ng-click="selecteEmployer()">
+                  Muokkaa valittua terveyskeskusta
+                  <span class="glyphicon glyphicon-arrow-right"></span>
+                </button>
+              </div>
+            </div>
+            <div class="col-sm-8">
+              <div class="form-group">
+                <div multi-select ng-model="employerUsers" available="availableUsers" selected-label="Käyttäjät - {{employer.name}}" available-label="Kaikki" display-attr="list_name" size="20"></div>
+              </div>
+
+              <div class="row">
+
+                <div class="col-sm-5 form-group">
+                  <label for="" class="control-label">ERVA-alue:</label>
+                  <select class="form-control" ng-model="employerDomain" ng-options="domain.name for domain in domains">
+                  </select>
+                </div>
+
+                <div class="col-sm-2">
+                </div>
+
+                <div class="col-sm-5 form-group">
+                  <p><a href="/#/user/new/{{employer._id || 'not-selected'}}">Luo uusi käyttäjä ›</a>
+                  </p>
+                  <p><a href="/#/settings/not-selected">Muokkaa käyttäjien tietoja ›</a>
+                  </p>
+                </div>
+
+              </div>
+
+              <div class="row">
+                <div class="col-sm-5">
+                  <div class="form-group">
+                    <label for="" class="control-label">Sairaanhoitopiiri:</label>
+                    <select class="form-control" ng-model="employerDistrict" ng-options="district.name for district in districts|filter:domainFilter">
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary" ng-click="update()">
+                      Tallenna muutokset
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </fieldset>
+
+      </form>
+
+    </div>
+  </div>
+
+</div>
+
+<div ng-include="'partials/footer.html'"></div>

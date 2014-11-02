@@ -1,0 +1,32 @@
+<header class="header container" ng-controller="NavbarCtrl">
+  <div class="logo">
+    <h1>
+      <a href="/" title="Etusivulle">
+        <span>TKrekry</span>
+      </a>
+    </h1>
+    <h2>
+      Työpaikkailmoitusten julkaisu ja ylläpito
+    </h2>
+  </div>
+  <div class="logininfo" ng-show="currentUser">
+    <p><!--{{currentUser.first_name}} {{currentUser.role}}-->{{currentUser.email}},
+      <a href="#" ng-click="logout()">Kirjaudu ulos</a>
+    </p>
+    <p>Kirjauduit viimeksi {{currentUser.previous_login | amDateFormat: 'DD.MM.YYYY - HH:mm'}}</p>
+  </div>
+  <nav class="navbar navbar-default" ng-show="currentUser" role="navigation">
+    <ul class="nav navbar-nav">
+      <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
+        <a ng-href="#{{item.link}}" ng-show="item.show.indexOf(currentUser.role) >= 0">{{item.title}}</a>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav pull-right">
+      <li>
+        <a href="https://docs.google.com/forms/d/19z6cLV8PtCBRz85DYCrxC-mtpidWxm_s2bVsbO0Td2I/viewform?usp=send_form" target="_blank">Anna palautetta
+          <span class="glyphicon glyphicon-new-window"></span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</header>

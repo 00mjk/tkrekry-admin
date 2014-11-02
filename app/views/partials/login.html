@@ -1,0 +1,48 @@
+<div ng-include="'partials/login-header.html'"></div>
+
+<div class="container content login">
+  <div class="row">
+
+    <div class="col-sm-6">
+      <h1>Kirjaudu sisään</h1>
+      <form class="form-horizontal" name="form" ng-submit="login(form)" novalidate>
+        <fieldset>
+          <div class="form-group">
+            <label for="email" class="col-sm-4 control-label">Sähköpostiosoite:</label>
+            <div class="col-sm-8">
+              <input type="email" name="email" id="email" class="form-control" ng-model="user.email">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password" class="col-sm-4 control-label">Salasana:</label>
+            <div class="col-sm-8">
+              <input type="password" name="password" id="password" class="form-control" ng-model="user.password">
+            </div>
+          </div>
+
+          <div class="form-group button-row">
+            <div class="col-sm-12">
+              <hr />
+              <button id="login-button" type="submit" class="col-sm-4 btn btn-lg btn-primary">Kirjaudu</button>
+              <div class="col-sm-8 has-error">
+                <label class="help-block">{{ errors.other }}</label>
+              </div>
+            </div>
+          </div>
+
+        </fieldset>
+      </form>
+    </div>
+
+    <div class="col-sm-6">
+      <div class="help alert alert-info">
+        <p><strong>Tarvitsetko apua?</strong></p>
+        <p>Voit kirjautua sisään TKrekryn työpaikkailmoitusten ja terveyskeskusten tietojen ylläpitoon henkilökohtaisella käyttäjätunnuksellasi.</p>
+        <p>Jos sinulla/terveyskeskuksellasi ei ole käyttäjätunnusta tai salasanaa ja tarvitsette uuden, niin ota sähköpostilla yhteyttä ylläpitoon osoitteessa <a href="info@tkrekry.fi">info@tkrekry.fi</a>.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div ng-include="'partials/login-footer.html'"></div>

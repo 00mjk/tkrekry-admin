@@ -1,0 +1,42 @@
+[
+  {
+    "old_id": 1,
+    "name": {
+      "fi": "Toistaiseksi",
+      "sv": "Hittills"
+    },
+    "id": "toistaiseksi"
+  },
+  {
+    "old_id": 2,
+    "name": {
+      "fi": "yli 12kk",
+      "sv": "mer än 12 månader"
+    },
+    "id": "yli-12kk"
+  },
+  {
+    "old_id": 3,
+    "name": {
+      "fi": "6-12kk",
+      "sv": "6-12 månader"
+    },
+    "id": "6-12kk"
+  },
+  {
+    "old_id": 4,
+    "name": {
+      "fi": "3-6kk",
+      "sv": "3-6 månader"
+    },
+    "id": "3-6kk"
+  },
+  {
+    "old_id": 5,
+    "name": {
+      "fi": "alle 3kk",
+      "sv": "mindre än 3 månader"
+    },
+    "id": "alle-3kk"
+  }
+]
