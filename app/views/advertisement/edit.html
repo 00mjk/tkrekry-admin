@@ -239,7 +239,7 @@
                         <hr />
                         <button type="submit" class="btn btn-primary btn-lg" ng-click="submit()" ng-disabled="advertisementForm.$invalid">Tallenna</button>
                         <button type="submit" class="btn btn-default btn-lg" ng-click="preview()" ng-disabled="advertisementForm.$invalid">Esikatsele</button>
-                        <button type="submit" class="btn btn-default btn-lg" ng-click="toggle()" ng-disabled="!(advertisement._id) && advertisementForm.$invalid">{{toggleText()}}</button>
+                        <button type="submit" class="btn btn-default btn-lg" ng-click="toggle()" ng-disabled="!(advertisement._id)">{{toggleText()}}</button>
                         <a href="#/">Takaisin työpaikkailmoituksiin</a>
                         <button type="copy" class="btn btn-default btn-lg pull-right" ng-click="copy()" ng-disabled="!(advertisement._id) && advertisementForm.$invalid">Kopioi</button>
                     </div>
