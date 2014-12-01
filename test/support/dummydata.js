@@ -60,6 +60,15 @@ module.exports.resetDB = function(callback) {
     });
 };
 
+var createEmployer = function(defaults, callback) {
+    factory.build('employer', defaults, function(doc) {
+        var employer = new Employer(doc);
+        employer.save(function(err, data) {
+            callback(err, data);
+        });
+    });
+};
+
 var createUser = function(defaults, callback) {
     createEmployer({}, function(err, employer) {
         defaults = _.defaults(defaults, {employers: [employer._id]});
@@ -97,15 +106,6 @@ var createContact = function(defaults, callback) {
 
             debug('Contact %s %s created.', data.title, data.email);
 
-            callback(err, data);
-        });
-    });
-};
-
-var createEmployer = function(defaults, callback) {
-    factory.build('employer', defaults, function(doc) {
-        var employer = new Employer(doc);
-        employer.save(function(err, data) {
             callback(err, data);
         });
     });

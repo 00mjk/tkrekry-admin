@@ -135,7 +135,7 @@
       link: function(scope, element, attr, ctrl) {
 
         var _config;
-        if ((_config = scope.config) != null) {
+        if ((_config = scope.config) !== null) {
           if (typeof _config.rowFunction === "function") {
             _config.rowFunction(scope, element, attr, ctrl);
           }
@@ -144,7 +144,7 @@
         element.bind('click', function() {
           scope.$apply(function() {
             ctrl.toggleSelection(scope.dataRow);
-          })
+          });
         });
       }
     };
@@ -159,7 +159,7 @@
           scope.$apply(function() {
             ctrl.sortBy(scope.column);
           });
-        })
+        });
       }
     };
   }).directive('smartTableSelectAll', function() {
@@ -169,7 +169,7 @@
       link: function(scope, element, attr, ctrl) {
         element.bind('click', function(event) {
           ctrl.toggleSelectionAll(element[0].checked === true);
-        })
+        });
       }
     };
   })
@@ -182,7 +182,7 @@
           e.stopPropagation();
         });
       }
-    }
+    };
   })
   //the global filter
   .directive('smartTableGlobalSearch', ['templateUrlList', function(templateList) {
@@ -203,7 +203,7 @@
           ctrl.search(value);
         });
       }
-    }
+    };
   }])
   //a customisable cell (see templateUrl) and editable
   //TODO check with the ng-include strategy
@@ -703,16 +703,16 @@ angular.module("partials/smartTable.html", []).run(["$templateCache", function($
         return arrayRef.splice(index, 1)[0];
       }
     },
-        
-        
-        
+
+
+
         /**
          * insert item in arrayRef at index or a the end if index is wrong
          * @param arrayRef
          * @param index
          * @param item
          */
-        
+
         insertAt = function(arrayRef, index, item) {
         if (index >= 0 && index < arrayRef.length) {
           arrayRef.splice(index, 0, item);
@@ -720,16 +720,16 @@ angular.module("partials/smartTable.html", []).run(["$templateCache", function($
           arrayRef.push(item);
         }
         },
-        
-        
-        
+
+
+
         /**
          * move the item at oldIndex to newIndex in arrayRef
          * @param arrayRef
          * @param oldIndex
          * @param newIndex
          */
-        
+
         moveAt = function(arrayRef, oldIndex, newIndex) {
         var elementToMove;
         if (oldIndex >= 0 && oldIndex < arrayRef.length && newIndex >= 0 && newIndex < arrayRef.length) {
@@ -737,9 +737,9 @@ angular.module("partials/smartTable.html", []).run(["$templateCache", function($
           arrayRef.splice(newIndex, 0, elementToMove);
         }
         },
-        
-        
-        
+
+
+
         /**
          * sort arrayRef according to sortAlgorithm following predicate and reverse
          * @param arrayRef
@@ -748,7 +748,7 @@ angular.module("partials/smartTable.html", []).run(["$templateCache", function($
          * @param reverse
          * @returns {*}
          */
-        
+
         sort = function(arrayRef, sortAlgorithm, predicate, reverse) {
 
         if (!sortAlgorithm || !angular.isFunction(sortAlgorithm)) {
@@ -757,9 +757,9 @@ angular.module("partials/smartTable.html", []).run(["$templateCache", function($
           return sortAlgorithm(arrayRef, predicate, reverse === true); //excpet if reverse is true it will take it as false
         }
         },
-        
-        
-        
+
+
+
         /**
          * filter arrayRef according with filterAlgorithm and predicate
          * @param arrayRef
@@ -767,7 +767,7 @@ angular.module("partials/smartTable.html", []).run(["$templateCache", function($
          * @param predicate
          * @returns {*}
          */
-        
+
         filter = function(arrayRef, filterAlgorithm, predicate) {
         if (!filterAlgorithm || !angular.isFunction(filterAlgorithm)) {
           return arrayRef;
@@ -775,9 +775,9 @@ angular.module("partials/smartTable.html", []).run(["$templateCache", function($
           return filterAlgorithm(arrayRef, predicate);
         }
         },
-        
-        
-        
+
+
+
         /**
          * return an array, part of array ref starting at min and the size of length
          * @param arrayRef
@@ -785,7 +785,7 @@ angular.module("partials/smartTable.html", []).run(["$templateCache", function($
          * @param length
          * @returns {*}
          */
-        
+
         fromTo = function(arrayRef, min, length) {
 
         var out = [],

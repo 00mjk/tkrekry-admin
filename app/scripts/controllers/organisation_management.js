@@ -75,7 +75,7 @@ angular.module('tkrekryApp')
                         $scope.ok = function() {
                             $timeout.cancel(promise);
                             $modalInstance.close('close');
-                        }
+                        };
                     }
                 });
 

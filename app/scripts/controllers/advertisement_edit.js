@@ -105,7 +105,7 @@ angular.module('tkrekryApp')
 
         $scope.fillOffice = function(office) {
             $scope.advertisement.office = angular.copy(office);
-        }
+        };
 
         $scope.fullname = function(contact) {
             return [contact.title, contact.first_name, contact.last_name].join(" ");
@@ -130,7 +130,7 @@ angular.module('tkrekryApp')
                             $scope.ok = function() {
                                 $timeout.cancel(promise);
                                 $modalInstance.close('close');
-                            }
+                            };
                         }
                     });
                     $route.reload();
@@ -146,12 +146,12 @@ angular.module('tkrekryApp')
                         controller: function($scope, $modalInstance, $timeout) {
                             var promise = $timeout(function() {
                                 $modalInstance.close('close');
-                            }, modalSettings.timeout)
+                            }, modalSettings.timeout);
 
                             $scope.ok = function() {
                                 $timeout.cancel(promise);
                                 $modalInstance.close('close');
-                            }
+                            };
                         }
                     });
                     $route.reload();
@@ -166,7 +166,7 @@ angular.module('tkrekryApp')
 
         $scope.toggleText = function() {
             return $scope.advertisement.published ? 'Piilota' : 'Julkaise';
-        }
+        };
 
         $scope.preview = function() {
             $scope.advertisementForPreview = angular.copy($scope.advertisement);

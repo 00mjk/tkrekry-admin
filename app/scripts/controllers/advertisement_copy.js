@@ -27,7 +27,7 @@ angular.module('tkrekryApp')
                             $scope.ok = function() {
                                 $timeout.cancel(promise);
                                 $modalInstance.close('close');
-                            }
+                            };
                         }
                     });
                     $location.path('/' + ['advertisements', 'edit', savedAdvertisement._id].join('/'));
