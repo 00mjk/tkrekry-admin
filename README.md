@@ -2,6 +2,10 @@
 
 Tool for maintaining job advertisements and health center information for http://www.tkrekry.fi/
 
+## Statuses
+
+[![dependencies](https://david-dm.org/tkrekry/tkrekry-admin.png)](https://david-dm.org/tkrekry/tkrekry-admin)
+
 ## Development
 
 ### Setup
