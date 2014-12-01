@@ -534,6 +534,7 @@ module.exports = function ( grunt ) {
     if ( target === 'server' ) {
       return grunt.task.run( [
         'env:test',
+        'jshint:server',
         'mochaTest'
       ] );
     }
@@ -541,6 +542,7 @@ module.exports = function ( grunt ) {
     if ( target === 'client' ) {
       return grunt.task.run( [
         'env:test',
+        'jshint',
         'clean:server',
         'ngtemplates',
         'concurrent:test',
@@ -552,6 +554,7 @@ module.exports = function ( grunt ) {
 
     grunt.task.run( [
       'env:test',
+      'jshint',
       'mochaTest',
       'clean:server',
       'concurrent:test',
@@ -579,7 +582,7 @@ module.exports = function ( grunt ) {
   ] );
 
   grunt.registerTask( 'default', [
-    'newer:jshint',
+    'jshint',
     'ngtemplates',
     'test',
     'build'
