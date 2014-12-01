@@ -49,6 +49,21 @@ Local development environment is using Docker for MongoDB and Redis.
   # as normal normal@example.com / password
 ```
 
+### Run tests
+
+```bash
+  # Start Mongodb and Redis containers
+  docker/start.sh
+
+  # Run REST API tests
+  grunt test:server
+
+  # Run browser tests
+  grunt test:client
+```
+
+
+
 ## Contributing
 
 Check open issues from https://github.com/tkrekry/tkrekry-admin/issues
