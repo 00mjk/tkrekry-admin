@@ -5,6 +5,7 @@ Tool for maintaining job advertisements and health center information for http:/
 ## Statuses
 
 [![dependencies](https://david-dm.org/tkrekry/tkrekry-admin.png)](https://david-dm.org/tkrekry/tkrekry-admin)
+[![Code Climate](https://codeclimate.com/github/tkrekry/tkrekry-admin/badges/gpa.svg)](https://codeclimate.com/github/tkrekry/tkrekry-admin)
 
 ## Development
 
