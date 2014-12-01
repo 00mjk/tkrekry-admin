@@ -111,6 +111,7 @@ node_modules
 # Bower
 !**/.bower.json
 app/scripts/bower_components/*
+bower_components/
 
 # Auto detect text files and perform LF normalization
 * text=auto

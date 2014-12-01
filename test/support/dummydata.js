@@ -5,7 +5,7 @@ var path = require('path'),
     mongoose = require('mongoose');
 
 // Set default node environment to development
-process.env.NODE_ENV = 'test';
+process.env.NODE_ENV = process.env.NODE_ENV || 'test';
 
 // Application Config
 var config = require(path.join(__dirname, '../../lib/config/config'));
@@ -70,7 +70,9 @@ var createUser = function(defaults, callback) {
             user.save(function(err, data) {
 
                 if (err)
-                    debug("Failder to create user %s %s %s", user.first_name, user.last_name, user.email);
+                    debug("Failed to create user %s %s %s", user.first_name, user.last_name, user.email);
+
+                debug('User %s created.', user.email);
 
                 callback(err, data);
             });
@@ -91,6 +93,11 @@ var createContact = function(defaults, callback) {
     factory.build('contact', defaults, function(doc) {
         var contact = new Contact(doc);
         contact.save(function(err, data) {
+            if (err)
+                debug('Failed to created contact %s', data.name);
+
+            debug('Contact %s %s created.', data.title, data.email);
+
             callback(err, data);
         });
     });
@@ -116,31 +123,32 @@ var users = module.exports.users = {
     }
 };
 
-module.exports.seedDB = function(defaults, callback) {
+module.exports.seedDB = function(callback) {
     async.waterfall([
-        function (callback) {
+        function (cb) {
             createUser({email: users.admin.username, password: users.admin.password, role: 'admin'}, function(err, user) {
-                callback(null, user);
+                cb(null, user);
             });
         },
-        function (adminUser, callback) {
+        function (adminUser, cb) {
             createContact({employer: adminUser.employers[0]}, function(err, contact) {
                 contact.employer = adminUser.employers[0];
                 contact.save(function(err, saved) {
-                    callback(null, adminUser);
+                    cb(null, adminUser);
                 });
             });
         },
-        function(adminUser, callback) {
+        function(adminUser, cb) {
           createUser({email: users.normal.username, password: users.normal.password}, function(err, user){
-            callback(null, adminUser, user);
+            cb(null, adminUser, user);
           });
         },
-        function (adminUser, user, callback) {
+        function (adminUser, user, cb) {
             createContact({employer: user.employers.first}, function(err, da) {
-                callback(null, adminUser);
+                cb(null, adminUser);
             });
         },
+        callback
     ]);
 };
 
