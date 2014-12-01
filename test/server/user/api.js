@@ -1,17 +1,14 @@
 'use strict';
 
-var should = require( 'should' ),
-  app = require( '../../../server' ),
-  factory = require( '../../support/fixtures/factory' ),
-  mongoose = require( 'mongoose' ),
-  Advertisement = mongoose.model( 'Advertisement' ),
-  Employer = mongoose.model( 'Employer' ),
-  User = mongoose.model( 'User' ),
-  async = require( 'async' ),
-  _ = require( 'lodash' ),
-  Session = require( 'supertest-session' )( {
-    app: app
-  } );
+var helper = require('../spec_helper'),
+    should = helper.should,
+    factory = helper.factory,
+    Advertisement = helper.Advertisement,
+    Employer = helper.Employer,
+    User = helper.User,
+    async = helper.async,
+    _ = helper._,
+    Session = helper.Session;
 
 var firstsEmployer,
   userEmployer,
@@ -30,15 +27,16 @@ var firstsEmployer,
 
 describe( 'user management', function () {
   beforeEach( function ( done ) {
-    User.remove()
-      .exec();
-    Advertisement.remove()
-      .exec();
-    Employer.remove()
-      .exec();
-
     async.waterfall( [
-
+        function(cb) {
+          User.remove({}, function() {
+            Advertisement.remove({}, function() {
+              Employer.remove({}, function() {
+                cb(null);
+              });
+            });
+          });
+        },
         function ( cb ) {
           factory( 'employer', {}, function ( sampleUserEmployer ) {
             userEmployer = sampleUserEmployer;

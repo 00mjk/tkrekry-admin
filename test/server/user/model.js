@@ -1,11 +1,11 @@
 'use strict';
 
-var should = require('should'),
-    mongoose = require('mongoose'),
-    _ = require('lodash'),
-    Employer = mongoose.model('Employer'),
-    User = mongoose.model('User'),
-    factory = require('../../support/fixtures/factory');
+var helper = require('../spec_helper'),
+    should = helper.should,
+    _ = helper._,
+    factory = helper.factory,
+    Employer = helper.Employer,
+    User = helper.User;
 
 var user, userDefaultAttributes, employer,
     userDefaults = {
@@ -20,21 +20,21 @@ var user, userDefaultAttributes, employer,
 describe('User Model', function() {
     beforeEach(function(done) {
         // Clear users before testing
-        User.remove().exec();
-        factory('employer', {}, function(sampleUserEmployer) {
-            employer = sampleUserEmployer;
-            userDefaults.employers[0] = sampleUserEmployer._id;
-            factory.build('user', userDefaults, function(userAttributes) {
-                userDefaultAttributes = userAttributes;
-                user = new User(userAttributes);
-                done();
+        User.remove({}, function() {
+            factory('employer', {}, function(sampleUserEmployer) {
+                employer = sampleUserEmployer;
+                userDefaults.employers[0] = sampleUserEmployer._id;
+                factory.build('user', userDefaults, function(userAttributes) {
+                    userDefaultAttributes = userAttributes;
+                    user = new User(userAttributes);
+                    done();
+                });
             });
         });
     });
 
     afterEach(function(done) {
-        User.remove().exec();
-        done();
+        User.remove({}, done);
     });
 
     it('should begin with no users', function(done) {
@@ -45,11 +45,12 @@ describe('User Model', function() {
     });
 
     it('should fail when saving a duplicate user', function(done) {
-        user.save();
-        var userDup = new User(userDefaultAttributes);
-        userDup.save(function(err, result) {
-            should.exist(err);
-            done();
+        user.save(function() {
+            var userDup = new User(userDefaultAttributes);
+            userDup.save(function(err, result) {
+                should.exist(err);
+                done();
+            });
         });
     });
 
@@ -75,17 +76,20 @@ describe('User Model', function() {
                 done(err);
 
             user.authenticate('password').should.be.true;
-            user.model(user.constructor.modelName).findOne({
-                    _id: user._id
-                },
-                function(err, reloadedUser) {
-                    if (err)
-                        done(err);
+            // TODO: Related to above authenticate because it's incrementing login_count
+            setTimeout(function(){
+                User.findOne({
+                        _id: user._id
+                    },
+                    function(err, reloadedUser) {
+                        if (err)
+                            done(err);
 
-                    reloadedUser.login_count.should.be.equal(1);
-                    done();
-                }
-            );
+                        reloadedUser.login_count.should.be.equal(1);
+                        done();
+                    }
+                );
+            }, 200);
         });
 
     });

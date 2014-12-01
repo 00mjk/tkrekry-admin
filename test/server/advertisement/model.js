@@ -1,9 +1,9 @@
 'use strict';
 
-var should = require('should'),
-    mongoose = require('mongoose'),
-    factory = require('../../support/fixtures/factory'),
-    Advertisement = mongoose.model('Advertisement');
+var helper = require('../spec_helper'),
+    should = helper.should,
+    factory = helper.factory,
+    Advertisement = helper.Advertisement;
 
 var advertisement;
 

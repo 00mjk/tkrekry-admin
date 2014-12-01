@@ -2,7 +2,7 @@
   "name": "tkrekry-admin",
   "version": "0.2.0",
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test:server"
   },
   "dependencies": {
     "Faker": "~0.7.2",

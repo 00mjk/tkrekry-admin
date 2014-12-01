@@ -23,8 +23,7 @@ fs.readdirSync(modelsPath).forEach(function (file) {
 });
 
 
-var mongoose = require('mongoose'),
-    debug  = require('debug')('tkrekry:dummydata'),
+var debug  = require('debug')('tkrekry:dummydata'),
     async = require('async'),
     _ = require('lodash'),
     path = require('path'),
