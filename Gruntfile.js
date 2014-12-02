@@ -23,6 +23,12 @@ module.exports = function ( grunt ) {
 
   // Define the configuration for all the tasks
   grunt.initConfig( {
+    // Project settings
+    yeoman: {
+      // configurable paths
+      app: require( './bower.json' ).appPath || 'app',
+      dist: 'dist'
+    },
     bower: {
       install: {
         options:{
@@ -31,7 +37,7 @@ module.exports = function ( grunt ) {
           verbose: true,
           cleanTargetDir: false,
           cleanBowerDir: false,
-          copy: false,
+          copy: true,
           bowerOptions: {}
         }
       }
@@ -53,12 +59,6 @@ module.exports = function ( grunt ) {
       npm_install: {
         command: 'npm install'
       }
-    },
-    // Project settings
-    yeoman: {
-      // configurable paths
-      app: require( './bower.json' ).appPath || 'app',
-      dist: 'dist'
     },
     express: {
       options: {
@@ -94,7 +94,7 @@ module.exports = function ( grunt ) {
     watch: {
       js: {
         files: [ '<%= yeoman.app %>/scripts/{,*/}*.js' ],
-        tasks: [ 'newer:jshint:all' ],
+        tasks: [ 'jshint:all' ],
         options: {
           livereload: false
         }
@@ -105,11 +105,11 @@ module.exports = function ( grunt ) {
       },
       jsTest: {
         files: [ 'test/client/spec/{,*/}*.js' ],
-        tasks: [ 'newer:jshint:test' ]
+        tasks: [ 'jshint:test' ]
       },
       styles: {
         files: [ '<%= yeoman.app %>/styles/{,*/}*.css' ],
-        tasks: [ 'newer:copy:styles', 'autoprefixer' ]
+        tasks: [ 'copy:styles', 'autoprefixer' ]
       },
       gruntfile: {
         files: [ 'Gruntfile.js' ]
@@ -131,7 +131,7 @@ module.exports = function ( grunt ) {
           'server.js',
           'lib/**/*.{js,json}'
         ],
-        tasks: [ 'newer:jshint:server', 'express:dev', 'wait' ],
+        tasks: [ 'jshint:server', 'express:dev', 'wait' ],
         options: {
           livereload: false,
           nospawn: true //Without this option specified express won't be reloaded
@@ -273,8 +273,7 @@ module.exports = function ( grunt ) {
     // concat, minify and revision files. Creates configurations in memory so
     // additional tasks can operate on them
     useminPrepare: {
-      html: [ '<%= yeoman.app %>/views/{,*/}*.html',
-              '<%= yeoman.app %>/views/index.jade'
+      html: [ '<%= yeoman.app %>/views/{,*/}*.html'
       ],
       options: {
         dest: '<%= yeoman.dist %>/public'
@@ -283,8 +282,7 @@ module.exports = function ( grunt ) {
 
     // Performs rewrites based on rev and the useminPrepare configuration
     usemin: {
-      html: [ '<%= yeoman.dist %>/views/{,*/}*.html',
-              '<%= yeoman.dist %>/views/{,*/}*.jade'
+      html: [ '<%= yeoman.dist %>/views/{,*/}*.html'
       ],
       css: [ '<%= yeoman.dist %>/public/styles/{,*/}*.css' ],
       options: {
@@ -443,11 +441,6 @@ module.exports = function ( grunt ) {
         'svgmin',
         'htmlmin'
       ]
-    },
-    cssmin: {
-      options: {
-        keepSpecialComments: 0
-      }
     },
     uglify: {
       options: {
