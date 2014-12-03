@@ -14,6 +14,10 @@ angular.module('tkrekryApp', [
     'ngCkeditor',
     'newrelic-timing'
 ])
+    .constant('angularMomentConfig', {
+        timezone: 'Europe/Helsinki'
+    })
+
     .config(function($routeProvider, $locationProvider, $httpProvider, $logProvider) {
         $routeProvider
             .when('/', {
@@ -108,7 +112,7 @@ angular.module('tkrekryApp', [
     })
     .run(function($rootScope, $location, Auth, amMoment) {
 
-        amMoment.changeLanguage('fi');
+        amMoment.changeLocale('fi');
 
         // Redirect to login if route requires auth and you're not logged in
         $rootScope.$on('$routeChangeStart', function(event, next) {

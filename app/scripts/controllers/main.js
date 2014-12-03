@@ -43,7 +43,7 @@ angular.module('tkrekryApp')
             label: 'Automaattinen julkaisu pvm.',
             isSortable: true,
             headerClass: "is-sortable",
-            cellTemplateUrl: '/partials/smart-table/publish-at-row.html'
+            cellTemplateUrl: "/partials/smart-table/publication-day-row.html"
         }, {
             map: 'published_at',
             label: 'Julkaistu',
