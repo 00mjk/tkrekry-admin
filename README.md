@@ -62,10 +62,10 @@ Local development environment is using Docker for MongoDB and Redis.
   docker/start.sh
 
   # Run REST API tests
-  grunt test:server
+  NODE_ENV=docker grunt test:server
 
   # Run browser tests
-  grunt test:client
+  NODE_ENV=docker grunt test:client
 ```
 
 
