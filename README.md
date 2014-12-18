@@ -1,6 +1,6 @@
 # TKrekry Admin
 
-Tool for maintaining job advertisements and health center information for http://www.tkrekry.fi/
+Tool for maintaining job advertisements and health center information for http://www.tkrekry.fi/. See http://tkrekry.wordpress.com/2014/11/20/tkrekryn-kehityksesta-ja-tekniikasta/ for more info (in Finnish).
 
 ## Statuses
 
