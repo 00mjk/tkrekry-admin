@@ -5,7 +5,7 @@ var path = require('path'),
     mongoose = require('mongoose');
 
 // Set default node environment to development
-process.env.NODE_ENV = process.env.NODE_ENV || 'test';
+// process.env.NODE_ENV = process.env.NODE_ENV || 'test';
 
 // Application Config
 var config = require(path.join(__dirname, '../../lib/config/config'));
