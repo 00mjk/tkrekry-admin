@@ -62,10 +62,13 @@ Local development environment is using Docker for MongoDB and Redis.
   docker/start.sh
 
   # Run REST API tests
-  NODE_ENV=docker grunt test:server
+  DEBUG=tkrekry* grunt env:local-test test:server
+
+  # Install selenium driver first
+  DEBUG=tkrekry* grunt shell:protractor_install
 
   # Run browser tests
-  NODE_ENV=docker grunt test:client
+  DEBUG=tkrekry* grunt env:local-test test:client
 ```
 
 
