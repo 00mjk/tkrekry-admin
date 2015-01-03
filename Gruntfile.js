@@ -23,6 +23,20 @@ module.exports = function ( grunt ) {
 
   // Define the configuration for all the tasks
   grunt.initConfig( {
+    env: {
+      options: {
+       //Shared Options Hash
+      },
+      dev: {
+        NODE_ENV: 'development'
+      },
+      test: {
+        NODE_ENV: 'test'
+      },
+      local_test: {
+        NODE_ENV: 'docker'
+      }
+    },
     // Project settings
     yeoman: {
       // configurable paths
@@ -63,13 +77,13 @@ module.exports = function ( grunt ) {
     express: {
       options: {
         port: process.env.PORT || 9000,
-        env: process.env.ENV || 'test'
+        env: process.env.ENV
       },
       test: {
         options: {
           script: 'server.js',
           debug: true,
-          env: 'test',
+          env: process.env.ENV,
           port: 9999
         }
       },
@@ -468,11 +482,6 @@ module.exports = function ( grunt ) {
           }
         }
       }
-    },
-    env: {
-      test: {
-        NODE_ENV: 'test'
-      }
     }
   } );
 
@@ -526,7 +535,6 @@ module.exports = function ( grunt ) {
   grunt.registerTask( 'test', function ( target ) {
     if ( target === 'server' ) {
       return grunt.task.run( [
-        'env:test',
         'jshint:server',
         'mochaTest'
       ] );
@@ -534,7 +542,6 @@ module.exports = function ( grunt ) {
 
     if ( target === 'client' ) {
       return grunt.task.run( [
-        'env:test',
         'jshint',
         'clean:server',
         'ngtemplates',
@@ -546,7 +553,6 @@ module.exports = function ( grunt ) {
     }
 
     grunt.task.run( [
-      'env:test',
       'jshint',
       'mochaTest',
       'clean:server',
