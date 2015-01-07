@@ -32,8 +32,11 @@ angular.module('tkrekryApp')
 
     $scope.logout = function() {
       Auth.logout()
-      .then(function() {
-        $location.path('/login');
+        .then(function() {
+          $location.path('/login');
+          return false;
+        }, function(err) {
+          return false;
       });
     };
 
