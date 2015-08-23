@@ -1,7 +1,7 @@
-// 'use strict';
-
 angular.module('tkrekryApp')
     .service('Contact', function Contact($resource) {
+        'use strict';
+
         return $resource('/api/contacts/:id', {}, {
             list: {
                 method: 'GET',

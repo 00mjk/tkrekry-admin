@@ -1,5 +1,3 @@
-// 'use strict';
-
 angular.module('tkrekryApp', [
     'ngCookies',
     'ngResource',
@@ -10,7 +8,7 @@ angular.module('tkrekryApp', [
     'ui.bootstrap',
     'ui.router',
     'angularMoment',
-    'smartTable.table',
+    'smart-table',
     'ngCkeditor',
     'newrelic-timing'
 ])
@@ -19,69 +17,76 @@ angular.module('tkrekryApp', [
     })
 
     .config(function($routeProvider, $locationProvider, $httpProvider, $logProvider) {
+        'use strict';
+
         $routeProvider
             .when('/', {
                 templateUrl: 'partials/main.html',
-                controller: 'MainCtrl',
+                controller: 'MainController',
                 authenticate: true
             })
             .when('/login', {
                 templateUrl: 'partials/login.html',
-                controller: 'LoginCtrl'
+                controller: 'LoginController'
             })
             .when('/settings/:userId', {
                 templateUrl: 'settings/edit.html',
-                controller: 'SettingsCtrl',
+                controller: 'SettingsController',
                 authenticate: true
             })
-            .when('/employer/edit', {
+            .when('/employer/select', {
+                templateUrl: 'employer/select.html',
+                controller: 'EmployerSelectController',
+                authenticate: true
+            })
+            .when('/employers/edit/:id', {
                 templateUrl: 'employer/edit.html',
-                controller: 'EmployerEditCtrl',
+                controller: 'EmployerEditController',
                 authenticate: true
             })
             .when('/advertisements/new', {
                 templateUrl: 'advertisement/edit.html',
-                controller: 'AdvertisementEditCtrl',
+                controller: 'AdvertisementEditController',
                 authenticate: true
             })
             .when('/advertisements/edit/:id', {
                 templateUrl: 'advertisement/edit.html',
-                controller: 'AdvertisementEditCtrl',
+                controller: 'AdvertisementEditController',
                 authenticate: true
             })
             .when('/advertisements/copy/:id', {
-                controller: 'AdvertisementCopyCtrl',
+                controller: 'AdvertisementCopyController',
                 templateUrl: 'advertisement/copy.html',
                 authenticate: true
             })
             .when('/advertisements/remove/:id', {
                 templateUrl: 'advertisement/destroy.html',
-                controller: 'AdvertisementDestroyCtrl',
+                controller: 'AdvertisementDestroyController',
                 authenticate: true
             })
             .when('/advertisements/publish/:id', {
                 templateUrl: 'advertisement/publish.html',
-                controller: 'AdvertisementPublishCtrl',
+                controller: 'AdvertisementPublishController',
                 authenticate: true
             })
             .when('/advertisements/unpublish/:id', {
                 templateUrl: 'advertisement/publish.html',
-                controller: 'AdvertisementUnpublishCtrl',
+                controller: 'AdvertisementUnpublishController',
                 authenticate: true
             })
             .when('/advertisements/preview/:id', {
                 templateUrl: 'advertisement/publish.html',
-                controller: 'AdvertisementPreviewCtrl',
+                controller: 'AdvertisementPreviewController',
                 authenticate: true
             })
             .when('/organisation', {
                 templateUrl: 'organisation/management.html',
-                controller: 'OrganisationManagementCtrl',
+                controller: 'OrganisationManagementController',
                 authenticate: true
             })
             .when('/user/new/:employerId', {
                 templateUrl: 'user/new.html',
-                controller: 'UserNewCtrl',
+                controller: 'UserNewController',
                 authenticate: true
             })
             .when('/help', {
@@ -111,6 +116,7 @@ angular.module('tkrekryApp', [
         ]);
     })
     .run(function($rootScope, $location, Auth, amMoment) {
+        'use strict';
 
         amMoment.changeLocale('fi');
 

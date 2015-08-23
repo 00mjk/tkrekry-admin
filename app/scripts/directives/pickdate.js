@@ -1,7 +1,7 @@
-// 'use strict';
-
 angular.module( 'tkrekryApp' )
   .directive( 'pickAdate', function ( $parse, $window ) {
+    'use strict';
+
     return {
       restrict: 'A',
       link: function ( scope, element, attrs ) {
@@ -17,6 +17,8 @@ angular.module( 'tkrekryApp' )
 
   } )
   .directive( 'pickAtime', function ( $parse ) {
+      'use strict';
+
       return {
         restrict: 'A',
         link: function ( scope, element, attrs ) {

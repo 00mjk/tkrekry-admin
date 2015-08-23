@@ -2,7 +2,7 @@ var helper = require('../spec_helper');
 
 describe('Tkrekry Admin homepage', function() {
 
-  var ptor = protractor.getInstance(),
+  var ptor = browser,
       expect = helper.expect,
       loginPage = helper.loginPage,
       advertisementPage = helper.advertisementPage,
@@ -18,7 +18,9 @@ describe('Tkrekry Admin homepage', function() {
   });
 
   after(function(done) {
-      helper.resetDB(done);
+      helper.resetDB(function(err, res) {
+        done();
+      });
   });
 
   describe('as Admin User', function() {

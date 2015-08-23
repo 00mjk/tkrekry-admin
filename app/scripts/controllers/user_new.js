@@ -1,10 +1,9 @@
-// 'use strict';
-
 angular.module( 'tkrekryApp' )
-  .controller( 'UserNewCtrl', function( $q, $log, $rootScope,
+  .controller( 'UserNewController', function( $q, $log, $rootScope,
         $anchorScroll, $scope, $routeParams, $location, $window, $timeout,
         $modal, $route, focus, _, Auth, Organisation, Advertisement,
         Employer, Contact, Office, User, modalSettings ) {
+    'use strict';
 
     var employerId = $routeParams.employerId;
     $scope.usedEmails = [];

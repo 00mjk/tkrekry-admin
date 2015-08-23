@@ -1,7 +1,7 @@
-// 'use strict';
-
 angular.module('tkrekryApp')
-  .controller('SignupCtrl', function($scope, Auth, $location) {
+  .controller('SignupController', function($scope, Auth, $location) {
+    'use strict';
+
     $scope.user = {};
     $scope.errors = {};
 

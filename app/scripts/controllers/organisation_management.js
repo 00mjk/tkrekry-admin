@@ -1,34 +1,38 @@
-// 'use strict';
-
 angular.module('tkrekryApp')
-    .controller('OrganisationManagementCtrl', function($q, $scope, $routeParams, $location, $modal, focus, _, Auth, Organisation, Employer, Contact, Office, User, modalSettings) {
-        $q.all({
-            employers: Employer.list().$promise,
-            users: User.list().$promise,
-            offices: Office.list().$promise,
-            contacts: Contact.list().$promise,
-            domains: Organisation.domains().$promise,
-            districts: Organisation.districts().$promise,
-        }).then(function(promises) {
-            $scope.domains = promises.domains;
-            $scope.districts = promises.districts;
-            $scope.allDistricts = $scope.districts;
+    .controller('OrganisationManagementController', function($q, $scope, $routeParams, $location, $modal, focus, _, Auth, Organisation, Employer, Contact, Office, User, modalSettings) {
+        'use strict';
 
-            $scope.contacts = promises.contacts;
-            $scope.offices = promises.offices;
-            $scope.users = promises.users;
+        $scope.updateOrganisationDetails = function() {
+            $q.all({
+                employers: Employer.list().$promise,
+                users: User.list().$promise,
+                offices: Office.list().$promise,
+                contacts: Contact.list().$promise,
+                domains: Organisation.domains().$promise,
+                districts: Organisation.districts().$promise,
+            }).then(function(promises) {
+                $scope.domains = promises.domains;
+                $scope.districts = promises.districts;
+                $scope.allDistricts = angular.copy($scope.districts);
 
-            $scope.selectedEmployer = promises.employers[0];
-            $scope.employers = promises.employers;
+                $scope.contacts = promises.contacts;
+                $scope.offices = promises.offices;
+                $scope.users = promises.users;
 
-            $scope.employerContacts = _.filter($scope.contacts, {
-                employer: promises.employers[0]._id
+                $scope.selectedEmployer = promises.employers[0];
+                $scope.employers = promises.employers;
+
+                $scope.employerContacts = _.filter($scope.contacts, {
+                    employer: promises.employers[0]._id
+                });
+
+                $scope.employerOffices = _.filter($scope.offices, {
+                    employer: promises.employers[0]._id
+                });
             });
+        };
 
-            $scope.employerOffices = _.filter($scope.offices, {
-                employer: promises.employers[0]._id
-            });
-        });
+        $scope.updateOrganisationDetails();
 
         $scope.domainFilter = function(val) {
             if ($scope.employerDomain && $scope.employerDomain.id == val.domain_id)
@@ -36,7 +40,7 @@ angular.module('tkrekryApp')
         };
 
         $scope.selecteEmployer = function() {
-            $scope.employer = $scope.selectedEmployer;
+            $scope.employer = angular.copy($scope.selectedEmployer);
 
             $scope.employerUsers = _.sortBy(_.map(_.filter($scope.users, function(user) {
                 return _(user.employers).contains($scope.employer._id);
@@ -57,7 +61,7 @@ angular.module('tkrekryApp')
         };
 
         $scope.update = function() {
-            $scope.employer.users = $scope.employerUsers;
+            $scope.employer.users = angular.copy($scope.employerUsers);
             $scope.employer.domain = _.find($scope.domains, {name: $scope.employerDomain.name});
             $scope.employer.district = _.find($scope.districts, {name: $scope.employerDistrict.name});
 
@@ -79,9 +83,7 @@ angular.module('tkrekryApp')
                     }
                 });
 
-                $scope.employerDistrict = _.find($scope.districts, {name: $scope.employer.district.name});
-                $scope.employerDomain = _.find($scope.domains, {name: $scope.employer.domain.name});
-                $scope.employers = Employer.list();
+                $scope.updateOrganisationDetails();
             });
         };
     });

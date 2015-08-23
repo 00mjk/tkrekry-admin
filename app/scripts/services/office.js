@@ -1,7 +1,7 @@
-// 'use strict';
-
 angular.module('tkrekryApp')
     .service('Office', function Office($resource) {
+        'use strict';
+
         return $resource('/api/offices/:id', {}, {
             list: {
                 method: 'GET',

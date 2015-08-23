@@ -2,13 +2,11 @@ var helper = require('../spec_helper');
 
 describe('Tkrekry Admin homepage', function() {
 
-  var ptor = protractor.getInstance(),
-    loginNameField = element(by.model('user.email')),
-    loginPasswordField = element(by.model('user.password')),
-    expect = helper.expect,
-    loginButton = element(by.id('login-button')),
-    loginPage = helper.loginPage;
-
+  var loginNameField = element(by.model('user.email')),
+      loginPasswordField = element(by.model('user.password')),
+      expect = helper.expect,
+      loginButton = element(by.id('login-button')),
+      loginPage = helper.loginPage;
 
   before(function(done) {
     helper.resetDB(function(err, res) {
@@ -19,7 +17,9 @@ describe('Tkrekry Admin homepage', function() {
   });
 
   after(function(done) {
-    helper.resetDB(done);
+    helper.resetDB(function(err, result) {
+      done();
+    });
   });
 
 
@@ -28,7 +28,10 @@ describe('Tkrekry Admin homepage', function() {
       .validLogin(helper.users.admin.username, helper.users.admin.password)
       .then(function(email) {
         expect(email).to.be.equal(helper.users.admin.username + ', Kirjaudu ulos');
-        loginPage.logout().then(done);
+        loginPage.logout().then(function(err, res) {
+          console.log(err, res);
+          done();
+        });
       });
   });
 
@@ -37,7 +40,10 @@ describe('Tkrekry Admin homepage', function() {
       .validLogin(helper.users.normal.username, helper.users.normal.password)
       .then(function(email) {
         expect(email).to.be.equal(helper.users.normal.username + ', Kirjaudu ulos');
-        loginPage.logout().then(done);
+        loginPage.logout().then(function(err, res) {
+          console.log(err, res);
+          done();
+        });
       });
   });
 

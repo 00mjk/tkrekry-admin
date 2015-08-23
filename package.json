@@ -16,7 +16,7 @@
     "node": "0.12.x"
   },
   "dependencies": {
-    "Faker": "0.7.2",
+    "faker": "*",
     "agenda": "0.6.28",
     "async": "1.4.0",
     "body-parser": "1.13.2",
@@ -74,7 +74,7 @@
     "grunt-google-cdn": "0.4.3",
     "grunt-mocha-test": "0.12.7",
     "grunt-newer": "1.1.1",
-    "grunt-ngmin": "0.0.3",
+    "grunt-ng-annotate": "*",
     "grunt-node-inspector": "0.2.0",
     "grunt-nodemon": "0.4.0",
     "grunt-open": "0.2.3",
