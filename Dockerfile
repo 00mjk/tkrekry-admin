@@ -1,12 +1,12 @@
 FROM node:wheezy
 
-RUN npm install grunt grunt-cli gulp -g
-COPY package.json .
-COPY bower.json .
+ENV DEBUG *
+RUN npm install grunt-cli gulp -g
+RUN mkdir /app
+WORKDIR /app
 
+COPY package.json /app/package.json
 RUN npm install
 
-ADD . .
-
-EXPOSE 9000
-CMD DEBUG=tkrekry:* grunt serve
+ADD . /app
+ 
