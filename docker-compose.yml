@@ -9,7 +9,7 @@ app:
   ports:
     - "9000:9000"
   environment:
-    - DEBUG=tkrekry:*
+    - DEBUG=*
 
 mongo:
   image: mongo
