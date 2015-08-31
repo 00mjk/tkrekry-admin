@@ -27,7 +27,7 @@ Local development environment is using Docker for MongoDB and Redis.
 ```
 * Install project dependencies
 ```bash
-  
+
   docker-compose build
 
 ```
@@ -36,11 +36,11 @@ Local development environment is using Docker for MongoDB and Redis.
 
 ```bash
   # Start App
-  docker-compose up ap  
+  docker-compose up app
 
   # Seed development
   docker-compose run --no-deps app scripts/seed-development.sh
-  
+
   # Open browser
   open http://dockerhost:9000
 
