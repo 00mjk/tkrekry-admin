@@ -8,14 +8,14 @@
         Olet kirjautunut TKrekryn ylläpitotyökaluun, jonka avulla voit julkaista työpaikkailmoituksesi sivustolle ja päivittää terveyskeskuksesi yhteystiedot ja esittelysisällöt.
       </p>
       <p>
-        Terveyskeskuksenne tiedot on viimeksi päivitetty {{latestEmployer.updated_at| amDateFormat: 'DD.MM.YYYY - HH:mm'}} <a href="#/employer/edit">Päivitä tiedot &rsaquo;</a>
+        Terveyskeskuksenne tiedot on viimeksi päivitetty {{latestEmployer.updated_at| amDateFormat: 'DD.MM.YYYY - HH:mm'}} <a href="#/employer/select">Päivitä tiedot &rsaquo;</a>
       </p>
     </div>
 
     <div class="col-sm-12" ng-if="currentUser.role == 'admin'">
       <h1>Etusivu</h1>
       <p>
-        Olet kirjatunut pääkäyttäjänä TKrekryn ylläpitotyökaluun. Voit luoda <a href="#/user/new/self">uusia käyttäjiä</a> ja muokata <a href="#/settings/edit">olemassaolevia</a>, muokata <a href="#/organisation">organisaatiota</a>, muokata <a href="#/employer/edit">terveyskeskusten tietoja</a> ja julkaista näiden työpaikkailmoituksia.
+        Olet kirjatunut pääkäyttäjänä TKrekryn ylläpitotyökaluun. Voit luoda <a href="#/user/new/self">uusia käyttäjiä</a> ja muokata <a href="#/settings/edit">olemassaolevia</a>, muokata <a href="#/organisation">organisaatiota</a>, muokata <a href="#/employer/select">terveyskeskusten tietoja</a> ja julkaista näiden työpaikkailmoituksia.
       </p>
       <p>
         Katso myös <a href="#/help">käyttöohjeet &rsaquo;</a>
