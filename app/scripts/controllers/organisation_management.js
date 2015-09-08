@@ -56,8 +56,8 @@ angular.module('tkrekryApp')
                 return user;
             }), ['list_name']);
 
-            $scope.employerDistrict = _.find($scope.districts, {name: $scope.employer.district.name});
-            $scope.employerDomain = _.find($scope.domains, {name: $scope.employer.domain.name});
+            $scope.employerDistrict = _.find($scope.districts, {name: ($scope.employer.district && $scope.employer.district.name)});
+            $scope.employerDomain = _.find($scope.domains, {name: ($scope.employer.domain && $scope.employer.domain.name)});
         };
 
         $scope.update = function() {
