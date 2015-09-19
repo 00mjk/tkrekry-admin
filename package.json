@@ -11,7 +11,7 @@
   },
   "scripts": {
     "test": "grunt env:test test:server",
-    "postinstall": "grunt"
+    "postinstall": "grunt build"
   },
   "engines": {
     "node": "0.12"
