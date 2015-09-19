@@ -10,7 +10,8 @@
     "url" : "https://github.com/tkrekry/tkrekry-admin/issues"
   },
   "scripts": {
-    "test": "grunt env:test test:server"
+    "test": "grunt env:test test:server",
+    "postinstall": "grunt"
   },
   "engines": {
     "node": "4.x"
