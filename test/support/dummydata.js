@@ -146,9 +146,8 @@ module.exports.seedDB = function(callback) {
             createContact({employer: user.employers.first}, function(err, da) {
                 cb(null, adminUser);
             });
-        },
-        callback
-    ]);
+        }
+    ], callback);
 };
 
 

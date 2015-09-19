@@ -1,7 +1,7 @@
-// 'use strict';
-
 angular.module('tkrekryApp')
     .directive('ngScrollAndFocus', function($timeout, $log) {
+        'use strict';
+
         return {
             restrict: 'A',
             link: function(scope, elem, attr) {

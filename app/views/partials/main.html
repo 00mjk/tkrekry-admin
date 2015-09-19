@@ -5,17 +5,17 @@
     <div class="col-sm-6" ng-if="currentUser.role == 'user'">
       <h1>Etusivu</h1>
       <p>
-        Olet kirjautunut TKrekryn ylläpitotyökaluun, jonka avulla voit julkaista työpaikkailmoituksesi sivustolle ja päivittää terveyskeskuksesi yhteystiedot tiedot ja esittelysisällöt.
+        Olet kirjautunut TKrekryn ylläpitotyökaluun, jonka avulla voit julkaista työpaikkailmoituksesi sivustolle ja päivittää terveyskeskuksesi yhteystiedot ja esittelysisällöt.
       </p>
       <p>
-        Terveyskeskuksenne tiedot on viimeksi päivitetty {{latestEmployer.updated_at| amDateFormat: 'DD.MM.YYYY - HH:mm'}} <a href="#/employer/edit">Päivitä tiedot &rsaquo;</a>
+        Terveyskeskuksenne tiedot on viimeksi päivitetty {{latestEmployer.updated_at| amDateFormat: 'DD.MM.YYYY - HH:mm'}} <a href="#/employer/select">Päivitä tiedot &rsaquo;</a>
       </p>
     </div>
 
     <div class="col-sm-12" ng-if="currentUser.role == 'admin'">
       <h1>Etusivu</h1>
       <p>
-        Olet kirjatunut pääkäyttäjänä TKrekryn ylläpitotyökaluun. Voit luoda <a href="#/user/new/self">uusia käyttäjiä</a> ja muokata <a href="#/settings/edit">olemassaolevia</a>, muokata <a href="#/organisation">organisaatiota</a>, muokata <a href="#/employer/edit">terveyskeskusten tietoja</a> ja julkaista näiden työpaikkailmoituksia.
+        Olet kirjatunut pääkäyttäjänä TKrekryn ylläpitotyökaluun. Voit luoda <a href="#/user/new/self">uusia käyttäjiä</a> ja muokata <a href="#/settings/edit">olemassaolevia</a>, muokata <a href="#/organisation">organisaatiota</a>, muokata <a href="#/employer/select">terveyskeskusten tietoja</a> ja julkaista näiden työpaikkailmoituksia.
       </p>
       <p>
         Katso myös <a href="#/help">käyttöohjeet &rsaquo;</a>
@@ -24,7 +24,8 @@
 
     <div class="col-sm-6">
       <div class="help alert alert-info" ng-if="currentUser.role == 'user'">
-        <p><strong>Tarvitsetko apua?</strong> Ota yhteyttä sähköpostilla osoitteeseen <a href="mailto:info@tkrekry.fi">info@tkrekry.fi</a></p>
+        <p>
+          <strong>Tarvitsetko apua?</strong> Ota yhteyttä sähköpostilla osoitteeseen <a href="mailto:info@tkrekry.fi">info@tkrekry.fi</a></p>
         <p>Katso myös palvelun <a href="#/help">käyttöohjeet &rsaquo;</a></p>
       </div>
     </div>
@@ -47,9 +48,54 @@
 
   <div class="row">
     <div class="col-sm-12">
-      <!-- TODO: Styles for sorting -->
-      <smart-table class="table table-striped" table-title="Smart Table example" columns="columnCollection"
-             rows="advetisements" config="globalConfig"></smart-table>
+      <table st-table="advetisements" class="table table-striped">
+        <thead>
+          <tr>
+            <th st-sort="title">Tehtävä</th>
+            <th st-sort="publication_day">Automaattinen julkaisu pvm.</th>
+            <th st-sort="published_at">Julkaistu</th>
+            <th st-sort="application_period_end">Haku päättyy</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="advetisement in advetisements">
+            <td>
+              {{advetisement.title}}
+            </td>
+            <td>
+              {{advetisement.publication_day | date: 'dd.MM.yyyy - HH:mm'}}
+            </td>
+            <td>
+              {{advetisement.published_at |  date: 'dd.MM.yyyy'}}
+            </td>
+            <td>
+              {{advetisement.application_period_end |  date: 'dd.MM.yyyy - HH:mm'}}
+            </td>
+            <td ng-switch on="{{advetisement.published}}">
+              <a ng-switch-when="true" ng-href="#/advertisements/unpublish/{{advetisement._id}}">
+                Piilota
+              </a>
+              <a ng-switch-when="false" ng-href="#/advertisements/publish/{{advetisement._id}}">
+                Julkaise
+              </a>
+            </td>
+            <td>
+              <a ng-href="#/advertisements/edit/{{advetisement._id}}">Muokkaa</a>
+            </td>
+            <td>
+              <a ng-href="#/advertisements/copy/{{advetisement._id}}">Kopioi</a>
+            </td>
+            <td>
+              <a ng-href="#/advertisements/remove/{{advetisement._id}}">Poista</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
     </div>
   </div>
 </div>

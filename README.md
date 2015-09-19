@@ -16,7 +16,6 @@ Local development environment is using Docker for MongoDB and Redis.
 
 #### Dependencies
 
-* Install nodejs 0.10.x http://nodejs.org/ or https://github.com/creationix/nvm
 * Install docker https://docs.docker.com/installation/
 * Add dockerhost to /etc/hosts
 ```bash
@@ -28,27 +27,22 @@ Local development environment is using Docker for MongoDB and Redis.
 ```
 * Install project dependencies
 ```bash
-  npm install -g grunt-cli bower
-  npm install
+
+  docker-compose build
+
 ```
 
 ### Start development environment
 
 ```bash
-  # Start Mongodb and Redis containers
-  docker/start.sh
-
-  # Ensure that mongodb and redis are running
-  docker ps
+  # Start App
+  docker-compose up app
 
   # Seed development
-  scripts/seed-development.sh
-
-  # Start app
-  DEBUG=tkrekry:* grunt serve
+  docker-compose run --no-deps app scripts/seed-development.sh
 
   # Open browser
-  open http://localhost:9000
+  open http://dockerhost:9000
 
   # Login in
   # as admin admin@example.com / password

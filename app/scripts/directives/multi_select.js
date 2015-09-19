@@ -1,7 +1,7 @@
-// 'use strict';
-
 angular.module('tkrekryApp')
     .directive('multiSelect', function($q) {
+        'use strict';
+
         return {
             restrict: 'AE',
             require: 'ngModel',

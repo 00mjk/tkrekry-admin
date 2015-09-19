@@ -1,7 +1,7 @@
-// 'use strict';
-
 angular.module('tkrekryApp')
-    .controller('AdvertisementEditCtrl', function($q, $log, $rootScope, $anchorScroll, $scope, $routeParams, $location, $window, $timeout, $modal, $route, focus, _, Auth, Organisation, Advertisement, Employer, Contact, Office, modalSettings) {
+    .controller('AdvertisementEditController', function($q, $log, $rootScope, $anchorScroll, $scope, $routeParams, $location, $window, $timeout, $modal, $route, focus, _, Auth, Organisation, Advertisement, Employer, Contact, Office, modalSettings) {
+        'use strict';
+
         $scope.submitted = false;
         $scope.showErrors = false;
         $scope.selectedOffice = {};

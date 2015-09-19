@@ -1,7 +1,7 @@
-// 'use strict';
-
 angular.module('tkrekryApp')
     .service('Advertisement', function Advertisement($resource, Auth, _) {
+        'use strict';
+
         var user = Auth.currentUser();
         var isAllowed = function(advertisement) {
             return _(user.employers).contains(advertisement.employer);

@@ -1,7 +1,7 @@
-// 'use strict';
-
 angular.module('tkrekryApp')
     .service('Organisation', function Organisation($resource) {
+        'use strict';
+
         return $resource('/api/organisation/:type', null, {
             domains: {
                 method: 'GET',

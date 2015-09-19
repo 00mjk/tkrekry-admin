@@ -1,7 +1,7 @@
-// 'use strict';
-
 angular.module('tkrekryApp')
-    .controller('AdvertisementPreviewCtrl', function($log, $rootScope, $scope, $routeParams, $location, $modal, Advertisement) {
+    .controller('AdvertisementPreviewController', function($log, $rootScope, $scope, $routeParams, $location, $modal, Advertisement) {
+        'use strict';
+
         if ($routeParams.id) {
             Advertisement.publish({
                 id: $routeParams.id

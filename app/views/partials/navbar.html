@@ -1,4 +1,4 @@
-<header class="header container" ng-controller="NavbarCtrl">
+<header class="header container" ng-controller="NavbarController">
   <div class="logo">
     <h1>
       <a href="/" title="Etusivulle">
@@ -11,7 +11,7 @@
   </div>
   <div class="logininfo" ng-show="currentUser">
     <p><!--{{currentUser.first_name}} {{currentUser.role}}-->{{currentUser.email}},
-      <a href ng-click="logout()">Kirjaudu ulos</a>
+      <a href ng-click="logout()" href="#">Kirjaudu ulos</a>
     </p>
     <p>Kirjauduit viimeksi {{currentUser.previous_login | amDateFormat: 'DD.MM.YYYY - HH:mm'}}</p>
   </div>

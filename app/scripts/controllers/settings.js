@@ -1,40 +1,41 @@
-// 'use strict';
-
 angular.module( 'tkrekryApp' )
-  .controller( 'SettingsCtrl', function ( $scope, $routeParams, $timeout, $modal, $q, User, Auth, Employer, _, modalSettings ) {
+  .controller( 'SettingsController', function ( $scope, $routeParams, $timeout, $modal, $q, $location, User, Auth, Employer, _, modalSettings ) {
+    'use strict';
+
     $scope.errors = {};
     var userId = $routeParams.userId;
 
-    $q.all( {
-        employers: Employer.list().$promise,
-        users: User.list().$promise,
-        currentUser: Auth.currentUser().$promise
-      } )
-      .then( function ( promises ) {
-        $scope.allEmployers = promises.employers;
-        $scope.allUsers = promises.users;
-        $scope.currentUser = promises.currentUser;
+    $scope.updateSettingsDetails = function() {
+      $q.all( {
+          employers: Employer.list().$promise,
+          users: User.list().$promise,
+          currentUser: Auth.currentUser().$promise
+        } )
+        .then( function ( promises ) {
+          $scope.user = null;
+          $scope.allEmployers = promises.employers;
+          $scope.allUsers = promises.users;
+          $scope.currentUser = promises.currentUser;
 
-        if (userId && promises.currentUser.role === 'admin') {
-          $scope.user = _.find($scope.allUsers, {'_id': userId});
-        }
+          if (userId && $scope.currentUser.role === 'admin') {
+            $scope.user = _.find($scope.allUsers, {'id': userId});
+          }
 
-        $scope.user = $scope.user || promises.currentUser;
+          $scope.user = angular.copy($scope.user || promises.currentUser);
+          $scope.selectedUser = $scope.user;
 
-        var employerIds = $scope.user.employers;
+          var employerIds = $scope.user.employers;
+          $scope.user.employers = _.sortBy( _.filter( $scope.allEmployers, function ( employer ) {
+            return _.contains( employerIds, employer._id );
+          } ), [ 'name' ] );
+        } );
+    };
 
-        $scope.user.employers = _.sortBy( _.filter( $scope.allEmployers, function ( employer ) {
-          return _.contains( employerIds, employer._id );
-        } ), [ 'name' ] );
-      } );
-
+    $scope.updateSettingsDetails();
 
     $scope.changeUser = function ( user ) {
-      $scope.user = user;
-      var employerIds = $scope.user.employers;
-      $scope.user.employers = _.filter( $scope.allEmployers, function ( employer ) {
-        return _.contains( employerIds, employer._id );
-      } );
+      $scope.userSettingsURL = '/' + ['settings', (user._id || user.id)].join('/');
+      $location.path($scope.userSettingsURL);
     };
 
     $scope.remove = function () {
@@ -63,6 +64,7 @@ angular.module( 'tkrekryApp' )
           .then( function () {
             $scope.allUsers = User.list();
             $scope.changeUser($scope.currentUser);
+
             var modalInstance = $modal.open({
               templateUrl: 'settings/modals/removed.html',
               controller: function ( $scope, $modalInstance, $timeout) {

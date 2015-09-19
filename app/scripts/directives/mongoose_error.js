@@ -1,11 +1,11 @@
-// 'use strict';
-
 angular.module('tkrekryApp')
 
   /**
    * Removes server error when user updates input
    */
   .directive('mongooseError', function () {
+    'use strict';
+
     return {
       restrict: 'A',
       require: 'ngModel',

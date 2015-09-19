@@ -1,7 +1,7 @@
-// 'use strict';
-
 angular.module('tkrekryApp')
-    .controller('AdvertisementCopyCtrl', function($log, $rootScope, $scope, $routeParams, $location, $modal, Advertisement, modalSettings) {
+    .controller('AdvertisementCopyController', function($log, $rootScope, $scope, $routeParams, $location, $modal, Advertisement, modalSettings) {
+        'use strict';
+
         if ($routeParams.id) {
             Advertisement.show({
                 id: $routeParams.id

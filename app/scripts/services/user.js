@@ -1,7 +1,7 @@
-// 'use strict';
-
 angular.module('tkrekryApp')
     .factory('User', function($resource) {
+        'use strict';
+
         return $resource('/api/users/:id', {
             id: '@id'
         }, { //parameters default

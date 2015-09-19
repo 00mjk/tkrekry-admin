@@ -1,7 +1,6 @@
-// 'use strict';
-
 angular.module('tkrekryApp')
     .factory('Auth', function Auth($location, $rootScope, Session, User, $cookieStore) {
+        'use strict';
 
         // Get currentUser from cookie
         $rootScope.currentUser = $cookieStore.get('user') || null;

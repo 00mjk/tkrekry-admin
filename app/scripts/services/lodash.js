@@ -1,5 +1,3 @@
-// 'use strict';
-
 angular.module('tkrekryApp')
     .factory('_', function() {
         return window._;

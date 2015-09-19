@@ -1,7 +1,7 @@
-// 'use strict';
-
 angular.module('tkrekryApp')
-  .controller('NavbarCtrl', function ($scope, $location, Auth) {
+  .controller('NavbarController', function ($scope, $location, Auth, Employer) {
+    'use strict';
+
     $scope.menu = [
       {
         'title': 'Työpaikkailmoitukset',
@@ -10,7 +10,7 @@ angular.module('tkrekryApp')
       },
       {
         'title': 'Terveyskeskuksen tiedot',
-        'link': '/employer/edit',
+        'link': '/employer/select',
         'show': ['user', 'admin']
       },
       {

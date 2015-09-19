@@ -1,7 +1,7 @@
-// 'use strict';
-
 angular.module('tkrekryApp')
-    .controller('AdvertisementDestroyCtrl', function($log, $rootScope, $scope, $routeParams, $location, $modal, Advertisement, modalSettings) {
+    .controller('AdvertisementDestroyController', function($log, $rootScope, $scope, $routeParams, $location, $modal, Advertisement, modalSettings) {
+        'use strict';
+
         if ($routeParams.id) {
 
             var confirmDestroyModalInstance = $modal.open({
