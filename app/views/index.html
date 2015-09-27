@@ -1,7 +1,7 @@
 <!DOCTYPE html>
   <head>
+  	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <%- newrelic ? newrelic.getBrowserTimingHeader() : "" %>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <base href="/">
@@ -12,21 +12,21 @@
     <link rel="stylesheet" media="screen" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
     <![endif]>
 
-    <!-- build:css({.tmp,app}) /styles/3-party.css -->
     <![if !(lte IE 8)]>
+    <!-- build:css({.tmp,app}) /styles/3-party.css -->
     <link rel="stylesheet" media="screen" href="/bower_components/angular-ui/build/angular-ui.css" />
     <link rel="stylesheet" media="screen" href="/bower_components/angular-loading-bar/loading-bar.css" />
     <link rel="stylesheet" media="screen" href="/bower_components/pickadate/default.css" />
     <link rel="stylesheet" media="screen" href="/bower_components/pickadate/default.date.css" />
     <link rel="stylesheet" media="screen" href="/bower_components/pickadate/default.time.css" />
-    <![endif]>
     <!-- endbuild -->
+    <![endif]>
 
-    <!-- build:css({.tmp,app}) /styles/main.css -->
     <![if !(lte IE 8)]>
+    <!-- build:css({.tmp,app}) /styles/main.css -->
     <link rel="stylesheet" media="screen" href="styles/main.css" />
-    <![endif]>
     <!-- endbuild -->
+    <![endif]>
 
   </head>
   <body id="ng-app" ng-app="tkrekryApp">
