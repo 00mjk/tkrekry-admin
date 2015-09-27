@@ -2,31 +2,31 @@
   <head>
     <%- newrelic ? newrelic.getBrowserTimingHeader() : "" %>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta charset="utf-8" />   
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <base href="/">
     <title>TKrekry - Työpaikkailmoitusten julkaisu ja ylläpito</title>
     <meta name="description" content="TKrekry - Työpaikkailmoitusten julkaisu ja ylläpito" />
 
-    <![if !(lte IE 8)]> 
+    <![if !(lte IE 8)]>
     <link rel="stylesheet" media="screen" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
     <![endif]>
 
     <!-- build:css({.tmp,app}) /styles/3-party.css -->
-    <![if !(lte IE 8)]>    
+    <![if !(lte IE 8)]>
     <link rel="stylesheet" media="screen" href="/bower_components/angular-ui/build/angular-ui.css" />
     <link rel="stylesheet" media="screen" href="/bower_components/angular-loading-bar/loading-bar.css" />
     <link rel="stylesheet" media="screen" href="/bower_components/pickadate/default.css" />
     <link rel="stylesheet" media="screen" href="/bower_components/pickadate/default.date.css" />
     <link rel="stylesheet" media="screen" href="/bower_components/pickadate/default.time.css" />
-    <![endif]>    
+    <![endif]>
     <!-- endbuild -->
 
-    <!-- build:css({.tmp,app}) /styles/main.css -->    
-    <![if !(lte IE 8)]>    
+    <!-- build:css({.tmp,app}) /styles/main.css -->
+    <![if !(lte IE 8)]>
     <link rel="stylesheet" media="screen" href="styles/main.css" />
     <![endif]>
-    <!-- endbuild -->  
+    <!-- endbuild -->
 
   </head>
   <body id="ng-app" ng-app="tkrekryApp">
@@ -34,7 +34,7 @@
     <!--[if lte IE 8]>
     <h1>Käyttämäsi Internet Explorer selaimen versio ei ole tuettu</h1>
     <p>TKrekryn työpaikkailmoitusten julkaisua ja ylläpitoa voi käyttää Internet Explorer 9+, Chrome, Firefox tai Safari selaimilla. Lisätietoja voit kysyä sähköpostilla osoitteesta <a href="mailto:info@tkrekry.fi">info@tkrekry.fi</a>.</p>
-    <![endif]--> 
+    <![endif]-->
 
     <!-- Add your site or application content here -->
     <div ng-view=""></div>
@@ -50,14 +50,14 @@
       ga('send', 'pageview');
     </script>
 
-    <![if !(lte IE 8)]>    
+    <![if !(lte IE 8)]>
     <script src="bower_components/jquery/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <![endif]>
 
     <!-- build:js(app) scripts/pack-one.js -->
-    <![if !(lte IE 8)]>    
+    <![if !(lte IE 8)]>
     <script src="bower_components/angular-i18n/angular-locale_fi-fi.js"></script>
     <script src="bower_components/newrelic-timing/newrelic-timing.js"></script>
     <script src="bower_components/newrelic-timing/newrelic-timing-angular.js"></script>
@@ -65,10 +65,10 @@
     <script src="bower_components/lodash/lodash.js"></script>
     <script src="bower_components/moment/moment-with-locales.js"></script>
     <script src="bower_components/moment-timezone/moment-timezone-with-data-2010-2020.js"></script>
-    <![endif]>    
+    <![endif]>
     <!-- endbuild -->
 
-    <![if !(lte IE 8)]>    
+    <![if !(lte IE 8)]>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
@@ -77,8 +77,8 @@
     <script src="bower_components/angular-moment/angular-moment.js"></script>
     <![endif]>
 
-    <!-- build:js(app) scripts/pack-two.js -->    
-    <![if !(lte IE 8)]>    
+    <!-- build:js(app) scripts/pack-two.js -->
+    <![if !(lte IE 8)]>
     <script src="bower_components/angular-loading-bar/loading-bar.js"></script>
     <script src="bower_components/ng-ckeditor/ng-ckeditor.js"></script>
     <script src="bower_components/pickadate/picker.js"></script>
@@ -87,25 +87,25 @@
     <script src="bower_components/pickadate/fi_FI.js"></script>
     <![endif]>
     <!-- endbuild -->
-    
-    <![if !(lte IE 8)]>    
+
+    <![if !(lte IE 8)]>
     <script src="//cdn.ckeditor.com/4.5.1/full-all/ckeditor.js"></script>
     <![endif]>
 
     <!-- build:js(app) scripts/ui-modules.js -->
-    <![if !(lte IE 8)]>    
+    <![if !(lte IE 8)]>
     <script src="/scripts/modules/ui-bootstrap-custom-0.10.0.js"></script>
     <![endif]>
     <!-- endbuild -->
 
     <!-- build:js(app) scripts/smart-modules.js -->
-    <![if !(lte IE 8)]>    
+    <![if !(lte IE 8)]>
     <script src="/bower_components/angular-smart-table/smart-table.js"></script>
     <![endif]>
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
-    <![if !(lte IE 8)]>    
+    <![if !(lte IE 8)]>
     <script src="/scripts/app.js"></script>
     <script src="/scripts/templates/all.js"></script>
     <script src="/scripts/controllers/main.js"></script>
