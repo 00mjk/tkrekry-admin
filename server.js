@@ -1,12 +1,5 @@
 'use strict';
 
-if(process.env.NODETIME_ACCOUNT_KEY) {
-  require('nodetime').profile({
-    accountKey: process.env.NODETIME_ACCOUNT_KEY,
-    appName: process.env.NODETIME_APP_NAME
-  });
-}
-
 if(process.env.NEW_RELIC_LICENSE_KEY) {
   var newrelic = require('newrelic');
 }
@@ -61,7 +54,12 @@ app.listen(config.port, function () {
 });
 
 var jobs = require('./lib/config/jobs');
-jobs.start();
+
+jobs.on('ready', function() {
+  jobs.every( '1 minutes', 'ManageAdvertisements' );
+  jobs.start();
+});
+
 
 function graceful() {
   jobs.stop(function() {

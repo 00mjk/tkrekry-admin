@@ -28,6 +28,8 @@ Local development environment is using Docker for MongoDB and Redis.
 * Install project dependencies
 ```bash
 
+  npm install -g grunt-cli bower
+
   docker-compose build
 
 ```
@@ -53,10 +55,10 @@ Local development environment is using Docker for MongoDB and Redis.
 
 ```bash
   # Start Mongodb and Redis containers
-  docker/start.sh
+  docker-compose up -d
 
   # Run REST API tests
-  DEBUG=tkrekry* grunt env:local-test test:server
+  DEBUG=tkrekry* grunt env:local_test test:server
 
   # Install selenium driver first
   DEBUG=tkrekry* grunt shell:protractor_install
@@ -72,4 +74,3 @@ Local development environment is using Docker for MongoDB and Redis.
 Check open issues from https://github.com/tkrekry/tkrekry-admin/issues
 Fork the project and create pull request.
 https://help.github.com/articles/using-pull-requests/
-
