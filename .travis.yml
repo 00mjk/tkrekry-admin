@@ -1,15 +1,12 @@
-sudo: false
+sudo: required
 language: node_js
+services:
+  - docker
 node_js:
   - "5"
-
-addons:
-  hosts:
-    - dockerhost
 env:
-  - NODE_ENV=test
+  NODE_ENV: test
+before_install:
+  - docker-compose up -d
 before_script:
   - npm install -g grunt-cli bower
-services:
-  - mongodb
-  - redis
