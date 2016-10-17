@@ -8,7 +8,7 @@ var helper = require('../spec_helper'),
     User = helper.User,
     async = helper.async,
     _ = helper._,
-    Session = helper.Session;
+    session = helper.session;
 
 var advertisementsForUser = [],
   advertisementsForUserIds = '',
@@ -121,16 +121,16 @@ describe( '/api/advertisements', function () {
   describe( 'not autheticated user', function () {
 
     beforeEach( function () {
-      this.sess = new Session();
+      this.userSession = session(helper.app);
     } );
 
     afterEach( function () {
-      this.sess.destroy();
+      this.userSession.destroy();
     } );
 
 
     it( 'GET /api/advertisement should respond with JSON array containing elements in correct order', function ( done ) {
-      this.sess
+      this.userSession
         .get( '/api/advertisements' )
         .expect( 200 )
         .expect( 'Content-Type', /json/ )
@@ -152,7 +152,7 @@ describe( '/api/advertisements', function () {
       factory.build( 'advertisement', {
         employer: otherEmployer._id
       }, function ( ad ) {
-        self.sess
+        self.userSession
           .post( '/api/advertisements' )
           .send( ad )
           .expect( 401 )
@@ -165,7 +165,7 @@ describe( '/api/advertisements', function () {
     } );
 
     it( 'PUT /api/advertisements/:id is not allowed', function ( done ) {
-      this.sess
+      this.userSession
         .put( '/api/advertisements/' + advertisementIds.split( '-' )[ 0 ] )
         .send( advertisements[ 0 ].toJSON() )
         .expect( 401 )
@@ -177,7 +177,7 @@ describe( '/api/advertisements', function () {
     } );
 
     it( 'PUT /api/advertisements/1234 is not found', function ( done ) {
-      this.sess
+      this.userSession
         .put( '/api/advertisements/' + advertisementIds.split( '-' )[ 0 ] + 1 )
         .send( advertisements[ 0 ].toJSON() )
         .expect( 401 )
@@ -189,8 +189,8 @@ describe( '/api/advertisements', function () {
     } );
 
     it( 'DELETE /api/advertisements/:id is not allowed', function ( done ) {
-      this.sess
-        .del( '/api/advertisements/' + advertisementIds[ 0 ] )
+      this.userSession
+        .delete( '/api/advertisements/' + advertisementIds[ 0 ] )
         .expect( 401 )
         .expect( 'Content-Type', 'application/json; charset=utf-8' )
         .end( function ( err, res ) {
@@ -200,7 +200,7 @@ describe( '/api/advertisements', function () {
     } );
 
     it( 'POST /api/advertisements/:id/publish is not allowed', function ( done ) {
-      this.sess
+      this.userSession
         .post( '/api/advertisements/' + advertisementIds[ 0 ] + '/publish' )
         .expect( 401 )
         .expect( 'Content-Type', 'application/json; charset=utf-8' )
@@ -211,7 +211,7 @@ describe( '/api/advertisements', function () {
     } );
 
     it( 'POST /api/advertisements/:id/unpublish is not allowed', function ( done ) {
-      this.sess
+      this.userSession
         .post( '/api/advertisements/' + advertisements[ 0 ] + '/unpublish' )
         .expect( 404 )
         .expect( 'Content-Type', 'text/html; charset=utf-8' )
@@ -224,9 +224,9 @@ describe( '/api/advertisements', function () {
 
   describe( 'authenticated user', function () {
     beforeEach( function ( done ) {
-      this.sess = new Session();
+      this.userSession = session(helper.app);
 
-      this.sess
+      this.userSession
         .post( '/api/session' )
         .send( {
           email: 'test@test.com',
@@ -241,8 +241,8 @@ describe( '/api/advertisements', function () {
     } );
 
     afterEach( function ( done ) {
-      this.sess
-        .del( '/api/session' )
+      this.userSession
+        .delete( '/api/session' )
         .expect( 200 )
         .end( onResponse );
 
@@ -252,7 +252,7 @@ describe( '/api/advertisements', function () {
     } );
 
     it( 'GET /api/advertisement should respond with JSON array containing advertisements which are editable', function ( done ) {
-      this.sess
+      this.userSession
         .get( '/api/advertisements' )
         .expect( 200 )
         .expect( 'Content-Type', /json/ )
@@ -270,13 +270,12 @@ describe( '/api/advertisements', function () {
     } );
 
     describe( 'not in users employer', function () {
-
       it( 'POST /api/advertisements is not allowed', function ( done ) {
         var self = this;
         factory.build( 'advertisement', {
           employer: otherEmployer._id
         }, function ( ad ) {
-          self.sess
+          self.userSession
             .post( '/api/advertisements' )
             .send( ad )
             .expect( 403 )
@@ -288,7 +287,7 @@ describe( '/api/advertisements', function () {
       } );
 
       it( 'PUT /api/advertisements/:id is not allowed', function ( done ) {
-        this.sess
+        this.userSession
           .put( '/api/advertisements/' + advertisements[ 0 ]._id )
           .send( advertisements[ 0 ].toJSON() )
           .expect( 403 )
@@ -299,7 +298,7 @@ describe( '/api/advertisements', function () {
       } );
 
       it( 'PUT /api/advertisements/1234 is not found', function ( done ) {
-        this.sess
+        this.userSession
           .put( '/api/advertisements/' + advertisementIds.split( '-' )[ 0 ] + 1 )
           .send( advertisements[ 0 ].toJSON() )
           .expect( 404 )
@@ -310,8 +309,8 @@ describe( '/api/advertisements', function () {
       } );
 
       it( 'DELETE /api/advertisements/:id is not allowed', function ( done ) {
-        this.sess
-          .del( '/api/advertisements/' + advertisements[ 0 ]._id )
+        this.userSession
+          .delete( '/api/advertisements/' + advertisements[ 0 ]._id )
           .expect( 403 )
           .end( function ( err, res ) {
             if ( err ) return done( err );
@@ -320,7 +319,7 @@ describe( '/api/advertisements', function () {
       } );
 
       it( 'POST /api/advertisements/:id/publish is not allowed', function ( done ) {
-        this.sess
+        this.userSession
           .post( '/api/advertisements/' + advertisements[ 0 ]._id + '/publish' )
           .expect( 403 )
           .end( function ( err, res ) {
@@ -330,7 +329,7 @@ describe( '/api/advertisements', function () {
       } );
 
       it( 'POST /api/advertisements/:id/unpublish is not allowed', function ( done ) {
-        this.sess
+        this.userSession
           .post( '/api/advertisements/' + advertisements[ 0 ]._id + '/unpublish' )
           .expect( 403 )
           .end( function ( err, res ) {
@@ -346,7 +345,7 @@ describe( '/api/advertisements', function () {
         factory.build( 'advertisement', {
           employer: userEmployer._id
         }, function ( ad ) {
-          self.sess
+          self.userSession
             .post( '/api/advertisements' )
             .send( ad )
             .expect( 200 )
@@ -359,7 +358,7 @@ describe( '/api/advertisements', function () {
       } );
 
       it( 'PUT /api/advertisements/:id is allowed', function ( done ) {
-        this.sess
+        this.userSession
           .put( '/api/advertisements/' + advertisementsForUser[ 0 ]._id )
           .send( advertisementsForUser[ 0 ].toJSON() )
           .expect( 200 )
@@ -371,7 +370,7 @@ describe( '/api/advertisements', function () {
       } );
 
       it( 'PUT /api/advertisements/1234 is not found', function ( done ) {
-        this.sess
+        this.userSession
           .put( '/api/advertisements/' + advertisementsForUserIds.split( '-' )[ 0 ] + 1 )
           .send( advertisements[ 0 ].toJSON() )
           .expect( 404 )
@@ -382,8 +381,8 @@ describe( '/api/advertisements', function () {
       } );
 
       it( 'DELETE /api/advertisements/:id is allowed', function ( done ) {
-        this.sess
-          .del( '/api/advertisements/' + advertisementsForUser[ 1 ]._id )
+        this.userSession
+          .delete( '/api/advertisements/' + advertisementsForUser[ 1 ]._id )
           .expect( 200 )
           .expect( 'Content-Type', /json/ )
           .end( function ( err, res ) {
@@ -393,7 +392,7 @@ describe( '/api/advertisements', function () {
       } );
 
       it( 'POST /api/advertisements/:id/publish is allowed', function ( done ) {
-        this.sess
+        this.userSession
           .post( '/api/advertisements/' + advertisementsForUser[ 0 ]._id + '/publish' )
           .expect( 200 )
           .expect( 'Content-Type', /json/ )
@@ -404,7 +403,7 @@ describe( '/api/advertisements', function () {
       } );
 
       it( 'POST /api/advertisements/:id/unpublish is allowed', function ( done ) {
-        this.sess
+        this.userSession
           .post( '/api/advertisements/' + advertisementsForUser[ 0 ]._id + '/unpublish' )
           .expect( 200 )
           .expect( 'Content-Type', /json/ )
@@ -419,9 +418,9 @@ describe( '/api/advertisements', function () {
 
   describe( 'admin user', function () {
     beforeEach( function ( done ) {
-      this.sess = new Session();
+      this.userSession = session(helper.app);
 
-      this.sess
+      this.userSession
         .post( '/api/session' )
         .send( {
           email: 'admin@test.com',
@@ -436,8 +435,8 @@ describe( '/api/advertisements', function () {
     } );
 
     afterEach( function ( done ) {
-      this.sess
-        .del( '/api/session' )
+      this.userSession
+        .delete( '/api/session' )
         .expect( 200 )
         .end( onResponse );
 
@@ -447,7 +446,7 @@ describe( '/api/advertisements', function () {
     } );
 
     it( 'GET /api/advertisement should respond with JSON array containing advertisements which are editable', function ( done ) {
-      this.sess
+      this.userSession
         .get( '/api/advertisements' )
         .expect( 200 )
         .expect( 'Content-Type', /json/ )
@@ -469,7 +468,7 @@ describe( '/api/advertisements', function () {
       factory.build( 'advertisement', {
         employer: userEmployer._id
       }, function ( ad ) {
-        self.sess
+        self.userSession
           .post( '/api/advertisements' )
           .send( ad )
           .expect( 200 )
@@ -482,7 +481,7 @@ describe( '/api/advertisements', function () {
     } );
 
     it( 'PUT /api/advertisements/:id is allowed', function ( done ) {
-      this.sess
+      this.userSession
         .put( '/api/advertisements/' + advertisementsForUser[ 0 ]._id )
         .send( advertisementsForUser[ 0 ].toJSON() )
         .expect( 200 )
@@ -494,7 +493,7 @@ describe( '/api/advertisements', function () {
     } );
 
     it( 'PUT /api/advertisements/1234 is not found', function ( done ) {
-      this.sess
+      this.userSession
         .put( '/api/advertisements/' + advertisementsForUserIds.split( '-' )[ 0 ] + 1 )
         .send( advertisements[ 0 ].toJSON() )
         .expect( 404 )
@@ -505,8 +504,8 @@ describe( '/api/advertisements', function () {
     } );
 
     it( 'DELETE /api/advertisements/:id is allowed', function ( done ) {
-      this.sess
-        .del( '/api/advertisements/' + advertisementsForUser[ 1 ]._id )
+      this.userSession
+        .delete( '/api/advertisements/' + advertisementsForUser[ 1 ]._id )
         .expect( 200 )
         .expect( 'Content-Type', /json/ )
         .end( function ( err, res ) {
@@ -516,7 +515,7 @@ describe( '/api/advertisements', function () {
     } );
 
     it( 'POST /api/advertisements/:id/publish is allowed', function ( done ) {
-      this.sess
+      this.userSession
         .post( '/api/advertisements/' + advertisementsForUser[ 0 ]._id + '/publish' )
         .expect( 200 )
         .expect( 'Content-Type', /json/ )
@@ -527,7 +526,7 @@ describe( '/api/advertisements', function () {
     } );
 
     it( 'POST /api/advertisements/:id/unpublish is allowed', function ( done ) {
-      this.sess
+      this.userSession
         .post( '/api/advertisements/' + advertisementsForUser[ 0 ]._id + '/unpublish' )
         .expect( 200 )
         .expect( 'Content-Type', /json/ )

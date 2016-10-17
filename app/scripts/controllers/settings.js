@@ -26,7 +26,7 @@ angular.module( 'tkrekryApp' )
 
           var employerIds = $scope.user.employers;
           $scope.user.employers = _.sortBy( _.filter( $scope.allEmployers, function ( employer ) {
-            return _.contains( employerIds, employer._id );
+            return _.includes( employerIds, employer._id );
           } ), [ 'name' ] );
         } );
     };

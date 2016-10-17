@@ -8,7 +8,7 @@ var helper = require('../spec_helper'),
     User = helper.User,
     async = helper.async,
     _ = helper._,
-    Session = helper.Session;
+    session = helper.session;
 
 var firstsEmployer,
     userEmployer,
@@ -101,11 +101,11 @@ describe('/api/employers', function() {
     describe('not autheticated user', function() {
 
         beforeEach(function() {
-            this.sess = new Session();
+            this.userSession = session(helper.app);
         });
 
         afterEach(function() {
-            this.sess.destroy();
+            this.userSession.destroy();
         });
 
         it('GET /api/employers should respond with JSON array containing elements in correct order', function(done) {
@@ -113,7 +113,7 @@ describe('/api/employers', function() {
                 return d.name;
             }).join('-');
 
-            this.sess
+            this.userSession
                 .get('/api/employers')
                 .expect(200)
                 .expect('Content-Type', /json/)
@@ -132,7 +132,7 @@ describe('/api/employers', function() {
         it('POST /api/employers is not allowed', function(done) {
             var self = this;
             factory.build('employer', {}, function(employer) {
-                self.sess
+                self.userSession
                     .post('/api/employers')
                     .send(employer)
                     .expect(401)
@@ -145,7 +145,7 @@ describe('/api/employers', function() {
         });
 
         it('PUT /api/employers/:id is not allowed', function(done) {
-            this.sess
+            this.userSession
                 .put('/api/employers/' + firstsEmployer._id)
                 .send(firstsEmployer.toJSON())
                 .expect(401)
@@ -157,7 +157,7 @@ describe('/api/employers', function() {
         });
 
         it('PUT /api/employers/1234 is not found', function(done) {
-            this.sess
+            this.userSession
                 .put('/api/employers/' + otherEmployer._id + '0')
                 .send(otherEmployer.toJSON())
                 .expect(401)
@@ -169,8 +169,8 @@ describe('/api/employers', function() {
         });
 
         it('DELETE /api/employers/:id is not allowed', function(done) {
-            this.sess
-                .del('/api/employers/' + otherEmployer._id)
+            this.userSession
+                .delete('/api/employers/' + otherEmployer._id)
                 .expect(401)
                 .expect('Content-Type', 'application/json; charset=utf-8')
                 .end(function(err, res) {
@@ -183,9 +183,9 @@ describe('/api/employers', function() {
 
     describe('authenticated user', function() {
         beforeEach(function(done) {
-            this.sess = new Session();
+            this.userSession = session(helper.app);
 
-            this.sess
+            this.userSession
                 .post('/api/session')
                 .send({
                     email: 'test@test.com',
@@ -200,8 +200,8 @@ describe('/api/employers', function() {
         });
 
         afterEach(function(done) {
-            this.sess
-                .del('/api/session')
+            this.userSession
+                .delete('/api/session')
                 .expect(200)
                 .end(onResponse);
 
@@ -211,7 +211,7 @@ describe('/api/employers', function() {
         });
 
         it('GET /api/employer should respond with JSON array containing employers which are editable', function(done) {
-            this.sess
+            this.userSession
                 .get('/api/employers')
                 .expect(200)
                 .expect('Content-Type', /json/)
@@ -231,7 +231,7 @@ describe('/api/employers', function() {
             it('POST /api/employers is not allowed', function(done) {
                 var self = this;
                 factory.build('employer', {}, function(ad) {
-                    self.sess
+                    self.userSession
                         .post('/api/employers')
                         .send(ad)
                         .expect(403)
@@ -243,7 +243,7 @@ describe('/api/employers', function() {
             });
 
             it('PUT /api/employers/:id is not allowed', function(done) {
-                this.sess
+                this.userSession
                     .put('/api/employers/' + otherEmployer._id)
                     .send(otherEmployer.toJSON())
                     .expect(403)
@@ -254,7 +254,7 @@ describe('/api/employers', function() {
             });
 
             it('PUT /api/employers/1234 is not found', function(done) {
-                this.sess
+                this.userSession
                     .put('/api/employers/' + otherEmployer._id + 1)
                     .send(otherEmployer.toJSON())
                     .expect(404)
@@ -265,8 +265,8 @@ describe('/api/employers', function() {
             });
 
             it('DELETE /api/employers/:id is not allowed', function(done) {
-                this.sess
-                    .del('/api/employers/' + otherEmployer._id)
+                this.userSession
+                    .delete('/api/employers/' + otherEmployer._id)
                     .expect(403)
                     .end(function(err, res) {
                         if (err) return done(err);
@@ -279,7 +279,7 @@ describe('/api/employers', function() {
             it('POST /api/employers is', function(done) {
                 var self = this;
                 factory.build('employer', {}, function(ad) {
-                    self.sess
+                    self.userSession
                         .post('/api/employers')
                         .send(ad)
                         .expect(403)
@@ -292,7 +292,7 @@ describe('/api/employers', function() {
             });
 
             it('PUT /api/employers/:id is allowed', function(done) {
-                this.sess
+                this.userSession
                     .put('/api/employers/' + userEmployer._id)
                     .send(userEmployer.toJSON())
                     .expect(200)
@@ -304,7 +304,7 @@ describe('/api/employers', function() {
             });
 
             it('PUT /api/employers/1234 is not found', function(done) {
-                this.sess
+                this.userSession
                     .put('/api/employers/' + userEmployer._id + 1)
                     .send(userEmployer.toJSON())
                     .expect(404)
@@ -315,8 +315,8 @@ describe('/api/employers', function() {
             });
 
             it('DELETE /api/employers/:id is allowed', function(done) {
-                this.sess
-                    .del('/api/employers/' + userEmployer._id)
+                this.userSession
+                    .delete('/api/employers/' + userEmployer._id)
                     .expect(200)
                     .expect('Content-Type', /json/)
                     .end(function(err, res) {
@@ -330,9 +330,9 @@ describe('/api/employers', function() {
 
     describe('admin user', function() {
         beforeEach(function(done) {
-            this.sess = new Session();
+            this.userSession = session(helper.app);
 
-            this.sess
+            this.userSession
                 .post('/api/session')
                 .send({
                     email: 'admin@test.com',
@@ -347,8 +347,8 @@ describe('/api/employers', function() {
         });
 
         afterEach(function(done) {
-            this.sess
-                .del('/api/session')
+            this.userSession
+                .delete('/api/session')
                 .expect(200)
                 .end(onResponse);
 
@@ -362,7 +362,7 @@ describe('/api/employers', function() {
                 return d.name;
             }).join('-');
 
-            this.sess
+            this.userSession
                 .get('/api/employers')
                 .expect(200)
                 .expect('Content-Type', /json/)
@@ -380,7 +380,7 @@ describe('/api/employers', function() {
         it('POST /api/employers is', function(done) {
             var self = this;
             factory.build('employer', {}, function(ad) {
-                self.sess
+                self.userSession
                     .post('/api/employers')
                     .send(ad)
                     .expect(403)
@@ -393,7 +393,7 @@ describe('/api/employers', function() {
         });
 
         it('PUT /api/employers/:id is allowed', function(done) {
-            this.sess
+            this.userSession
                 .put('/api/employers/' + otherEmployer._id)
                 .send(otherEmployer.toJSON())
                 .expect(200)
@@ -405,7 +405,7 @@ describe('/api/employers', function() {
         });
 
         it('PUT /api/employers/1234 is not found', function(done) {
-            this.sess
+            this.userSession
                 .put('/api/employers/' + firstsEmployer._id + '1')
                 .send(firstsEmployer.toJSON())
                 .expect(404)
@@ -416,8 +416,8 @@ describe('/api/employers', function() {
         });
 
         it('DELETE /api/employers/:id is allowed', function(done) {
-            this.sess
-                .del('/api/employers/' + firstsEmployer._id)
+            this.userSession
+                .delete('/api/employers/' + firstsEmployer._id)
                 .expect(200)
                 .expect('Content-Type', /json/)
                 .end(function(err, res) {

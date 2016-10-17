@@ -7,6 +7,8 @@ var path = require('path'),
     fs = require('fs'),
     mongoose = require( 'mongoose' );
 
+mongoose.Promise = require( 'bluebird' );
+
 // Bootstrap models
 var modelsPath = path.join(__dirname, '../../lib/models');
 
@@ -20,8 +22,7 @@ var factory = require(path.join(__dirname, '../support/fixtures/factory')),
     app = require(path.join(__dirname, '../../server')),
     Advertisement = mongoose.model( 'Advertisement' ),
     Employer = mongoose.model( 'Employer' ),
-    User = mongoose.model( 'User' ),
-    Session = require('supertest-session')({ app: app });
+    User = mongoose.model( 'User' );
 
 chai.use(chaiAsPromised);
 
@@ -33,7 +34,7 @@ module.exports = {
   Employer: Employer,
   User: User,
   async: async,
-  Session: Session,
+  session: require('supertest-session'),
   expect: chai.expect,
   _: _
 };

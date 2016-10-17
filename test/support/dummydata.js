@@ -4,6 +4,8 @@ var path = require('path'),
     fs = require('fs'),
     mongoose = require('mongoose');
 
+mongoose.Promise = require( 'bluebird' );
+
 // Set default node environment to development
 // process.env.NODE_ENV = process.env.NODE_ENV || 'test';
 
@@ -40,7 +42,6 @@ var user, employers = [],
     contactsList = {},
     officeList = {},
     advertisements = [];
-
 
 module.exports.resetDB = function(callback) {
     User.remove({}, function(err, data) {
@@ -149,6 +150,3 @@ module.exports.seedDB = function(callback) {
         }
     ], callback);
 };
-
-
-

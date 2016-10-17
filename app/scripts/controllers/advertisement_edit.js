@@ -54,7 +54,7 @@ angular.module('tkrekryApp')
                     _id: $scope.advertisement.employer
                 });
             } else {
-                $scope.selectedEmployer = _.first($scope.employers);
+                $scope.selectedEmployer = _.head($scope.employers);
             }
 
             $scope.advertisement.application_period_end_date = ($scope.advertisement.application_period_end ? $window.moment($scope.advertisement.application_period_end)
