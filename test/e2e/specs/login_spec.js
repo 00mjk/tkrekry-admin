@@ -29,7 +29,6 @@ describe('Tkrekry Admin homepage', function() {
       .then(function(email) {
         expect(email).to.be.equal(helper.users.admin.username + ', Kirjaudu ulos');
         loginPage.logout().then(function(err, res) {
-          console.log(err, res);
           done();
         });
       });
@@ -41,7 +40,6 @@ describe('Tkrekry Admin homepage', function() {
       .then(function(email) {
         expect(email).to.be.equal(helper.users.normal.username + ', Kirjaudu ulos');
         loginPage.logout().then(function(err, res) {
-          console.log(err, res);
           done();
         });
       });

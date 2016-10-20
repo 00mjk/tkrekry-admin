@@ -82,7 +82,7 @@ angular.module('tkrekryApp')
 
         $scope.addContact = function(contact) {
             if (contact) {
-                if ((_($scope.advertisement.contacts).contains(contact)) === false) {
+                if ((_($scope.advertisement.contacts).includes(contact)) === false) {
                     var new_contact = angular.copy(contact);
                     new_contact._id = Math.random().toString(36).substring(6);
 

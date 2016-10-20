@@ -43,14 +43,14 @@ angular.module('tkrekryApp')
             $scope.employer = angular.copy($scope.selectedEmployer);
 
             $scope.employerUsers = _.sortBy(_.map(_.filter($scope.users, function(user) {
-                return _(user.employers).contains($scope.employer._id);
+                return _(user.employers).includes($scope.employer._id);
             }), function(user) {
                 user.list_name = [user.last_name, user.first_name].join(', ');
                 return user;
             }), ['list_name']);
 
             $scope.availableUsers = _.sortBy(_.map(_.reject($scope.users, function(user) {
-                return _($scope.employerUsers).contains(user);
+                return _($scope.employerUsers).includes(user);
             }), function(user) {
                 user.list_name = [user.last_name, user.first_name].join(', ');
                 return user;

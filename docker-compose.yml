@@ -1,16 +1,3 @@
-app:
-  build: .
-  command: grunt serve
-  volumes:
-   - .:/app:rw
-  links:
-    - mongo
-    - redis
-  ports:
-    - "9000:9000"
-  environment:
-    - DEBUG=tkrekry:*
-
 mongo:
   image: mongo:2.6
   ports:
