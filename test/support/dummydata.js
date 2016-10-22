@@ -1,9 +1,12 @@
 'use strict';
 
-var path = require('path'),
-    fs = require('fs'),
-    mongoose = require('mongoose');
-
+const path = require('path');
+const fs = require('fs');
+const Promise = require('bluebird');
+const _ = require('lodash');
+const mongoose = require('mongoose');
+const debug  = require('debug')('tkrekry:dummydata');
+const async = require('async');
 mongoose.Promise = require( 'bluebird' );
 
 // Set default node environment to development
@@ -24,49 +27,39 @@ fs.readdirSync(modelsPath).forEach(function (file) {
   }
 });
 
+const Employer = mongoose.model('Employer');
+const Advertisement = mongoose.model('Advertisement');
+const Office = mongoose.model('Office');
+const Contact = mongoose.model('Contact');
+const User = mongoose.model('User');
 
-var debug  = require('debug')('tkrekry:dummydata'),
-    async = require('async'),
-    _ = require('lodash'),
-    path = require('path'),
+const factory = require(path.join(__dirname, 'fixtures/factory'));
 
-    Employer = mongoose.model('Employer'),
-    Advertisement = mongoose.model('Advertisement'),
-    Office = mongoose.model('Office'),
-    Contact = mongoose.model('Contact'),
-    User = mongoose.model('User');
+let user;
+let employers = [];
+let contactsList = {};
+let officeList = {};
+let advertisements = [];
 
-var factory = require(path.join(__dirname, 'fixtures/factory'));
+module.exports.resetDB = (callback) =>
+  Promise.join(
+    User.remove(),
+    Employer.remove(),
+    Advertisement.remove(),
+    Office.remove(),
+    Contact.remove(),
+    (u, e, a, o, c) => callback(null, 'reset done'));
 
-var user, employers = [],
-    contactsList = {},
-    officeList = {},
-    advertisements = [];
 
-module.exports.resetDB = function(callback) {
-    User.remove({}, function(err, data) {
-        debug('user reset', err, data);
-        Employer.remove({}, function(err, data) {
-            debug('employer reset', err, data);
-            Advertisement.remove({}, function(err, data) {
-                debug('advertisement reset', err, data);
-                Office.remove({}, function(err, data) {
-                    debug('office reset', err, data);
-                    Contact.remove({}, function() {
-                        callback(null, 'reset done');
-                    });
-                });
-            });
-        });
-    });
-};
+var pFactory = Promise.promisify(
+  (type, options = {}, callback) =>
+    factory.build(type, options, (doc) => callback(null, doc)));
+
 
 var createEmployer = function(defaults, callback) {
     factory.build('employer', defaults, function(doc) {
         var employer = new Employer(doc);
-        employer.save(function(err, data) {
-            callback(err, data);
-        });
+        employer.save().then((data) => callback(null, data));
     });
 };
 
@@ -76,15 +69,7 @@ var createUser = function(defaults, callback) {
 
         factory.build('user', defaults, function(user_attrs) {
             var user = new User(user_attrs);
-            user.save(function(err, data) {
-
-                if (err)
-                    debug("Failed to create user %s %s %s", user.first_name, user.last_name, user.email);
-
-                debug('User %s created.', user.email);
-
-                callback(err, data);
-            });
+            user.save().then((data) => callback(null, data));
         });
     });
 };
@@ -92,23 +77,14 @@ var createUser = function(defaults, callback) {
 var createOffice = function(defaults, callback) {
     factory.build('office', defaults, function(doc) {
         var office = new Office(doc);
-        office.save(function(err, data) {
-            callback(err, data);
-        });
+        office.save().then((data) => callback(null, data));
     });
 };
 
 var createContact = function(defaults, callback) {
     factory.build('contact', defaults, function(doc) {
         var contact = new Contact(doc);
-        contact.save(function(err, data) {
-            if (err)
-                debug('Failed to created contact %s', data.name);
-
-            debug('Contact %s %s created.', data.title, data.email);
-
-            callback(err, data);
-        });
+        contact.save().then((data) => callback(null, data));
     });
 };
 

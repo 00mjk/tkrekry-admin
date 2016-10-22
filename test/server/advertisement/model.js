@@ -1,51 +1,70 @@
 'use strict';
 
 var helper = require('../spec_helper'),
+    Promise = require('bluebird'),
     should = helper.should,
     factory = helper.factory,
     Advertisement = helper.Advertisement;
 
-var advertisement;
+var advertisementFactory = Promise.promisify(
+  (options = {}, callback) =>
+    factory.build('advertisement', options, (doc) => callback(null, doc)));
+
+const createAdvertisement = (options) =>
+  advertisementFactory(options)
+    .then((fields) => new Advertisement(fields))
+    .then((advertisement) => advertisement.save());
 
 describe('Advertisement Model', function() {
-  beforeEach(function(done) {
-    factory.build('advertisement', {}, function(doc) {
-        advertisement = new Advertisement(doc);
-        Advertisement.remove().exec();
-        done();
-    });
+  beforeEach(() => Advertisement.remove().exec());
+  afterEach(() => Advertisement.remove().exec());
+
+  it('rejects if not found by id', function() {
+    return advertisementFactory({ published: true })
+      .then((fields) => new Advertisement(fields))
+      .then(({_id}) => Advertisement.get(_id))
+      .catch((error) => {
+        error.status.should.be.equal(404);
+      });
   });
 
-  afterEach(function(done) {
-    Advertisement.remove().exec();
-    done();
-  });
-
-  it('store contacts on create', function(done) {
-    advertisement.contacts.should.be.instanceof(Array).and.have.lengthOf(1);
-    advertisement.save(function(err, res) {
-      Advertisement.get(res._id, function(err, storedAdvertisement) {
+  it('store contacts on create', function() {
+    return advertisementFactory({ published: true })
+      .then((fields) => new Advertisement(fields))
+      .then((advertisement) => {
+        advertisement.contacts.should.be.instanceof(Array).and.have.lengthOf(1);
+        return advertisement;
+      })
+      .then((advertisement) => advertisement.save())
+      .then(({_id}) => Advertisement.get(_id))
+      .then((storedAdvertisement) => {
         storedAdvertisement.contacts.should.be.instanceof(Array).and.have.lengthOf(1);
-        done();
+      });
+  });
+
+  it('find all published', function() {
+    return createAdvertisement({ published: true })
+      .then(() => createAdvertisement({ published: false }))
+      .then(() => createAdvertisement({ published: true }))
+      .then(() => createAdvertisement({ published: false }))
+      .then(() => Advertisement.published())
+      .then((advertisements) => {
+        advertisements.should.be.instanceof(Array).and.have.lengthOf(2);
+      });
+  });
+
+  it('store contacts on update', function() {
+    return createAdvertisement({ published: true })
+      .then(({id}) => Advertisement.get(id))
+      .then(({contacts, updated_at, _id}) => {
+        contacts.should.be.instanceof(Array).and.have.lengthOf(1);
+        updated_at.should.be.instanceof(Date);
+        return Promise.resolve(_id);
+      })
+      .then((id) => Advertisement.findByIdAndUpdate(id, { title: 'Updated title' }, { new: true }).exec())
+      .then(({updated_at, title, contacts }) => {
+        contacts.should.be.instanceof(Array).and.have.lengthOf(1);
+        title.should.be.equal('Updated title');
       });
     });
-  });
-
-  it('store contacts on update', function(done) {
-    advertisement.contacts.should.be.instanceof(Array).and.have.lengthOf(1);
-
-    advertisement.save(function(err, res) {
-      var update_at = res.updated_at;
-      Advertisement.get(res.id, function(err, storedAdvertisement) {
-        storedAdvertisement.contacts.should.be.instanceof(Array).and.have.lengthOf(1);
-        storedAdvertisement.updated_at.should.be.instanceof(Date);
-        Advertisement.findByIdAndUpdate(res.id, {title: 'sdfdsfsfdfsdfsd'}, function(er, rs) {
-          rs.updated_at.getTime().should.be.equal(update_at.getTime());
-          done();
-        });
-
-      });
-    });
-  });
-
 });

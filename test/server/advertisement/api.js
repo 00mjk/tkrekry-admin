@@ -1,6 +1,7 @@
 'use strict';
 
 var helper = require('../spec_helper'),
+    Promise = require('bluebird'),
     should = helper.should,
     factory = helper.factory,
     Advertisement = helper.Advertisement,
@@ -32,13 +33,12 @@ describe( '/api/advertisements', function () {
   beforeEach( function ( done ) {
     async.waterfall( [
         function(cb) {
-          User.remove({}, function(err, result) {
-            Advertisement.remove({}, function(err, result) {
-              Employer.remove({}, function(err, result) {
-                cb(err);
-              });
-            });
-          });
+          Promise.join(
+            User.remove(),
+            Advertisement.remove(),
+            Employer.remove(),
+            (v,s,b) => cb(null)
+          );
         },
         function ( cb ) {
           factory( 'employer', {}, function ( sampleUserEmployer ) {
