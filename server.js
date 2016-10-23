@@ -1,13 +1,17 @@
-'use strict';
+let newrelic = null;
 
-if(process.env.NEW_RELIC_LICENSE_KEY) {
-  var newrelic = require('newrelic');
+if (process.env.NEW_RELIC_LICENSE_KEY) {
+  newrelic = require('newrelic');
 }
 
-var express = require('express'),
-    path = require('path'),
-    fs = require('fs'),
-    mongoose = require('mongoose');
+const express = require('express');
+const path = require('path');
+const fs = require('fs');
+const mongoose = require('mongoose');
+const Promise = require('bluebird');
+const _ = require('lodash');
+
+mongoose.Promise = Promise;
 
 /**
  * Main application file
@@ -47,6 +51,19 @@ require('./lib/config/express')(app);
 
 // Routing
 require('./lib/routes')(app);
+
+app.use(function({constructor: {name}, status, message, errors}, req, res, next) {
+  if (name === 'MongooseError') {
+    status = 400;
+    message = _.reduce(errors, (acc, val, key) => {
+      acc.push({ message: val.message, field: key, value: val.value});
+      return acc;
+    }, []);
+  }
+
+  res.status(status)
+  res.json({ error: message, status: status });
+});
 
 // Start server
 app.listen(config.port, function () {

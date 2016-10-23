@@ -1,14 +1,15 @@
 'use strict';
 
-var helper = require('../spec_helper'),
-    should = helper.should,
-    factory = helper.factory,
-    Advertisement = helper.Advertisement,
-    Employer = helper.Employer,
-    User = helper.User,
-    async = helper.async,
-    _ = helper._,
-    session = helper.session;
+const helper = require('../spec_helper');
+const should = helper.should;
+const factory = helper.factory;
+const Advertisement = helper.Advertisement;
+const Employer = helper.Employer;
+const Promise = require('bluebird');
+const User = helper.User;
+const async = helper.async;
+const _ = helper._;
+const session = helper.session;
 
 var firstsEmployer,
   userEmployer,
@@ -29,13 +30,12 @@ describe( 'user management', function () {
   beforeEach( function ( done ) {
     async.waterfall( [
         function(cb) {
-          User.remove({}, function() {
-            Advertisement.remove({}, function() {
-              Employer.remove({}, function() {
-                cb(null);
-              });
-            });
-          });
+          Promise.join(
+            User.remove(),
+            Advertisement.remove(),
+            Employer.remove(),
+            () => {}
+          ).then(() => cb(null));
         },
         function ( cb ) {
           factory( 'employer', {}, function ( sampleUserEmployer ) {
@@ -141,7 +141,7 @@ describe( 'user management', function () {
        this.userSession
         .post( '/api/users')
         .send(userDefaults)
-        .expect( 403 )
+        .expect( 401 )
         .expect( 'Content-Type', /json/ )
         .end( function ( err, res ) {
           if ( err ) return done( err );
@@ -153,7 +153,7 @@ describe( 'user management', function () {
     it( 'DELETE /api/users/:userId is not allowed for normal user', function ( done ) {
       this.userSession
         .delete( '/api/users/' + secondNormalUser._id)
-        .expect( 403 )
+        .expect( 401 )
         .expect( 'Content-Type', /json/ )
         .end( function ( err, res ) {
           if ( err ) return done( err );

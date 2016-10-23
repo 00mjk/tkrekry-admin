@@ -1,14 +1,15 @@
 'use strict';
 
-var helper = require('../spec_helper'),
-    should = helper.should,
-    factory = helper.factory,
-    Advertisement = helper.Advertisement,
-    Employer = helper.Employer,
-    User = helper.User,
-    async = helper.async,
-    _ = helper._,
-    session = helper.session;
+const helper = require('../spec_helper');
+const should = helper.should;
+const factory = helper.factory;
+const Advertisement = helper.Advertisement;
+const Employer = helper.Employer;
+const User = helper.User;
+const async = helper.async;
+const _ = helper._;
+const session = helper.session;
+const Promise = require('bluebird');
 
 var firstsEmployer,
     userEmployer,
@@ -27,13 +28,12 @@ describe('/api/employers', function() {
     beforeEach(function(done) {
         async.waterfall([
                 function(cb) {
-                  User.remove({}, function() {
-                    Advertisement.remove({}, function() {
-                      Employer.remove({}, function() {
-                        cb(null);
-                      });
-                    });
-                  });
+                  Promise.join(
+                    User.remove(),
+                    Advertisement.remove(),
+                    Employer.remove(),
+                    () => {}
+                  ).then(() => cb(null));
                 },
                 function(cb) {
                     factory('employer', {}, function(sampleUserEmployer) {
@@ -278,10 +278,10 @@ describe('/api/employers', function() {
         describe('in users employer', function() {
             it('POST /api/employers is', function(done) {
                 var self = this;
-                factory.build('employer', {}, function(ad) {
+                factory.build('employer', {}, function(employer) {
                     self.userSession
                         .post('/api/employers')
-                        .send(ad)
+                        .send(employer)
                         .expect(403)
                         .expect('Content-Type', /json/)
                         .end(function(err, res) {
@@ -379,10 +379,10 @@ describe('/api/employers', function() {
 
         it('POST /api/employers is', function(done) {
             var self = this;
-            factory.build('employer', {}, function(ad) {
+            factory.build('employer', {}, function(employer) {
                 self.userSession
                     .post('/api/employers')
-                    .send(ad)
+                    .send(employer)
                     .expect(403)
                     .expect('Content-Type', /json/)
                     .end(function(err, res) {
