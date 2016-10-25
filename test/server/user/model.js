@@ -19,19 +19,22 @@ var user,
 
 describe('User Model', function () {
   beforeEach(function (done) {
-    factory('employer', {}, function (sampleUserEmployer) {
-      employer = sampleUserEmployer;
-      userDefaults.employers[0] = sampleUserEmployer._id;
-      factory.build('user', userDefaults, function (userAttributes) {
-        userDefaultAttributes = userAttributes;
-        user = new User(userAttributes);
-        done();
+    User.remove({}).exec()
+      .then(() => {
+        factory('employer', {}, function (sampleUserEmployer) {
+          employer = sampleUserEmployer;
+          userDefaults.employers[0] = sampleUserEmployer._id;
+          factory.build('user', userDefaults, function (userAttributes) {
+            userDefaultAttributes = userAttributes;
+            user = new User(userAttributes);
+            done();
+          });
+        });
       });
-    });
   });
 
   afterEach(function () {
-    return User.remove({});
+    return User.remove({}).exec();
   });
 
   it('should begin with no users', function () {

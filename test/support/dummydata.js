@@ -43,11 +43,11 @@ let advertisements = [];
 
 module.exports.resetDB = (callback) =>
   Promise.join(
-    User.remove(),
-    Employer.remove(),
-    Advertisement.remove(),
-    Office.remove(),
-    Contact.remove(),
+    User.remove({}).exec(),
+    Employer.remove({}).exec(),
+    Advertisement.remove({}).exec(),
+    Office.remove({}).exec(),
+    Contact.remove({}).exec(),
     (u, e, a, o, c) => callback(null, 'reset done'));
 
 

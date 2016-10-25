@@ -34,9 +34,9 @@ describe( '/api/advertisements', function () {
     async.waterfall( [
         function(cb) {
           Promise.join(
-            User.remove(),
-            Advertisement.remove(),
-            Employer.remove(),
+            User.remove({}).exec(),
+            Advertisement.remove({}).exec(),
+            Employer.remove({}).exec(),
             (v,s,b) => cb(null)
           );
         },
