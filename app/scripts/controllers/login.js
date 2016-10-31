@@ -2,7 +2,7 @@ angular.module('tkrekryApp')
   .controller('LoginController', function ($scope, Auth, $location) {
     'use strict';
 
-    $scope.user = {email: "admin@example.com", password: "password"};
+    $scope.user = {email: "", password: ""};
     $scope.errors = {};
 
     $scope.login = function(form) {
