@@ -21,71 +21,12 @@ const userDefaults = {
   role: 'user'
 };
 
-const resetDB = () => Promise.join(
-  User.remove({}).exec(),
-  Advertisement.remove({}).exec(),
-  Employer.remove({}).exec(),
-  () => {}
-);
-
-const createEmployers = () => Promise.join(
-  createFactory('employer', {}),
-  createFactory('employer', {}),
-  createFactory('employer', {}),
-  (...employers) => employers
-);
-
-const createUsers = (defaults, employers) => Promise.join(
-  createFactory('user', _.merge(defaults, {
-    employers: [employers[0]._id],
-    email: 'test@test.com',
-    password: 'password',
-    role: 'user'
-  })),
-  createFactory('user', _.merge(defaults, {
-    employers: [employers[1]._id],
-    email: 'test-1@test.com',
-    password: 'password',
-    role: 'user'
-  })),
-  createFactory('user', _.merge(defaults, {
-    employers: [employers[2]._id],
-    email: 'test-2@test.com',
-    password: 'password',
-    role: 'user'
-  })),
-  createFactory('user', _.merge(defaults, {
-    employers: employers.map((employer) => employer._id),
-    email : 'admin@test.com',
-    role : 'admin'})),
-  (...users) => users);
-
-const advertisementForEmployers = (employers) => Promise.map(
-  employers, (employer) =>
-    createFactory('advertisement', {employer: employer})
-);
-
-const loginUser = (user, session, ...resources) =>
-  new Promise((resolve, reject) => {
-    session
-      .post('/api/session')
-      .send({ email: user.email, password: 'password' })
-      .expect(200)
-      .end((err) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve([session, resources]);
-        }
-      });
-  });
-
 const setupDB = () =>
-  resetDB().then(createEmployers)
+  helper.resetDB().then(helper.createEmployers)
     .then((employers) =>
       Promise.join(
-        createUsers(userDefaults, employers),
-        advertisementForEmployers(employers),
+        helper.createUsers(userDefaults, employers),
+        helper.advertisementForEmployers(employers),
         (users, advertisements) => [employers, users, advertisements]
       ));
 
@@ -152,7 +93,7 @@ describe('/api/employers', function () {
     beforeEach(() =>
       setupDB()
         .then(([employers, users, advertisements]) =>
-          loginUser(users[0], session(helper.app), employers, users, advertisements))
+          helper.loginUser(users[0], session(helper.app), employers, users, advertisements))
         .then((vars) => [this.userSession, [this.employers, this.users, this.advertisements]] = vars));
 
     afterEach(() => {
@@ -243,7 +184,7 @@ describe('/api/employers', function () {
     beforeEach(() =>
       setupDB()
         .then(([employers, users, advertisements]) =>
-          loginUser(users[3], session(helper.app), employers, users, advertisements))
+          helper.loginUser(users[3], session(helper.app), employers, users, advertisements))
         .then((vars) => [this.userSession, [this.employers, this.users, this.advertisements]] = vars));
 
     afterEach(() => {
