@@ -52,16 +52,18 @@ require('./lib/config/express')(app);
 // Routing
 require('./lib/routes')(app);
 
-app.use(function({constructor: {name}, status, message, errors}, req, res, next) {
+app.use(function ({constructor: {name}, status, message, errors}, req, res, next) {
   if (name === 'MongooseError') {
     status = 400;
     message = _.reduce(errors, (acc, val, key) => {
-      acc.push({ message: val.message, field: key, value: val.value});
+      acc.push({ message: val.message, field: key, value: val.value });
       return acc;
     }, []);
   }
 
-  res.status(status)
+  console.log("error", message, errors, name, status);
+
+  res.status(status);
   res.json({ error: message, status: status });
 });
 
@@ -72,20 +74,20 @@ app.listen(config.port, function () {
 
 var jobs = require('./lib/config/jobs');
 
-jobs.on('ready', function() {
-  jobs.every( '1 minutes', 'ManageAdvertisements' );
+jobs.on('ready', function () {
+  jobs.every('1 minutes', 'ManageAdvertisements');
   jobs.start();
 });
 
 
 function graceful() {
-  jobs.stop(function() {
+  jobs.stop(function () {
     process.exit(0);
   });
 }
 
 process.on('SIGTERM', graceful);
-process.on('SIGINT' , graceful);
+process.on('SIGINT', graceful);
 
 // Expose app
 exports = module.exports = app;
