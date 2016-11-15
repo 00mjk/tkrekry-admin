@@ -112,72 +112,72 @@ describe('/api/employers', function () {
             err ? reject(err) : resolve();
           })));
 
-      it('POST /api/employers not in users employer is not allowed ', () =>
-          buildFactory('employer', {})
-            .call('toJSON')
-            .then(_)
-            .call('omit', '_id')
-            .call('value')
-            .then((employerParams) =>
-              new Promise((resolve, reject) =>
-                this.userSession
-                  .post('/api/employers')
-                  .send(employerParams)
-                  .expect(403)
-                  .expect('Content-Type', /json/)
-                  .end((err) => err ? reject(err) : resolve()))));
-
-      it('PUT /api/employers/:id not in users employer is not allowed', () =>
-        new Promise((resolve, reject) =>
-          this.userSession
-            .put(`/api/employers/${this.employers[1]._id}`)
-            .send(this.employers[1].toJSON())
-            .expect(403)
-            .expect('Content-Type', /json/)
-            .end((err) => err ? reject(err) : resolve())));
-
-      it('PUT /api/employers/1234 not in users employer is not found', () =>
-        new Promise((resolve, reject) =>
-          this.userSession
-            .put(`/api/employers/${this.advertisements[0]._id}`)
-            .send(this.employers[1].toJSON())
-            .expect(404)
-            .expect('Content-Type', /json/)
-            .end((err) => err ? reject(err) : resolve())));
-
-      it('DELETE /api/employers/:id not in users employer is not allowed', () =>
-        new Promise((resolve, reject) =>
-          this.userSession
-            .delete(`/api/employers/${this.employers[1]._id}`)
-            .expect(403)
-            .expect('Content-Type', /json/)
-            .end((err) => err ? reject(err) : resolve())));
-
-
-        it('PUT /api/employers/:id in users employer is allowed', () =>
+    it('POST /api/employers not in users employer is not allowed ', () =>
+      buildFactory('employer', {})
+        .call('toJSON')
+        .then(_)
+        .call('omit', '_id')
+        .call('value')
+        .then((employerParams) =>
           new Promise((resolve, reject) =>
             this.userSession
-              .put(`/api/employers/${this.employers[0]._id}`)
-              .send(this.employers[0].toJSON())
-              .expect(200)
-              .expect('Content-Type', /json/)
-              .end((err) => err ? reject(err) : resolve())));
-
-        it('PUT /api/employers/1234 in users employer is not found', () =>
-          new Promise((resolve, reject) =>
-            this.userSession
-              .put(`/api/employers/${this.employers[1]._id}`)
-              .send(this.employers[1].toJSON())
+              .post('/api/employers')
+              .send(employerParams)
               .expect(403)
-              .end((err) => err ? reject(err) : resolve())));
-
-        it('DELETE /api/employers/:id in users employer is allowed', () =>
-          new Promise((resolve, reject) =>
-            this.userSession
-              .delete(`/api/employers/${this.employers[0]._id}`)
-              .expect(200)
               .expect('Content-Type', /json/)
-              .end((err) => err ? reject(err) : resolve())));
+              .end((err) => err ? reject(err) : resolve()))));
+
+    it('PUT /api/employers/:id not in users employer is not allowed', () =>
+      new Promise((resolve, reject) =>
+        this.userSession
+          .put(`/api/employers/${this.employers[1]._id}`)
+          .send(this.employers[1].toJSON())
+          .expect(403)
+          .expect('Content-Type', /json/)
+          .end((err) => err ? reject(err) : resolve())));
+
+    it('PUT /api/employers/1234 not in users employer is not found', () =>
+      new Promise((resolve, reject) =>
+        this.userSession
+          .put(`/api/employers/${this.advertisements[0]._id}`)
+          .send(this.employers[1].toJSON())
+          .expect(404)
+          .expect('Content-Type', /json/)
+          .end((err) => err ? reject(err) : resolve())));
+
+    it('DELETE /api/employers/:id not in users employer is not allowed', () =>
+      new Promise((resolve, reject) =>
+        this.userSession
+          .delete(`/api/employers/${this.employers[1]._id}`)
+          .expect(403)
+          .expect('Content-Type', /json/)
+          .end((err) => err ? reject(err) : resolve())));
+
+
+    it('PUT /api/employers/:id in users employer is allowed', () =>
+      new Promise((resolve, reject) =>
+        this.userSession
+          .put(`/api/employers/${this.employers[0]._id}`)
+          .send(this.employers[0].toJSON())
+          .expect(200)
+          .expect('Content-Type', /json/)
+          .end((err) => err ? reject(err) : resolve())));
+
+    it('PUT /api/employers/1234 in users employer is not found', () =>
+      new Promise((resolve, reject) =>
+        this.userSession
+          .put(`/api/employers/${this.employers[1]._id}`)
+          .send(this.employers[1].toJSON())
+          .expect(403)
+          .end((err) => err ? reject(err) : resolve())));
+
+    it('DELETE /api/employers/:id in users employer is allowed', () =>
+      new Promise((resolve, reject) =>
+        this.userSession
+          .delete(`/api/employers/${this.employers[0]._id}`)
+          .expect(200)
+          .expect('Content-Type', /json/)
+          .end((err) => err ? reject(err) : resolve())));
   });
 
   describe('admin user', function () {
@@ -217,7 +217,8 @@ describe('/api/employers', function () {
               .send(employerParams)
               .expect(201)
               .expect('Content-Type', /json/)
-              .end((err) => err ? reject(err) : resolve())})));
+              .end((err) => err ? reject(err) : resolve())
+          })));
 
     it('PUT /api/employers/:id is allowed', () =>
       new Promise((resolve, reject) =>
