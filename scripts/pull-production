@@ -1,0 +1,19 @@
+#!/bin/bash
+set -o allexport
+source .env
+
+## DUMP THE PRODUCTION DB
+echo "Dumping '$PRODUCTION_HOST:$PRODUCTION_PORT/$PRODUCTION_DB'..."
+mongodump --host $PRODUCTION_HOST:$PRODUCTION_PORT --db $PRODUCTION_DB -u $PRODUCTION_USER -p $PRODUCTION_PASS --out .tmp  --excludeCollectionsWithPrefix=system
+
+## RESTORE DUMP DIRECTORY
+echo "Restoring to '$LOCAL_DB'..."
+mongorestore --db $LOCAL_DB --drop .tmp/$PRODUCTION_DB
+
+## REMOVE DUMP FILES
+echo "Removing dump files..."
+rm -r .tmp/$PRODUCTION_DB
+
+echo "Done."
+
+set +o allexport
