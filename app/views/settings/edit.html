@@ -5,7 +5,8 @@
             <h1>Omat tiedot</h1>
         </div>
         <div class="col-sm-5">
-            <select class="form-control" ng-model="selectedUser" ng-show="{{currentUser.role == 'admin'}}" ng-options="user.full_name for user in allUsers" ng-change="changeUser(selectedUser)">
+            <select class="form-control" ng-model="selectedUser" ng-show="{{currentUser.role == 'admin'}}" ng-options="user.full_name for user in allUsers"
+                ng-change="changeUser(selectedUser)">
             </select>
         </div>
         <div class="col-sm-4">
@@ -16,16 +17,21 @@
 
     <div class="row">
         <div class="col-sm-12">
-          <!-- TODO: Updated time -->
-          <p>* Merkityt kentät ovat pakollisia. Tietoja on päivitetty viimeksi <span am-time-ago="user.updated_at"></span>.</p>
+            <!-- TODO: Updated time -->
+            <p>* Merkityt kentät ovat pakollisia. Tietoja on päivitetty viimeksi <span am-time-ago="user.updated_at"></span>.</p>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-12">
             <form name="userForm" novalidate novalidate class="form-horizontal" role="form">
-                <div class="col-sm-12 alert alert-danger" id="errors-list" ng-focus-id="errorsList" ng-class="{ 'show-errors': showErrors }" ng-show="showErrors" ng-scroll-and-focus>
+                <div class="col-sm-12 alert alert-danger" id="errors-list" ng-focus-id="errorsList" ng-class="{ 'show-errors': showErrors }"
+                    ng-show="showErrors" ng-scroll-and-focus>
                     <p>
-                        <strong>Virheitä lomakkeella!</strong>Korjaa kenttien tiedot ja tallenna ilmoitus.</p>
+                        <strong>Virheitä lomakkeella!</strong> Korjaa kenttien tiedot ja tallenna ilmoitus.
+                    </p>
+                    <ol class="form-error-list" ng-show="showCustomErrors">
+                        <li class="" ng-repeat="error in customErrors">{{error}}</li>
+                    </ol>
                     <form-error-list></form-error-list>
                 </div>
                 <fieldset>
@@ -33,53 +39,59 @@
                     <div class="form-group" ng-class="{ 'has-error' : userForm.first_name.$invalid && !userForm.first_name.$pristine, 'has-success': userForm.first_name.$valid }">
                         <label for="first_name" class="col-sm-2 control-label">* Etunimi:</label>
                         <div class="col-sm-5">
-                            <input type="text" id="first_name" name="first_name" class="form-control" ng-model="user.first_name" ng-minlength="1" required nice-name="Etunimi"/>
+                            <input type="text" id="first_name" name="first_name" class="form-control" ng-model="user.first_name" ng-minlength="1" required
+                                nice-name="Etunimi" />
                         </div>
                     </div>
                     <div class="form-group" ng-class="{ 'has-error' : userForm.last_name.$invalid && !userForm.last_name.$pristine, 'has-success': userForm.last_name.$valid }">
                         <label for="last_name" class="col-sm-2 control-label">* Sukunimi:</label>
                         <div class="col-sm-5">
-                            <input type="text" id="last_name" name="last_name" class="form-control" ng-model="user.last_name" ng-minlength="1" required nice-name="Sukunimi"/>
+                            <input type="text" id="last_name" name="last_name" class="form-control" ng-model="user.last_name" ng-minlength="1" required
+                                nice-name="Sukunimi" />
                         </div>
                     </div>
                     <div class="form-group" ng-class="{ 'has-error' : userForm.phone.$invalid && !userForm.phone.$pristine, 'has-success': userForm.phone.$valid }">
                         <label for="phone" class="col-sm-2 control-label">* Puhelinumero:</label>
                         <div class="col-sm-5">
-                            <input type="tel" id="phone" name="phone" class="form-control" ng-model="user.phone" required nice-name="Puhelinnumero"/>
+                            <input type="tel" id="phone" name="phone" class="form-control" ng-model="user.phone" required nice-name="Puhelinnumero" />
                         </div>
                     </div>
                     <div class="form-group" ng-class="{ 'has-error' : userForm.email.$invalid && !userForm.email.$pristine, 'has-success': userForm.email.$valid }">
                         <label for="email" class="col-sm-2 control-label">* Sähköpostiosoite:</label>
                         <div class="col-sm-5">
-                            <input type="email" id="email" name="email" class="form-control" ng-model="user.email" required nice-name="Sähköpostiosoite"/>
+                            <input type="email" id="email" name="email" class="form-control" ng-model="user.email" required nice-name="Sähköpostiosoite"
+                            />
                         </div>
                         <span class="help-block">Sähköpostiosoitetta käytetään käyttäjätunnuksena.</span>
                     </div>
                     <div class="form-group">
                         <label for="email-backup" class="col-sm-2 control-label">Varahenkilön sähköpostiosoite:</label>
                         <div class="col-sm-5">
-                            <input type="email" id="email-backup" name="" class="form-control" ng-model="user.fallback_email"/>
+                            <input type="email" id="email-backup" name="" class="form-control" ng-model="user.fallback_email" />
                         </div>
                         <span class="help-block">Sähköpostiosoite jota käytetään tarvittaessa, jos käyttäjään ei saada yhteyttä.</span>
                     </div>
                     <div class="form-group" ng-show="{{currentUser.role != 'admin'}}" ng-class="{ 'has-error' : userForm.current_password.$invalid && !userForm.current_password.$pristine, 'has-success': userForm.current_password.$valid }">
                         <label for="current_password" class="col-sm-2 control-label">* Salasana:</label>
                         <div class="col-sm-5">
-                            <input type="text" id="current_password" name="current_password" class="form-control" ng-model="user.current_password" ng-required="{{currentUser.role == 'user'}}"/>
+                            <input type="text" id="current_password" name="current_password" class="form-control" ng-model="user.current_password" nice-name="Nykyinen salasana"
+                                ng-required="{{currentUser.role == 'user'}}" />
                         </div>
                         <span class="help-block">Salasana tulee syöttää, jotta voit tallentaa muutokset.</span>
                     </div>
                     <div class="form-group" ng-class="{ 'has-error' : userForm.new_password.$invalid && !userForm.new_password.$pristine, 'has-success': userForm.new_password.$valid && !userForm.new_password.$pristine }">
                         <label for="new_password" class="col-sm-2 control-label">Uusi salasana:</label>
                         <div class="col-sm-5">
-                            <input type="text" id="new_password" name="new_password" class="form-control" ng-model="user.new_password" ng-minlength="12" ng-pattern="/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{12,}$/" nice-name="Uusi salasana"/>
+                            <input type="text" id="new_password" name="new_password" class="form-control" ng-model="user.new_password" ng-minlength="12"
+                                ng-pattern="/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{12,}$/" nice-name="Uusi salasana" />
                         </div>
                         <span class="help-block">Salasanan tulee olla vähintään 12 merkkiä pitkä, sisältää isoja ja pieniä kirjaimia sekä vähintään yhden numeron.</span>
                     </div>
                     <div class="form-group" ng-show="{{currentUser.role == 'admin'}}">
                         <label for="" class="col-sm-2 control-label">Terveyskeskukset:</label>
                         <div class="col-sm-5">
-                            <div multi-select ng-model="user.employers" available="allEmployers" selected-label="Terveyskeskus" available-label="Kaikki" display-attr="name" disabled="{{currentUser.role != 'admin'}}"></div>
+                            <div multi-select ng-model="user.employers" available="allEmployers" selected-label="Terveyskeskus" available-label="Kaikki"
+                                display-attr="name" disabled="{{currentUser.role != 'admin'}}"></div>
                         </div>
                         <span class="help-block">Käyttäjällä on oikeus valittujen terveyskeskusten hallintaan.</span>
                     </div>
