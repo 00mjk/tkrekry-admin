@@ -1,430 +1,249 @@
 'use strict';
 
-var helper = require('../spec_helper'),
-    should = helper.should,
-    factory = helper.factory,
-    Advertisement = helper.Advertisement,
-    Employer = helper.Employer,
-    User = helper.User,
-    async = helper.async,
-    _ = helper._,
-    Session = helper.Session;
+const helper = require('../spec_helper');
+const should = helper.should;
+const factory = helper.factory;
+const Advertisement = helper.Advertisement;
+const Employer = helper.Employer;
+const User = helper.User;
+const _ = helper._;
+const session = helper.session;
+const createFactory = helper.createFactory;
+const buildFactory = helper.buildFactory;
+const Promise = require('bluebird');
 
-var firstsEmployer,
-    userEmployer,
-    otherEmployer,
-    userDefaults = {
-        provider: 'local',
-        first_name: 'First name',
-        last_name: 'Last name',
-        email: 'test@test.com',
-        password: 'password',
-        role: 'user'
-    };
+const userDefaults = {
+  provider: 'local',
+  first_name: 'First name',
+  last_name: 'Last name',
+  email: 'test@test.com',
+  password: 'password',
+  role: 'user'
+};
 
+const setupDB = () =>
+  helper.resetDB().then(helper.createEmployers)
+    .then((employers) =>
+      Promise.join(
+        helper.createUsers(userDefaults, employers),
+        helper.advertisementForEmployers(employers),
+        (users, advertisements) => [employers, users, advertisements]
+      ));
 
-describe('/api/employers', function() {
-    beforeEach(function(done) {
-        async.waterfall([
-                function(cb) {
-                  User.remove({}, function() {
-                    Advertisement.remove({}, function() {
-                      Employer.remove({}, function() {
-                        cb(null);
-                      });
-                    });
-                  });
-                },
-                function(cb) {
-                    factory('employer', {}, function(sampleUserEmployer) {
-                        userEmployer = sampleUserEmployer;
-                        factory('employer', {}, function(randomEmployer) {
-                            firstsEmployer = randomEmployer
-                            factory('employer', {}, function(secondRandomEmployer) {
-                                otherEmployer = secondRandomEmployer;
-                                cb(null, sampleUserEmployer, randomEmployer);
-                            });
-                        });
+describe('/api/employers', function () {
+  describe('not autheticated user', function () {
+    beforeEach(() =>
+      Promise.join(
+        setupDB(),
+        session(helper.app),
+        (vars, session) => vars.concat(session)
+      ).then((vars) => [this.employers, this.users, this.advertisements, this.userSession] = vars));
 
-                    });
-                },
-                function(sampleUserEmployer, randomEmployer, cb) {
-                    factory('user', _.merge(userDefaults, {
-                        employers: [sampleUserEmployer._id],
-                        email: 'test@test.com',
-                        role: 'user'
-                    }), function(createdUser) {
-                        factory('user', _.merge(userDefaults, {
-                            role: 'admin',
-                            email: 'admin@test.com'
-                        }), function() {
-                            cb(null, sampleUserEmployer, randomEmployer);
-                        });
-                    });
-                },
-                function(sampleUserEmployer, randomEmployer, cb) {
-                    var count = 0;
-                    var _advertisementsForUser = [],
-                        _advertisements = [];
-
-                    async.whilst(
-                        function() {
-                            return count < 2;
-                        },
-                        function(callback) {
-                            count++;
-                            factory.create('advertisement', {
-                                employer: sampleUserEmployer
-                            }, function(advertisementForUser) {
-                                _advertisementsForUser.push(advertisementForUser);
-                                factory.create('advertisement', {
-                                    employer: randomEmployer
-                                }, function(ad) {
-                                    _advertisements.push(ad);
-                                    callback(null, _advertisementsForUser, _advertisements);
-                                });
-
-                            });
-                        },
-                        function(err) {
-                            cb(err, _advertisementsForUser, _advertisements, sampleUserEmployer, randomEmployer);
-                        }
-                    );
-                },
-            ],
-
-            function(err, _advertisementsForUser, _advertisements, _userEmployer, _otherEmployer) {
-                done();
-            });
+    afterEach(() => {
+      this.userSession = null, this.employers = null, this.users = null, this.advertisements = null;
     });
 
-    describe('not autheticated user', function() {
+    it('GET /api/employers should respond with JSON array containing elements in correct order', () =>
+      new Promise((resolve, reject) =>
+        this.userSession
+          .get('/api/employers')
+          .expect(200)
+          .expect('Content-Type', /json/)
+          .end((err, { body: employerList }) => {
+            const assertEmployers = _.sortBy(this.employers, ['name']).map((emp) => emp.name).join('-');
+            employerList.should.be.instanceof(Array).and.have.lengthOf(3);
+            _.map(employerList, (emp) => emp.name).join('-').should.equal(assertEmployers);
+            err ? reject(err) : resolve();
+          })));
 
-        beforeEach(function() {
-            this.sess = new Session();
-        });
+    it('POST /api/employers is not allowed', () =>
+      buildFactory('employer', {})
+        .call('toJSON')
+        .then(_)
+        .call('omit', '_id')
+        .call('value')
+        .then((employerParams) =>
+          new Promise((resolve, reject) =>
+            this.userSession
+              .post('/api/employers')
+              .send(employerParams)
+              .expect(401)
+              .expect('Content-Type', /json/)
+              .end((err) => err ? reject(err) : resolve()))));
 
-        afterEach(function() {
-            this.sess.destroy();
-        });
+    it('PUT /api/employers/:id is not allowed', () =>
+      new Promise((resolve, reject) =>
+        this.userSession
+          .put('/api/employers/' + this.employers[0]._id)
+          .send(this.employers[0].toJSON())
+          .expect(401)
+          .expect('Content-Type', /json/)
+          .end((err) => err ? reject(err) : resolve())));
 
-        it('GET /api/employers should respond with JSON array containing elements in correct order', function(done) {
-            var ids = _.sortBy([otherEmployer, userEmployer, firstsEmployer], ['name']).map(function(d) {
-                return d.name;
-            }).join('-');
+    it('DELETE /api/employers/:id is not allowed', () =>
+      new Promise((resolve, reject) =>
+        this.userSession
+          .delete('/api/employers/' + this.employers[2]._id)
+          .expect(401)
+          .expect('Content-Type', /json/)
+          .end((err) => err ? reject(err) : resolve())));
+  });
 
-            this.sess
-                .get('/api/employers')
-                .expect(200)
-                .expect('Content-Type', /json/)
-                .end(function(err, res) {
-                    if (err) return done(err);
+  describe('authenticated user', function () {
+    beforeEach(() =>
+      setupDB()
+        .then(([employers, users, advertisements]) =>
+          helper.loginUser(users[0], session(helper.app), employers, users, advertisements))
+        .then((vars) => [this.userSession, [this.employers, this.users, this.advertisements]] = vars));
 
-                    res.body.should.be.instanceof(Array).and.have.lengthOf(3);
-                    _.map(res.body, function(d) {
-                        return d.name;
-                    }).join('-').should.equal(ids);
-                    done();
-                });
-        });
-
-
-        it('POST /api/employers is not allowed', function(done) {
-            var self = this;
-            factory.build('employer', {}, function(employer) {
-                self.sess
-                    .post('/api/employers')
-                    .send(employer)
-                    .expect(401)
-                    .expect('Content-Type', 'application/json; charset=utf-8')
-                    .end(function(err, res) {
-                        if (err) return done(err);
-                        done();
-                    })
-            });
-        });
-
-        it('PUT /api/employers/:id is not allowed', function(done) {
-            this.sess
-                .put('/api/employers/' + firstsEmployer._id)
-                .send(firstsEmployer.toJSON())
-                .expect(401)
-                .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function(err, res) {
-                    if (err) return done(err);
-                    done();
-                });
-        });
-
-        it('PUT /api/employers/1234 is not found', function(done) {
-            this.sess
-                .put('/api/employers/' + otherEmployer._id + '0')
-                .send(otherEmployer.toJSON())
-                .expect(401)
-                .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function(err, res) {
-                    if (err) return done(err);
-                    done();
-                });
-        });
-
-        it('DELETE /api/employers/:id is not allowed', function(done) {
-            this.sess
-                .del('/api/employers/' + otherEmployer._id)
-                .expect(401)
-                .expect('Content-Type', 'application/json; charset=utf-8')
-                .end(function(err, res) {
-                    if (err) return done(err);
-                    done();
-                });
-        });
-
+    afterEach(() => {
+      this.userSession = null, this.employers = null, this.users = null, this.advertisements = null;
     });
 
-    describe('authenticated user', function() {
-        beforeEach(function(done) {
-            this.sess = new Session();
+    it('GET /api/employer should respond with JSON array containing employers which are editable', () =>
+      new Promise((resolve, reject) =>
+        this.userSession
+          .get('/api/employers')
+          .expect(200)
+          .expect('Content-Type', /json/)
+          .end((err, {body}) => {
+            body.should.be.instanceof(Array).and.have.lengthOf(1);
+            body[0]._id.should.equal(this.employers[0].id);
+            err ? reject(err) : resolve();
+          })));
 
-            this.sess
-                .post('/api/session')
-                .send({
-                    email: 'test@test.com',
-                    password: 'password'
-                })
-                .expect(200)
-                .end(onResponse);
+    it('POST /api/employers not in users employer is not allowed ', () =>
+      buildFactory('employer', {})
+        .call('toJSON')
+        .then(_)
+        .call('omit', '_id')
+        .call('value')
+        .then((employerParams) =>
+          new Promise((resolve, reject) =>
+            this.userSession
+              .post('/api/employers')
+              .send(employerParams)
+              .expect(403)
+              .expect('Content-Type', /json/)
+              .end((err) => err ? reject(err) : resolve()))));
 
-            function onResponse(err, res) {
-                return done(err);
-            }
-        });
+    it('PUT /api/employers/:id not in users employer is not allowed', () =>
+      new Promise((resolve, reject) =>
+        this.userSession
+          .put(`/api/employers/${this.employers[1]._id}`)
+          .send(this.employers[1].toJSON())
+          .expect(403)
+          .expect('Content-Type', /json/)
+          .end((err) => err ? reject(err) : resolve())));
 
-        afterEach(function(done) {
-            this.sess
-                .del('/api/session')
-                .expect(200)
-                .end(onResponse);
+    it('PUT /api/employers/1234 not in users employer is not found', () =>
+      new Promise((resolve, reject) =>
+        this.userSession
+          .put(`/api/employers/${this.advertisements[0]._id}`)
+          .send(this.employers[1].toJSON())
+          .expect(404)
+          .expect('Content-Type', /json/)
+          .end((err) => err ? reject(err) : resolve())));
 
-            function onResponse(err, res) {
-                return done(err);
-            }
-        });
+    it('DELETE /api/employers/:id not in users employer is not allowed', () =>
+      new Promise((resolve, reject) =>
+        this.userSession
+          .delete(`/api/employers/${this.employers[1]._id}`)
+          .expect(403)
+          .expect('Content-Type', /json/)
+          .end((err) => err ? reject(err) : resolve())));
 
-        it('GET /api/employer should respond with JSON array containing employers which are editable', function(done) {
-            this.sess
-                .get('/api/employers')
-                .expect(200)
-                .expect('Content-Type', /json/)
-                .end(function(err, res) {
-                    if (err) return done(err);
 
-                    res.body.should.be.instanceof(Array).and.have.lengthOf(1);
-                    _.reduce(res.body, function(list, item) {
-                        return [item._id, list].join('');
-                    }, '').should.equal(userEmployer._id + '');
-                    done();
-                });
-        });
+    it('PUT /api/employers/:id in users employer is allowed', () =>
+      new Promise((resolve, reject) =>
+        this.userSession
+          .put(`/api/employers/${this.employers[0]._id}`)
+          .send(this.employers[0].toJSON())
+          .expect(200)
+          .expect('Content-Type', /json/)
+          .end((err) => err ? reject(err) : resolve())));
 
-        describe('not in users employer', function() {
+    it('PUT /api/employers/1234 in users employer is not found', () =>
+      new Promise((resolve, reject) =>
+        this.userSession
+          .put(`/api/employers/${this.employers[1]._id}`)
+          .send(this.employers[1].toJSON())
+          .expect(403)
+          .end((err) => err ? reject(err) : resolve())));
 
-            it('POST /api/employers is not allowed', function(done) {
-                var self = this;
-                factory.build('employer', {}, function(ad) {
-                    self.sess
-                        .post('/api/employers')
-                        .send(ad)
-                        .expect(403)
-                        .end(function(err, res) {
-                            if (err) return done(err);
-                            done();
-                        })
-                });
-            });
+    it('DELETE /api/employers/:id in users employer is allowed', () =>
+      new Promise((resolve, reject) =>
+        this.userSession
+          .delete(`/api/employers/${this.employers[0]._id}`)
+          .expect(200)
+          .expect('Content-Type', /json/)
+          .end((err) => err ? reject(err) : resolve())));
+  });
 
-            it('PUT /api/employers/:id is not allowed', function(done) {
-                this.sess
-                    .put('/api/employers/' + otherEmployer._id)
-                    .send(otherEmployer.toJSON())
-                    .expect(403)
-                    .end(function(err, res) {
-                        if (err) return done(err);
-                        done();
-                    });
-            });
+  describe('admin user', function () {
+    beforeEach(() =>
+      setupDB()
+        .then(([employers, users, advertisements]) =>
+          helper.loginUser(users[3], session(helper.app), employers, users, advertisements))
+        .then((vars) => [this.userSession, [this.employers, this.users, this.advertisements]] = vars));
 
-            it('PUT /api/employers/1234 is not found', function(done) {
-                this.sess
-                    .put('/api/employers/' + otherEmployer._id + 1)
-                    .send(otherEmployer.toJSON())
-                    .expect(404)
-                    .end(function(err, res) {
-                        if (err) return done(err);
-                        done();
-                    });
-            });
-
-            it('DELETE /api/employers/:id is not allowed', function(done) {
-                this.sess
-                    .del('/api/employers/' + otherEmployer._id)
-                    .expect(403)
-                    .end(function(err, res) {
-                        if (err) return done(err);
-                        done();
-                    });
-            });
-        });
-
-        describe('in users employer', function() {
-            it('POST /api/employers is', function(done) {
-                var self = this;
-                factory.build('employer', {}, function(ad) {
-                    self.sess
-                        .post('/api/employers')
-                        .send(ad)
-                        .expect(403)
-                        .expect('Content-Type', /json/)
-                        .end(function(err, res) {
-                            if (err) return done(err);
-                            done();
-                        })
-                });
-            });
-
-            it('PUT /api/employers/:id is allowed', function(done) {
-                this.sess
-                    .put('/api/employers/' + userEmployer._id)
-                    .send(userEmployer.toJSON())
-                    .expect(200)
-                    .expect('Content-Type', /json/)
-                    .end(function(err, res) {
-                        if (err) return done(err);
-                        done();
-                    });
-            });
-
-            it('PUT /api/employers/1234 is not found', function(done) {
-                this.sess
-                    .put('/api/employers/' + userEmployer._id + 1)
-                    .send(userEmployer.toJSON())
-                    .expect(404)
-                    .end(function(err, res) {
-                        if (err) return done(err);
-                        done();
-                    });
-            });
-
-            it('DELETE /api/employers/:id is allowed', function(done) {
-                this.sess
-                    .del('/api/employers/' + userEmployer._id)
-                    .expect(200)
-                    .expect('Content-Type', /json/)
-                    .end(function(err, res) {
-                        if (err) return done(err);
-                        done();
-                    });
-            });
-        });
+    afterEach(() => {
+      this.userSession = null, this.employers = null, this.users = null, this.advertisements = null;
     });
 
+    it('GET /api/employer should respond with JSON array containing employers which are editable', () =>
+      new Promise((resolve, reject) =>
+        this.userSession
+          .get('/api/employers')
+          .expect(200)
+          .expect('Content-Type', /json/)
+          .end((err, {body}) => {
+            const ids = _.sortBy(this.employers, ['name']).map((emp) => emp.name).join('-');
+            body.should.be.instanceof(Array).and.have.lengthOf(3);
+            _.map(body, (d) => d.name).join('-').should.equal(ids);
+            err ? reject(err) : resolve();
+          })));
 
-    describe('admin user', function() {
-        beforeEach(function(done) {
-            this.sess = new Session();
+    it('POST /api/employers is allowed to create', () =>
+      buildFactory('employer', {})
+        .call('toJSON')
+        .then(_)
+        .call('omit', '_id')
+        .call('value')
+        .then((employerParams) =>
+          new Promise((resolve, reject) => {
+            this.userSession
+              .post('/api/employers')
+              .send(employerParams)
+              .expect(201)
+              .expect('Content-Type', /json/)
+              .end((err) => err ? reject(err) : resolve())
+          })));
 
-            this.sess
-                .post('/api/session')
-                .send({
-                    email: 'admin@test.com',
-                    password: 'password'
-                })
-                .expect(200)
-                .end(onResponse);
+    it('PUT /api/employers/:id is allowed', () =>
+      new Promise((resolve, reject) =>
+        this.userSession
+          .put(`/api/employers/${this.employers[1]._id}`)
+          .send(this.employers[1].toJSON())
+          .expect(200)
+          .expect('Content-Type', /json/)
+          .end((err) => err ? reject(err) : resolve())));
 
-            function onResponse(err, res) {
-                return done(err);
-            }
-        });
+    it('PUT /api/employers/1234 is not found', () =>
+      new Promise((resolve, reject) =>
+        this.userSession
+          .put(`/api/employers/${this.advertisements[1]._id}`)
+          .send(this.employers[1].toJSON())
+          .expect(404)
+          .expect('Content-Type', /json/)
+          .end((err) => err ? reject(err) : resolve())));
 
-        afterEach(function(done) {
-            this.sess
-                .del('/api/session')
-                .expect(200)
-                .end(onResponse);
-
-            function onResponse(err, res) {
-                return done(err);
-            }
-        });
-
-        it('GET /api/employer should respond with JSON array containing employers which are editable', function(done) {
-            var ids = _.sortBy([otherEmployer, userEmployer, firstsEmployer], ['name']).map(function(d) {
-                return d.name;
-            }).join('-');
-
-            this.sess
-                .get('/api/employers')
-                .expect(200)
-                .expect('Content-Type', /json/)
-                .end(function(err, res) {
-                    if (err) return done(err);
-
-                    res.body.should.be.instanceof(Array).and.have.lengthOf(3);
-                    _.map(res.body, function(d) {
-                        return d.name;
-                    }).join('-').should.equal(ids);
-                    done();
-                });
-        });
-
-        it('POST /api/employers is', function(done) {
-            var self = this;
-            factory.build('employer', {}, function(ad) {
-                self.sess
-                    .post('/api/employers')
-                    .send(ad)
-                    .expect(403)
-                    .expect('Content-Type', /json/)
-                    .end(function(err, res) {
-                        if (err) return done(err);
-                        done();
-                    })
-            });
-        });
-
-        it('PUT /api/employers/:id is allowed', function(done) {
-            this.sess
-                .put('/api/employers/' + otherEmployer._id)
-                .send(otherEmployer.toJSON())
-                .expect(200)
-                .expect('Content-Type', /json/)
-                .end(function(err, res) {
-                    if (err) return done(err);
-                    done();
-                });
-        });
-
-        it('PUT /api/employers/1234 is not found', function(done) {
-            this.sess
-                .put('/api/employers/' + firstsEmployer._id + '1')
-                .send(firstsEmployer.toJSON())
-                .expect(404)
-                .end(function(err, res) {
-                    if (err) return done(err);
-                    done();
-                });
-        });
-
-        it('DELETE /api/employers/:id is allowed', function(done) {
-            this.sess
-                .del('/api/employers/' + firstsEmployer._id)
-                .expect(200)
-                .expect('Content-Type', /json/)
-                .end(function(err, res) {
-                    if (err) return done(err);
-                    done();
-                });
-        });
-
-    });
+    it('DELETE /api/employers/:id is allowed', () =>
+      new Promise((resolve, reject) =>
+        this.userSession
+          .delete(`/api/employers/${this.employers[2]._id}`)
+          .expect(200)
+          .expect('Content-Type', /json/)
+          .end((err) => err ? reject(err) : resolve())));
+  });
 });

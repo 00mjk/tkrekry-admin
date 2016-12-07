@@ -1,5 +1,5 @@
 angular.module('tkrekryApp')
-    .directive('formErrorList', function() {
+    .directive('formErrorList', function () {
         'use strict';
 
         return {
@@ -25,18 +25,18 @@ angular.module('tkrekryApp')
                     //     camelCase  --> Camel Case
                     //     dash-case  --> Dash Case
                     //     snake_case --> Snake Case
-                    humanize = function(str) {
+                    humanize = function (str) {
                         return str.replace(/[-_+]/g, ' ') // turn _ and - into spaces
-                        .replace(/([A-Z])/g, ' $1') // put a splace before every capital letter
-                        .replace(/^([a-z])|\s+([a-z])/g, // capitalize the first letter of each word
+                            .replace(/([A-Z])/g, ' $1') // put a splace before every capital letter
+                            .replace(/^([a-z])|\s+([a-z])/g, // capitalize the first letter of each word
 
-                            function($1) {
+                            function ($1) {
                                 return $1.toUpperCase();
                             }
-                        );
+                            );
                     },
                     // this is where we form our message
-                    errorMessage = function(name, error, props) {
+                    errorMessage = function (name, error, props) {
                         // get the nice name if they used the niceName
                         // directive or humanize the name and call it good
                         var niceName = props.$niceName || humanize(name);
@@ -55,17 +55,17 @@ angular.module('tkrekryApp')
                     };
 
                 // only update the list of errors if there was actually a change in $error
-                scope.$watch(function() {
+                scope.$watch(function () {
                     return ctrl.$error;
-                }, function() {
+                }, function () {
                     // reset error array
                     scope.errors = [];
-                    angular.forEach(ctrl, function(props, name) {
+                    angular.forEach(ctrl, function (props, name) {
                         // name has some internal properties we don't want to iterate over
                         if (name[0] === '$')
                             return;
 
-                        angular.forEach(props.$error, function(isInvalid, error) {
+                        angular.forEach(props.$error, function (isInvalid, error) {
                             // don't need to even try and get a a message unless it's invalid
                             if (isInvalid)
                                 scope.errors.push(errorMessage(name, error, props));
@@ -76,19 +76,19 @@ angular.module('tkrekryApp')
         };
     })
     // set a nice name to $niceName on the ngModel ctrl for later use
-    .directive('niceName', function() {
+    .directive('niceName', function () {
         return {
             require: 'ngModel',
-            link: function(scope, elem, attrs, ctrl) {
+            link: function (scope, elem, attrs, ctrl) {
                 ctrl.$niceName = attrs.niceName;
             }
         };
     })
     // set an errorMessage(s) to $errorMessages on the ngModel ctrl for later use
-    .directive('errorMessages', function() {
+    .directive('errorMessages', function () {
         return {
             require: 'ngModel',
-            link: function(scope, elem, attrs, ctrl) {
+            link: function (scope, elem, attrs, ctrl) {
                 // attrs.errorMessages can be:
                 //    1) "must be filled out."
                 //    2) "'must be filled out.'"

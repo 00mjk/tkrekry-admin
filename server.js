@@ -1,13 +1,17 @@
-'use strict';
+let newrelic = null;
 
-if(process.env.NEW_RELIC_LICENSE_KEY) {
-  var newrelic = require('newrelic');
+if (process.env.NEW_RELIC_LICENSE_KEY) {
+  newrelic = require('newrelic');
 }
 
-var express = require('express'),
-    path = require('path'),
-    fs = require('fs'),
-    mongoose = require('mongoose');
+const express = require('express');
+const path = require('path');
+const fs = require('fs');
+const mongoose = require('mongoose');
+const Promise = require('bluebird');
+const _ = require('lodash');
+
+mongoose.Promise = Promise;
 
 /**
  * Main application file
@@ -48,6 +52,21 @@ require('./lib/config/express')(app);
 // Routing
 require('./lib/routes')(app);
 
+app.use(function ({constructor: {name}, status, message, errors}, req, res, next) {
+  if (name === 'MongooseError') {
+    status = 400;
+    message = _.reduce(errors, (acc, val, key) => {
+      acc.push({ message: val.message, field: key, value: val.value });
+      return acc;
+    }, []);
+  }
+
+  console.log("error", message, errors, name, status);
+
+  res.status(status);
+  res.json({ error: message, status: status });
+});
+
 // Start server
 app.listen(config.port, function () {
   console.log('Express server listening on port %d in %s mode', config.port, app.get('env'));
@@ -55,20 +74,20 @@ app.listen(config.port, function () {
 
 var jobs = require('./lib/config/jobs');
 
-jobs.on('ready', function() {
-  jobs.every( '1 minutes', 'ManageAdvertisements' );
+jobs.on('ready', function () {
+  jobs.every('1 minutes', 'ManageAdvertisements');
   jobs.start();
 });
 
 
 function graceful() {
-  jobs.stop(function() {
+  jobs.stop(function () {
     process.exit(0);
   });
 }
 
 process.on('SIGTERM', graceful);
-process.on('SIGINT' , graceful);
+process.on('SIGINT', graceful);
 
 // Expose app
 exports = module.exports = app;

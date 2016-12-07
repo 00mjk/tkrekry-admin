@@ -4,7 +4,7 @@ angular.module('tkrekryApp')
 
         var user = Auth.currentUser();
         var isAllowed = function(advertisement) {
-            return _(user.employers).contains(advertisement.employer);
+            return _(user.employers).includes(advertisement.employer);
         };
 
         return $resource('/api/advertisements/:id/:method', {}, {

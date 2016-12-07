@@ -49,13 +49,13 @@ angular.module('tkrekryApp')
                 });
 
                 $scope.employerUsers = _.sortBy(_.map(_.filter($scope.users, function(user) {
-                    return _(user.employers).contains($scope.employer._id);
+                    return _(user.employers).includes($scope.employer._id);
                 }), function(user) {
                     return user;
                 }), ['full_name']);
 
                 $scope.availableUsers = _.sortBy(_.map(_.reject($scope.users, function(user) {
-                    return _($scope.employerUsers).contains(user);
+                    return _($scope.employerUsers).includes(user);
                 }), function(user) {
                     return user;
                 }), ['full_name']);

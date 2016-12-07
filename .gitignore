@@ -23,6 +23,7 @@ tmp/
 local.properties
 .settings/
 .loadpath
+.env
 
 # External tool builders
 .externalToolBuilders/

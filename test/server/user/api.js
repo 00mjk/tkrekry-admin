@@ -1,14 +1,15 @@
 'use strict';
 
-var helper = require('../spec_helper'),
-    should = helper.should,
-    factory = helper.factory,
-    Advertisement = helper.Advertisement,
-    Employer = helper.Employer,
-    User = helper.User,
-    async = helper.async,
-    _ = helper._,
-    Session = helper.Session;
+const helper = require('../spec_helper');
+const should = helper.should;
+const factory = helper.factory;
+const Advertisement = helper.Advertisement;
+const Employer = helper.Employer;
+const Promise = require('bluebird');
+const User = helper.User;
+const async = helper.async;
+const _ = helper._;
+const session = helper.session;
 
 var firstsEmployer,
   userEmployer,
@@ -29,13 +30,12 @@ describe( 'user management', function () {
   beforeEach( function ( done ) {
     async.waterfall( [
         function(cb) {
-          User.remove({}, function() {
-            Advertisement.remove({}, function() {
-              Employer.remove({}, function() {
-                cb(null);
-              });
-            });
-          });
+          Promise.join(
+            User.remove({}).exec(),
+            Advertisement.remove({}).exec(),
+            Employer.remove({}).exec(),
+            () => {}
+          ).then(() => cb(null));
         },
         function ( cb ) {
           factory( 'employer', {}, function ( sampleUserEmployer ) {
@@ -120,9 +120,9 @@ describe( 'user management', function () {
 
   describe( 'authenticated user', function () {
     beforeEach( function ( done ) {
-      this.sess = new Session();
+      this.userSession = session(helper.app);
 
-      this.sess
+      this.userSession
         .post( '/api/session' )
         .send( {
           email: 'test@test.com',
@@ -138,10 +138,10 @@ describe( 'user management', function () {
     } );
 
     it('POST /api/users is not allowed for normal user', function (done) {
-       this.sess
+       this.userSession
         .post( '/api/users')
         .send(userDefaults)
-        .expect( 403 )
+        .expect( 401 )
         .expect( 'Content-Type', /json/ )
         .end( function ( err, res ) {
           if ( err ) return done( err );
@@ -151,9 +151,9 @@ describe( 'user management', function () {
     } );
 
     it( 'DELETE /api/users/:userId is not allowed for normal user', function ( done ) {
-      this.sess
-        .del( '/api/users/' + secondNormalUser._id)
-        .expect( 403 )
+      this.userSession
+        .delete( '/api/users/' + secondNormalUser._id)
+        .expect( 401 )
         .expect( 'Content-Type', /json/ )
         .end( function ( err, res ) {
           if ( err ) return done( err );
@@ -164,8 +164,8 @@ describe( 'user management', function () {
 
 
     afterEach( function ( done ) {
-      this.sess
-        .del( '/api/session' )
+      this.userSession
+        .delete( '/api/session' )
         .expect( 200 )
         .end( onResponse );
 
@@ -178,9 +178,8 @@ describe( 'user management', function () {
 
   describe( 'authenticated admin', function () {
     beforeEach( function ( done ) {
-      this.sess = new Session();
-
-      this.sess
+      this.userSession = session(helper.app);
+      this.userSession
         .post( '/api/session' )
         .send( {
           email: 'admin@test.com',
@@ -196,7 +195,7 @@ describe( 'user management', function () {
     } );
 
     it('POST /api/users is allowed for admin user', function (done) {
-       this.sess
+       this.userSession
         .post( '/api/users')
         .send(_.merge(userDefaults, {email: 'new-user@email.com'}))
         .expect( 200 )
@@ -208,7 +207,7 @@ describe( 'user management', function () {
     });
 
     it('POST /api/users wont create user with existing email', function (done) {
-       this.sess
+       this.userSession
         .post( '/api/users')
         .send(userDefaults)
         .expect( 400 )
@@ -220,8 +219,8 @@ describe( 'user management', function () {
     });
 
     it( 'DELETE /api/users/:userId is allowed for admin user', function ( done ) {
-      this.sess
-        .del( '/api/users/' + secondNormalUser._id)
+      this.userSession
+        .delete( '/api/users/' + secondNormalUser._id)
         .expect( 200 )
         .expect( 'Content-Type', /json/ )
         .end( function ( err, res ) {
@@ -233,8 +232,8 @@ describe( 'user management', function () {
 
 
     afterEach( function ( done ) {
-      this.sess
-        .del( '/api/session' )
+      this.userSession
+        .delete( '/api/session' )
         .expect( 200 )
         .end( onResponse );
 

@@ -15,8 +15,8 @@ Factory.define('employer', Employer, {
     email: function(cb) {
         cb('user' + emailCounter+++'@example.com');
     },
-    domain: {},
-    district: {},
+    domain: { id: 'domain-id' },
+    district: { id: 'district-id' },
     general_presentation: function(cb) {
         cb(Faker.lorem.paragraphs(2))
     },

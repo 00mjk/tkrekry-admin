@@ -1,7 +1,7 @@
 // http://lorenzofox3.github.io/smart-table-website/
 
 angular.module('tkrekryApp')
-    .controller('MainController', function($q, $scope, $http, $modal, Auth, Advertisement, Organisation, Employer, User, _) {
+    .controller('MainController', function ($q, $scope, $http, $modal, Auth, Advertisement, Organisation, Employer, User, _) {
         'use strict';
 
         $q.all({
@@ -11,7 +11,7 @@ angular.module('tkrekryApp')
             domains: Organisation.domains().$promise,
             districts: Organisation.districts().$promise,
             users: User.list().$promise
-        }).then(function(promises) {
+        }).then(function (promises) {
             $scope.advetisements = promises.advertisements;
             $scope.allAdvetisements = promises.advertisements;
             $scope.domains = promises.domains;
@@ -22,9 +22,9 @@ angular.module('tkrekryApp')
             $scope.users = promises.users;
         });
 
-        $scope.filterAdvertisements = function() {
+        $scope.filterAdvertisements = function () {
             if ($scope.selectedEmployer) {
-                $scope.advetisements = _.filter($scope.allAdvetisements, function(advertisement) {
+                $scope.advetisements = _.filter($scope.allAdvetisements, function (advertisement) {
                     return advertisement.employer._id === $scope.selectedEmployer;
                 });
             } else {

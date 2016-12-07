@@ -1,0 +1,26 @@
+#!/bin/bash
+set -o allexport
+source .env
+
+read -p "Are you sure you wish to continue?"
+if [ "$REPLY" != "yes" ]; then
+   exit
+fi
+
+echo "exit any way"
+exit
+
+## DUMP THE REMOTE DB
+echo "Dumping '$PRODUCTION_HOST:$PRODUCTION_PORT/$PRODUCTION_DB'..."
+mongodump --host $PRODUCTION_HOST:$PRODUCTION_PORT --db $PRODUCTION_DB -u $PRODUCTION_USER -p $PRODUCTION_PASS --out .tmp  --excludeCollectionsWithPrefix=system
+
+## RESTORE DUMP DIRECTORY
+echo "Restoring to '$STAGING_DB'..."
+mongorestore --host $STAGING_HOST:$STAGING_PORT --db $STAGING_DB -u $STAGING_USER -p $STAGING_PASS --drop .tmp/$PRODUCTION_DB
+
+## REMOVE DUMP FILES
+echo "Removing dump files..."
+rm -r .tmp/$PRODUCTION_DB
+
+echo "Done."
+set +o allexport

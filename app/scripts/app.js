@@ -16,7 +16,7 @@ angular.module('tkrekryApp', [
         timezone: 'Europe/Helsinki'
     })
 
-    .config(function($routeProvider, $locationProvider, $httpProvider, $logProvider) {
+    .config(function ($routeProvider, $locationProvider, $httpProvider, $logProvider) {
         'use strict';
 
         $routeProvider
@@ -101,9 +101,9 @@ angular.module('tkrekryApp', [
 
         // Intercept 401s and redirect you to login
         $httpProvider.interceptors.push(['$q', '$location',
-            function($q, $location) {
+            function ($q, $location) {
                 return {
-                    'responseError': function(response) {
+                    'responseError': function (response) {
                         if (response.status === 401) {
                             $location.path('/login');
                             return $q.reject(response);
@@ -115,13 +115,13 @@ angular.module('tkrekryApp', [
             }
         ]);
     })
-    .run(function($rootScope, $location, Auth, amMoment) {
+    .run(function ($rootScope, $location, Auth, amMoment) {
         'use strict';
 
         amMoment.changeLocale('fi');
-
+        $rootScope.year = new Date().getFullYear();
         // Redirect to login if route requires auth and you're not logged in
-        $rootScope.$on('$routeChangeStart', function(event, next) {
+        $rootScope.$on('$routeChangeStart', function (event, next) {
 
             if (next.authenticate && !Auth.isLoggedIn()) {
                 $location.path('/login');

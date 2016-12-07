@@ -16,7 +16,7 @@ angular.module( 'tkrekryApp' )
     } )
       .then( function ( promises ) {
         $scope.allEmployers = promises.employers;
-        $scope.usedEmails = _.pluck(promises.users, 'email');
+        $scope.usedEmails = _.map(promises.users, 'email');
 
         var foundEmployer = _.find( $scope.allEmployers, { _id: employerId } );
         $scope.newUser.employers = (foundEmployer ? [foundEmployer] : []);
@@ -27,7 +27,7 @@ angular.module( 'tkrekryApp' )
     };
 
     $scope.save = function (userForm) {
-      $scope.newUser.employers = _.pluck($scope.newUser.employers, '_id');
+      $scope.newUser.employers = _.map($scope.newUser.employers, '_id');
       $scope.newUser.$save( function ( err, user ) {
         $modal.open( {
           templateUrl: 'user/modals/created.html',
