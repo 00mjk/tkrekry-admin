@@ -98,6 +98,7 @@ angular.module('tkrekryApp', [
             });
 
         $locationProvider.html5Mode(false);
+        $locationProvider.hashPrefix('');
 
         // Intercept 401s and redirect you to login
         $httpProvider.interceptors.push(['$q', '$location',
@@ -122,7 +123,6 @@ angular.module('tkrekryApp', [
         $rootScope.year = new Date().getFullYear();
         // Redirect to login if route requires auth and you're not logged in
         $rootScope.$on('$routeChangeStart', function (event, next) {
-
             if (next.authenticate && !Auth.isLoggedIn()) {
                 $location.path('/login');
             }

@@ -17,14 +17,6 @@ Local development environment is using Docker for MongoDB and Redis.
 #### Dependencies
 
 * Install docker https://docs.docker.com/installation/
-* Add dockerhost to /etc/hosts
-```bash
-  # Linux
-  127.0.0.1  dockerhost
-
-  # OSX with boot2docker
-  192.168.59.103  dockerhost
-```
 * Install project dependencies
 ```bash
 
@@ -38,11 +30,14 @@ Local development environment is using Docker for MongoDB and Redis.
 
 ```bash
   # Start App
-  docker-compose up app
+  docker-compose up -d
 
   # Seed development
-  docker-compose run --no-deps app scripts/seed-development.sh
+  scripts/seed-development.sh
 
+  # Stsart local server
+  node server.js
+  
   # Open browser
   open http://dockerhost:9000
 
