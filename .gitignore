@@ -138,3 +138,6 @@ bower_components/
 *.RTF  diff=astextplain
 
 app/bower_components
+
+# SSL stuff
+ssl/*
