@@ -8,5 +8,11 @@ env:
   NODE_ENV: test
 before_install:
   - docker-compose up -d
+  # package-lock.json was introduced in npm@5
+  - npm install -g npm@5 # skip this if you are using node 9
+  - npm install -g greenkeeper-lockfile@1
 before_script:
   - npm install -g grunt-cli bower
+  - greenkeeper-lockfile-update
+after_script:
+  - greenkeeper-lockfile-upload
