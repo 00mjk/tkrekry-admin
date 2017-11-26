@@ -1,5 +1,5 @@
 angular.module('tkrekryApp')
-    .controller('EmployerEditController', function($q, $scope, $routeParams, $location, $modal, focus, _, Auth, Organisation, Employer, Contact, Office, User, modalSettings) {
+    .controller('EmployerEditController', function($q, $scope, $routeParams, $location, $modal, focus, _, Auth, Organisation, Employer, Contact, Office, User, modalSettings, tbkKeenClient) {
         'use strict';
 
         $scope.employerId = $routeParams.id;
@@ -21,6 +21,15 @@ angular.module('tkrekryApp')
         };
 
         $scope.updateEmployerDetails = function() {
+            var employerUpdateEvent = {
+                user: $scope.currentUser,
+                selectedEmployerId: $scope.employerId,
+                keen: {
+                  timestamp: new Date().toISOString()
+                }
+              };
+            tbkKeenClient.addEvent('employers-update', employerUpdateEvent);
+
             $q.all({
                 employers: Employer.list().$promise,
                 users: User.list().$promise,

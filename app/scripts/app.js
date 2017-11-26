@@ -10,14 +10,19 @@ angular.module('tkrekryApp', [
     'angularMoment',
     'smart-table',
     'ngCkeditor',
-    'newrelic-timing'
+    'newrelic-timing',
+    'angular-keenio'
 ])
     .constant('angularMomentConfig', {
         timezone: 'Europe/Helsinki'
     })
 
-    .config(function ($routeProvider, $locationProvider, $httpProvider, $logProvider) {
+    .config(function ($routeProvider, $locationProvider, $httpProvider, $logProvider, tbkKeenConfigProvider) {
         'use strict';
+
+        tbkKeenConfigProvider
+            .projectId(window._env_config.projectId)
+            .writeKey(window._env_config.writeKey);
 
         $routeProvider
             .when('/', {

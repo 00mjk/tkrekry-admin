@@ -1,5 +1,5 @@
 angular.module('tkrekryApp')
-    .controller('OrganisationManagementController', function($q, $scope, $routeParams, $location, $modal, focus, _, Auth, Organisation, Employer, Contact, Office, User, modalSettings) {
+    .controller('OrganisationManagementController', function($q, $scope, $routeParams, $location, $modal, focus, _, Auth, Organisation, Employer, Contact, Office, User, modalSettings, tbkKeenClient) {
         'use strict';
 
         $scope.updateOrganisationDetails = function() {
@@ -64,6 +64,16 @@ angular.module('tkrekryApp')
             $scope.employer.users = angular.copy($scope.employerUsers);
             $scope.employer.domain = _.find($scope.domains, {name: $scope.employerDomain.name});
             $scope.employer.district = _.find($scope.districts, {name: $scope.employerDistrict.name});
+
+            var organizationUpdateEvent = {
+                user: $scope.currentUser,
+                employer: $scope.employer,
+                keen: {
+                  timestamp: new Date().toISOString()
+                }
+              };
+            tbkKeenClient.addEvent('employers-update', organizationUpdateEvent);
+            
 
             Employer.update({
                 id: $scope.employer._id

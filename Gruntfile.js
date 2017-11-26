@@ -82,7 +82,7 @@ module.exports = function ( grunt ) {
       test: {
         options: {
           script: 'server.js',
-          debug: true,
+          debug: false,
           env: process.env.ENV,
           port: 9999
         }
@@ -90,7 +90,7 @@ module.exports = function ( grunt ) {
       dev: {
         options: {
           script: 'server.js',
-          debug: true
+          debug: false
         }
       },
       prod: {
