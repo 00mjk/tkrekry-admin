@@ -15,7 +15,7 @@
 
 /* --- 2. Page layout & branding --- */
 body {
-  background: #E4ECEE url("https://res.cloudinary.com/hcmcbhfea/image/upload/v1414773966/header-bg.jpg") 50% 0 no-repeat;
+  background: #E4ECEE url("https://www.tkrekry.fi/images/header-bg.jpg") 50% 0 no-repeat;
 }
 
 header.container {
@@ -35,7 +35,7 @@ header .logo h2 {
   margin: 0 0 11px 0;
 }
 header .logo h1 a {
-  background: url("https://res.cloudinary.com/hcmcbhfea/image/upload/v1414773966/tkrekry-logo.png") 0 0 no-repeat;
+  background: url("https://www.tkrekry.fi/images/tkrekry-logo.png") 0 0 no-repeat;
   display: block;
   height: 55px;
   width: 212px;
@@ -112,7 +112,7 @@ footer p + p {
     float: right;
 }
 footer p:first-child a {
-    background: url("https://res.cloudinary.com/hcmcbhfea/image/upload/v1414773966/tkrekry-logo-small.png") 0 0 no-repeat;
+    background: url("https://www.tkrekry.fi/images/tkrekry-logo-small.png") 0 0 no-repeat;
     display: inline-block;
     height: 1.75em;
     width: 7em;
@@ -307,11 +307,11 @@ ol.form-error-list {
 /* Retina images */
 @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
   .logo h1 a {
-    background-image: url('https://res.cloudinary.com/hcmcbhfea/image/upload/v1414773965/tkrekry-logo-x2.png');
+    background-image: url('https://www.tkrekry.fi/images/tkrekry-logo-x2.png');
     background-size: 200px 52px;
   }
   footer p:first-child a {
-    background-image: url('https://res.cloudinary.com/hcmcbhfea/image/upload/v1414773965/tkrekry-logo-small-x2.png');
+    background-image: url('https://www.tkrekry.fi/images/tkrekry-logo-small-x2.png');
     background-size: 97px 25px;
   }
 }
