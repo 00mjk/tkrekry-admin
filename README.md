@@ -7,7 +7,7 @@ Tool for maintaining job advertisements and health center information for http:/
 [![Build Status](https://travis-ci.org/tkrekry/tkrekry-admin.svg)](https://travis-ci.org/tkrekry/tkrekry-admin)
 [![dependencies](https://david-dm.org/tkrekry/tkrekry-admin.png)](https://david-dm.org/tkrekry/tkrekry-admin)
 [![Code Climate](https://codeclimate.com/github/tkrekry/tkrekry-admin/badges/gpa.svg)](https://codeclimate.com/github/tkrekry/tkrekry-admin)
-[![Known Vulnerabilities](https://snyk.io/test/github/tkrekry/tkrekry-admin/badge.svg?targetFile=package.json)](https://snyk.io/test/github/tkrekry/tkrekry-admin?targetFile=package.json)
+[![Known Vulnerabilities](https://snyk.io/test/github/tkrekry/tkrekry-admin/badge.svg?targetFile=package.json)](https://snyk.io/test/github/tkrekry/tkrekry-admin?targetFile=package.json) [![Greenkeeper badge](https://badges.greenkeeper.io/tkrekry/tkrekry-admin.svg)](https://greenkeeper.io/)
 
 ## Development
 
