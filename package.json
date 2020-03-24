@@ -17,7 +17,7 @@
     "node": "6.11.2"
   },
   "dependencies": {
-    "agenda": "0.10.2",
+    "agenda": "2.0.0",
     "async": "2.5.0",
     "bluebird": "3.5.0",
     "body-parser": "1.18.2",
@@ -35,7 +35,7 @@
     "lodash": "4.17.11",
     "logdna": "^1.4.0",
     "moment": "2.19.3",
-    "mongoose": "4.13.17",
+    "mongoose": "5.3.9",
     "morgan": "1.9.1",
     "newrelic": "4.0.0",
     "passport": "0.3.2",
