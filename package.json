@@ -11,7 +11,9 @@
   },
   "scripts": {
     "test": "grunt env:test test:server",
-    "postinstall": "grunt build"
+    "postinstall": "grunt build",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "engines": {
     "node": "6.11.2"
@@ -41,7 +43,8 @@
     "passport": "0.3.2",
     "passport-local": "1.0.0",
     "serve-favicon": "2.4.5",
-    "when": "3.7.8"
+    "when": "3.7.8",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "astrolabe": "0.3.6",
@@ -98,5 +101,6 @@
     "supertest": "3.0.0",
     "supertest-session": "3.1.0",
     "time-grunt": "1.4.0"
-  }
+  },
+  "snyk": true
 }
