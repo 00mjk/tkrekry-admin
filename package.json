@@ -22,7 +22,7 @@
     "bluebird": "3.5.0",
     "body-parser": "1.18.2",
     "compression": "1.7.1",
-    "connect-redis": "3.3.0",
+    "connect-redis": "4.0.0",
     "cookie-parser": "1.4",
     "debug": "3.1.0",
     "ejs": "2.5.7",
