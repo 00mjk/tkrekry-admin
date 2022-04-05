@@ -34,7 +34,7 @@
     "lazy.js": "0.5.0",
     "lodash": "4.17.11",
     "logdna": "^1.4.0",
-    "moment": "2.19.3",
+    "moment": "2.29.2",
     "mongoose": "4.13.17",
     "morgan": "1.9.1",
     "newrelic": "4.0.0",
